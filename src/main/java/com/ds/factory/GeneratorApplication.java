@@ -11,7 +11,8 @@ import org.mybatis.generator.internal.DefaultShellCallback;
 
 public class GeneratorApplication {
     /** 生成mybatis资源 */
-    public static void main(String[] args) throws Exception{
+    //此文件已失去利用价值
+    public static void M()/*main(String[] args)*/ throws Exception{
         List<String> warnings = new ArrayList<String>();
         boolean overwrite = true;
         File configFile = new File("generatorConfig.xml");

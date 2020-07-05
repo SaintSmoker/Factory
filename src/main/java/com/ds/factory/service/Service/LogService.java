@@ -55,9 +55,6 @@ public class LogService {
     }
 
 
-
-
-
     public Log getLog(long id)throws Exception {
         Log result=null;
         try{
@@ -251,16 +248,14 @@ public class LogService {
     public void insertLog(String apiName, String type, HttpServletRequest request)throws Exception{
         Log log = new Log();
         log.setUserid(getUserId(request));
-        log.setOperation(getModule(apiName));
+        log.setOperation(apiName);
         log.setClientip(getLocalIp(request));
         log.setCreatetime(new Date());
         Byte status = 0;
         log.setStatus(status);
         log.setContentdetails(type + getModule(apiName));
         log.setRemark(type + getModule(apiName));
-//        System.out.print(apiName);
         System.out.print(type);
-//        System.out.print(getUserId(request));
         try{
             log.setOperation(apiName);
             logMapper.insertSelective(log);
