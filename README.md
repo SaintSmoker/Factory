@@ -2,11 +2,11 @@
 
 语言：JAVA + HTML + CSS + MYSQL语句 + JS(JAVASCRIPT)
 
-环境：Maven
+环境：JDK 1.8，Maven，MYSQL5.5+
 
 框架：SSM(Spring + SpringBoot + Mybatis)
 
-其他：Redis,，消息队列，Docker
+其他：Redis，消息队列，Docker
 
 参与者：
 姓名          学号              GitHub账号        邮箱
