@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>计量单位管理</title>
+    <meta charset="utf-8">
+    <!-- 指定以IE8的方式来渲染 -->
+    <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE8"/>
+    <link rel="shortcut icon" href="/images/dslogo.ico" type="image/x-icon"/>
+    <link rel="stylesheet" type="text/css" href="/js/easyui-1.3.5/themes/default/easyui.css"/>
+    <link rel="stylesheet" type="text/css" href="/js/easyui-1.3.5/themes/icon.css"/>
+    <link type="text/css" rel="stylesheet" href="/css/common.css"/>
+    <script type="text/javascript" src="/js/jquery-1.8.0.min.js"></script>
+    <script type="text/javascript" src="/js/easyui-1.3.5/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="/js/easyui-1.3.5/locale/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript" src="/js/common/common.js"></script>
+</head>
+<body>
+<!-- 数据显示table -->
+<div id="tablePanel" class="easyui-panel" data-options="fit:true" style="padding:1px;top:300px;" title="计量单位列表" iconCls="icon-list">
+
+    <table id="tableData" style="top:10px;border-bottom-color:#000000" BGCOLOR="black"></table>
+    <table id="searchTable">
+    </table>
+</div>
+
+<script type="text/javascript">
+    //初始化界面
+    $(function () {
+        initTableData();
+        ininPager();
+        initForm();
+    });
+
+    //防止表单提交重复
+    function initForm() {
+        $('#unitFM').form({
+            onSubmit: function () {
+                return false;
+            }
+        });
+    }
+
+    //初始化表格数据
+    function initTableData() {
+        $('#tableData').datagrid({
+            //title:'计量单位列表',
+            //iconCls:'icon-save',
+            //width:700,
+            height: heightInfo,
+            nowrap: false,
+            rownumbers: false,
+            //动画效果
+            animate: false,
+            //选中单行
+            singleSelect: true,
+            collapsible: false,
+            selectOnCheck: false,
+            //fitColumns:true,
+            //单击行是否选中
+            checkOnSelect: false,
+            pagination: true,
+            //交替出现背景
+            striped: true,
+            //loadFilter: pagerFilter,
+            pageSize: initPageSize,
+            pageList: initPageNum,
+            columns: [[
+                {field: 'id', width: 35, align: "center", checkbox: true},
+                {title: '编号', field: 'unit_no', width: 60},
+                {title: '单位名（中）', field: 'unit_name', width: 80},
+                {title: '单位名（英）', field: 'unit_name_en', width: 80},
+                {title: '单位比率', field: 'unit_rate', width: 80},
+                {title: '比率对照单位', field: 'default_type', width: 100},
+                {title: '适用食品种类', field: 'food_type', width: 400, formatter: function (value, rec) {
+                        var str = '';
+                        var details_nos=rec.food_type.split("；");
+                        for (var i = 0; i < details_nos.length; i++) {
+                            if(i%6==0)
+                                str+='<font color="#00FF00" >'+'第'+(i+1)+'种：'+details_nos[i]+'</font>&nbsp;&nbsp;';
+                            else if(i%6==1)
+                                str+='<font color="#FF0000" >'+'第'+(i+1)+'种：'+details_nos[i]+'</font>&nbsp;&nbsp;';
+                            else if(i%6==2)
+                                str+='<font color="#0000FF" >'+'第'+(i+1)+'种：'+details_nos[i]+'</font>&nbsp;&nbsp;';
+                            else if(i%6==3)
+                                str+='<font color="#00FFFF" >'+'第'+(i+1)+'种：'+details_nos[i]+'</font>&nbsp;&nbsp;';
+                            else if(i%6==4)
+                                str+='<font color="#FF00FF" >'+'第'+(i+1)+'种：'+details_nos[i]+'</font>&nbsp;&nbsp;';
+                            else if(i%6==5)
+                                str+='<span style="color:yellow;background-color:black">'+'第'+(i+1)+'种：'+details_nos[i]+'</span>&nbsp;&nbsp;';
+                            str+='<br/>';
+                        }
+                        return str;
+                    }
+                }
+            ]],
+            onLoadError: function () {
+                $.messager.alert('页面加载提示', '页面加载异常，请稍后再试！', 'error');
+                return;
+            }
+        });
+        dgResize();
+        showUnitDetails(1, initPageSize);
+    }
+
+    //分页信息处理
+    function ininPager() {
+        try {
+            var opts = $("#tableData").datagrid('options');
+            var pager = $("#tableData").datagrid('getPager');
+            pager.pagination({
+                onSelectPage: function (pageNum, pageSize) {
+                    opts.pageNumber = pageNum;
+                    opts.pageSize = pageSize;
+                    pager.pagination('refresh', {
+                        pageNumber: pageNum,
+                        pageSize: pageSize
+                    });
+                    showUnitDetails(pageNum, pageSize);
+                }
+            });
+        }
+        catch (e) {
+            $.messager.alert('异常处理提示', "分页信息异常 :  " + e.name + ": " + e.message, 'error');
+        }
+    }
+
+
+
+    //搜索处理
+    $("#searchBtn").unbind().bind({
+        click: function () {
+            showUnitDetails(1, initPageSize);
+            var opts = $("#tableData").datagrid('options');
+            var pager = $("#tableData").datagrid('getPager');
+            opts.pageNumber = 1;
+            opts.pageSize = initPageSize;
+            pager.pagination('refresh', {
+                pageNumber: 1,
+                pageSize: initPageSize
+            });
+        }
+    });
+
+    function showUnitDetails(pageNo, pageSize) {
+        var uName = "";
+        $.ajax({
+            type: "get",
+            url: "/user/unitlist",
+            dataType: "json",
+            data: ({
+                search: JSON.stringify({
+                    name: uName
+                }),
+                currentPage: pageNo,
+                pageSize: pageSize
+            }),
+            success: function (res) {
+                if(res && res.code === 200){
+                    if(res.data && res.data.page) {
+                        $("#tableData").datagrid('loadData', res.data.page);
+                    }
+                }
+            },
+            //此处添加错误处理
+            error: function () {
+                $.messager.alert('查询提示', '查询数据后台异常，请稍后再试！', 'error');
+                return;
+            }
+        });
+    }
+
+
+</script>
+</body>
+</html>

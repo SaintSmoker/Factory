@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>产品受欢迎排行</title>
+    <meta charset="utf-8">
+    <!-- 指定以IE8的方式来渲染 -->
+    <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE8"/>
+    <link rel="shortcut icon" href="/images/dslogo.ico" type="image/x-icon"/>
+    <script type="text/javascript" src="/js/jquery-1.8.0.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/js/easyui-1.3.5/themes/default/easyui.css"/>
+    <link rel="stylesheet" type="text/css" href="/js/easyui-1.3.5/themes/icon.css"/>
+    <link type="text/css" rel="stylesheet" href="/css/common.css"/>
+    <script type="text/javascript" src="/js/easyui-1.3.5/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="/js/easyui-1.3.5/locale/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript" src="/js/common/common.js"></script>
+</head>
+<body>
+<!-- 数据显示table -->
+<div id="tablePanel" class="easyui-panne" data-options="fit:true" style="padding: 1px;top: 300px;" title="商品采购" iconCls="icon-list">
+    <table id="searchTable">
+        <tr>
+            <td>产品编号：</td>
+            <td>
+                <input name="searchProduct_no" id="searchProduct_no"style="width:70px;"/>
+            </td>
+            <td>产品名：</td>
+            <td>
+                <input name="searchProduct_name" id="searchProduct_name"style="width:70px;"/>
+            </td>
+            <td>产品分类：</td>
+            <td>
+                <input name="searchProduct_type" id="searchProduct_type"style="width:70px;"/>
+            </td>
+            
+
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>
+                <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search" id="searchBtn" >查询</a>
+                <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-redo" id="searchResetBtn">重置</a>
+            </td>
+        </tr>
+    </table>
+    <table id="tableData" style="top:300px;border-bottom-color:#FFFFFF"></table>
+</div>
+
+<script type="text/javascript">
+    //初始化界面
+    $(function () {
+        initTableData();
+        ininPager();
+        initForm();
+    });
+
+    //防止表单提交重复
+    function initForm() {
+        $('#Product_criteriaFM').form({
+            onSubmit: function () {
+                return false;
+            }
+        });
+    }
+    //初始化表格数据
+    function initTableData() {
+        $('#tableData').datagrid({
+            height: heightInfo,
+            nowrap: false,
+            rownumbers: false,
+            animate: false,
+            singleSelect: true,
+            collapsible: false,
+            selectOnCheck: false,
+            pagination: true,
+            striped: true,
+            pageSize: initPageSize,
+            pageList: initPageNum,
+            columns: [[
+                {field: 'id', width: 35, align: "center", checkbox: true},
+                {title: '产品编号', field: 'product_no', width: 80},
+                {title: '产品名', field: 'product_name', width: 100},
+                {title: '产品分类', field: 'product_type', width: 280},
+                {title: '保质期', field: 'guarantee_period', width: 100},
+                {title: '单价', field: 'unit_Price', width: 80},
+                {title: '季度销量', field: 'purchase_times', width: 80},
+                {
+                    title: '购买量', field: 'count', align: "center", width: 100, formatter: function (value, rec,index) {
+                        var str = '';
+                        str += '<input type="number" name="count'+rec.product_no+'" id="count'+rec.product_no+'" style="width:70px;"/>&nbsp;&nbsp;&nbsp;';
+                        return str;
+                    }
+                },
+                {
+                    title: '购买单位', field: 'unit', align: "center", width: 120, formatter: function (value, rec,index) {
+                        var str = '';
+
+                        if(rec.product_type=="乳与乳制品" || rec.product_type=="冷冻饮品" || rec.product_type=="饮料类"||rec.product_type=="酒类"){
+                            str += '    <select name="unit'+rec.product_no+'" id="unit'+rec.product_no+'" style="width:100px;">'+
+                                '<option value="公升">默认单位(L)</option>'+
+
+                                '<option value="公升">公升(L)</option>'+
+                                '<option value="毫升">毫升(ml)</option>'+
+                                '<option value="箱">箱(trunk)</option>'+
+                                '<option value="罐">罐(tin)</option>'+
+                                '<option value="磅">磅(pound)</option>'+
+
+                                '<option value="盒">盒(case)</option>'+
+                                '<option value="瓶">瓶(bot)</option>'+
+
+                                '</select>&nbsp;&nbsp;&nbsp;';
+                        }
+                        else if(rec.product_type=="脂肪、油和乳化脂肪制品") {
+                            str += '    <select name="unit'+rec.product_no+'" id="unit'+rec.product_no+'" style="width:100px;">'+
+                                '<option value="公斤">默认单位(Kg)</option>'+
+
+                                '<option value="吨">吨(ton)</option>'+
+                                '<option value="公斤">公斤(Kg)</option>'+
+                                '<option value="克">公克(g)</option>'+
+                                '<option value="公升">公升(L)</option>'+
+                                '<option value="毫升">毫升(ml)</option>'+
+
+                                '<option value="车">车(cl.)</option>'+
+                                '<option value="包">包(pkt.)</option>'+
+                                '<option value="箱">箱(trunk)</option>'+
+                                '<option value="磅">磅(pound)</option>'+
+                                '<option value="盒">盒(case)</option>'+
+
+                                '<option value="瓶">瓶(bot)</option>'+
+
+                                '</select>&nbsp;&nbsp;&nbsp;';
+                        }
+                        else if(rec.product_type=="水果、蔬菜、豆类、食用菌、藻类、坚果以及籽类"||rec.product_type=="可可制品、巧克力和巧克力制品、以及糖果") {
+                            str += '    <select name="unit'+rec.product_no+'" id="unit'+rec.product_no+'" style="width:100px;">'+
+                                '<option value="公斤">默认单位(Kg)</option>'+
+
+                                '<option value="吨">吨(ton)</option>'+
+                                '<option value="公斤">公斤(Kg)</option>'+
+                                '<option value="克">公克(g)</option>'+
+                                '<option value="车">车(cl.)</option>'+
+                                '<option value="箱">箱(trunk)</option>'+
+
+                                '<option value="根">根(bar)</option>'+
+                                '<option value="捆">捆(bundle)</option>'+
+                                '<option value="袋">袋(bag)</option>'+
+                                '<option value="个">个(one)</option>'+
+
+                                '</select>&nbsp;&nbsp;&nbsp;';
+                        }
+                        else if(rec.product_type=="粮食和粮食制品"||rec.product_type=="焙烤食品") {
+                            str += '    <select name="unit'+rec.product_no+'" id="unit'+rec.product_no+'" style="width:100px;">'+
+                                '<option value="公斤">默认单位(Kg)</option>'+
+
+                                '<option value="吨">吨(ton)</option>'+
+                                '<option value="公斤">公斤(Kg)</option>'+
+                                '<option value="克">公克(g)</option>'+
+                                '<option value="公升">公升(L)</option>'+
+                                '<option value="毫升">毫升(ml)</option>'+
+
+                                '<option value="车">车(cl.)</option>'+
+                                '<option value="包">包(pkt.)</option>'+
+                                '<option value="箱">箱(trunk)</option>'+
+                                '<option value="袋">袋(bag)</option>'+
+
+                                '</select>&nbsp;&nbsp;&nbsp;';
+                        }
+                        else if(rec.product_type=="蛋及蛋制品"||rec.product_type=="肉及肉制品"||rec.product_type=="水产品及其制品") {
+                            str += '    <select name="unit'+rec.product_no+'" id="unit'+rec.product_no+'" style="width:100px;">'+
+                                '<option value="公斤">默认单位(Kg)</option>'+
+
+                                '<option value="吨">吨(ton)</option>'+
+                                '<option value="公斤">公斤(Kg)</option>'+
+                                '<option value="克">公克(g)</option>'+
+                                '<option value="车">车(cl.)</option>'+
+                                '<option value="打">打(dozen)</option>'+
+
+                                '<option value="包">包(pkt.)</option>'+
+                                '<option value="箱">箱(trunk)</option>'+
+                                '<option value="磅">磅(pound)</option>'+
+
+                                '</select>&nbsp;&nbsp;&nbsp;';
+                        }
+                        else if(rec.product_type=="甜味料"||rec.product_type=="调味品") {
+                            str += '    <select name="unit'+rec.product_no+'" id="unit'+rec.product_no+'" style="width:100px;">'+
+                                '<option value="公升">默认单位(L)</option>'+
+
+                                '<option value="公升">公升(L)</option>'+
+                                '<option value="毫升">毫升(ml)</option>'+
+                                '<option value="包">包(pkt.)</option>'+
+                                '<option value="箱">箱(trunk)</option>'+
+                                '<option value="罐">罐(tin)</option>'+
+
+                                '<option value="袋">袋(bag)</option>'+
+                                '<option value="盒">盒(case)</option>'+
+                                '<option value="瓶">瓶(bot)</option>'+
+                                '<option value="件">件(pcs)</option>'+
+
+                                '</select>&nbsp;&nbsp;&nbsp;';
+                        }
+                        else if(rec.product_type=="特殊营养食品"||rec.product_type=="其他类") {
+                            str += '    <select name="unit'+rec.product_no+'" id="unit'+rec.product_no+'" style="width:100px;">'+
+                                '<option value="公斤">默认单位(Kg)</option>'+
+
+                                '<option value="吨">吨(ton)</option>'+
+                                '<option value="公斤">公斤(Kg)</option>'+
+                                '<option value="克">公克(g)</option>'+
+                                '<option value="公升">公升(L)</option>'+
+                                '<option value="毫升">毫升(ml)</option>'+
+
+                                '<option value="车">车(cl.)</option>'+
+                                '<option value="包">包(pkt.)</option>'+
+                                '<option value="箱">箱(trunk)</option>'+
+                                '<option value="根">根(bar)</option>'+
+                                '<option value="捆">捆(bundle)</option>'+
+
+                                '<option value="罐">罐(tin)</option>'+
+                                '<option value="磅">磅(pound)</option>'+
+                                '<option value="棒">棒(stick)</option>'+
+                                '<option value="袋">袋(bag)</option>'+
+                                '<option value="盒">盒(case)</option>'+
+
+                                '<option value="瓶">瓶(bot)</option>'+
+                                '<option value="个">个(one)</option>'+
+                                '<option value="件">件(pcs)</option>'+
+
+                                '</select>&nbsp;&nbsp;&nbsp;';
+                        }
+                        return str;
+                    }
+                }
+            ]],
+            toolbar: [
+                {
+                    id: 'purchase_list',
+                    text: '批量购买',
+                    iconCls: 'icon-ok',
+                    handler: function () {
+                        purchase_list();
+                    }
+                },
+                {
+                    text: '用户编号：<input type="text" id="Client_no"/>（若为客户端登录，该文本框无法更改）'
+                }
+            ],
+            onLoadError: function () {
+                $.messager.alert('页面加载提示', '页面加载异常，请稍后再试！', 'error');
+                return;
+            }
+        });
+        dgResize();
+        showProduct_criteriaDetails(1, initPageSize);
+    }
+
+
+    function purchase_list() {
+        var row = $('#tableData').datagrid('getChecked');
+        if (row.length == 0) {
+            $.messager.alert('购买提示', '没有记录被选中！', 'info');
+            return;
+        }
+        if (row.length > 0) {
+            $.messager.confirm('购买确认', '确定要购买选中的' + row.length + '条商品吗？', function (r) {
+                if (r) {
+                    var client_no=$.trim($("#Client_no").val());
+                    var ids = "";
+                    var counts = "";
+                    var units = "";
+                    var purhase_details="";
+
+                    for (var i = 0; i < row.length; i++) {
+                        var z=i+1;
+                        if (i == row.length - 1) {
+                            ids += row[i].product_no;
+                            counts += $.trim($("#count"+row[i].product_no).val());
+                            units += $.trim($("#unit"+row[i].product_no).val());
+                            purhase_details+="第"+z+"件商品：编号"+row[i].product_no+"；购买量："
+                                +$.trim($("#count"+row[i].product_no).val())
+                                +$.trim($("#unit"+row[i].product_no).val());
+                            break;
+                        }
+                        ids += row[i].product_no + ",";
+                        counts += $.trim($("#count"+row[i].product_no).val())+ ",";
+                        units += $.trim($("#unit"+row[i].product_no).val())+ ",";
+                        purhase_details+="第"+z+"件商品：编号"+row[i].product_no+"；购买量："
+                            +$.trim($("#count"+row[i].product_no).val())
+                            +$.trim($("#unit"+row[i].product_no).val())+"<br/>";
+                    }
+
+                    $.messager.confirm('购买确认', '为客户编号'+client_no+'购买选中的' + row.length + '条商品：<br/>'+purhase_details, function (r2) {
+                        if(r2){
+
+                            $.ajax({
+                                type: "post",
+                                url: "/manufacturedesign/client_purchase",
+                                dataType: "json",
+                                async: false,
+                                data: ({
+                                    ids: ids,
+                                    counts: counts,
+                                    units: units,
+                                    client_no:client_no
+                                }),
+                                success: function (res) {
+                                    if(res && res.code === 200) {
+                                        $("#searchBtn").click();
+                                        $(":checkbox").attr("checked", false);
+                                    } else {
+                                        if(res && res.code == 601){
+                                            var jsondata={};
+                                            jsondata.ids=ids;
+                                            jsondata.counts=counts;
+                                            jsondata.units=units;
+                                            jsondata.deleteType='2';
+                                            var type='batch';
+                                            batDeleteProduct_criteriaForceConfirm(res,"/manufacturedesign/client_purchase",jsondata,type);
+                                        }else if(res && res.code == 600){
+                                            $.messager.alert('购买提示', res.msg, 'error');
+                                        }else{
+                                            $.messager.alert('购买提示', '购买失败，请稍后再试！', 'error');
+                                        }
+                                    }
+                                },
+                                //此处添加错误处理
+                                error: function () {
+                                    $.messager.alert('购买提示', '购买异常，请稍后再试！', 'error');
+                                    return;
+                                }
+                            });
+                        }
+                    });
+                }
+            });
+        }
+    }
+
+
+
+
+    //初始化键盘enter事件
+    $(document).keydown(function (event) {
+        //兼容 IE和firefox 事件
+        var e = window.event || event;
+        var k = e.keyCode || e.which || e.charCode;
+        //兼容 IE,firefox 兼容
+        var obj = e.srcElement ? e.srcElement : e.target;
+        //绑定键盘事件为 id是指定的输入框才可以触发键盘事件 13键盘事件 ---遗留问题 enter键效验 对话框会关闭问题
+        //搜索按钮添加快捷键
+        if (k == "13" && ((obj.id == "searchProduct_name")||(obj.id == "searchProduct_no")||(obj.id == "searchProduct_type"))) {
+            $("#searchBtn").click();
+        }
+    });
+
+    //分页信息处理
+    function ininPager() {
+        try {
+            var opts = $("#tableData").datagrid('options');
+            var pager = $("#tableData").datagrid('getPager');
+            pager.pagination({
+                onSelectPage: function (pageNum, pageSize) {
+                    opts.pageNumber = pageNum;
+                    opts.pageSize = pageSize;
+                    pager.pagination('refresh', {
+                        pageNumber: pageNum,
+                        pageSize: pageSize
+                    });
+                    showProduct_criteriaDetails(pageNum, pageSize);
+                }
+            });
+        }
+        catch (e) {
+            $.messager.alert('异常处理提示', "分页信息异常 :  " + e.name + ": " + e.message, 'error');
+        }
+    }
+
+    //搜索处理
+    $("#searchBtn").unbind().bind({
+        click: function () {
+            showProduct_criteriaDetails(1, initPageSize);
+            var opts = $("#tableData").datagrid('options');
+            var pager = $("#tableData").datagrid('getPager');
+            opts.pageNumber = 1;
+            opts.pageSize = initPageSize;
+            pager.pagination('refresh', {
+                pageNumber: 1,
+                pageSize: initPageSize
+            });
+        }
+    });
+
+    function showProduct_criteriaDetails(pageNo, pageSize) {
+        var no = $.trim($("#searchProduct_no").val());
+        var name = $.trim($("#searchProduct_name").val());
+        var type = $.trim($("#searchProduct_type").val());
+        $.ajax({
+            type: "get",
+            url: "/manufacturedesign/purchase_list",
+            dataType: "json",
+            data: ({
+                search: JSON.stringify({
+                    no: no,
+                    name: name,
+                    type: type
+                }),
+                currentPage: pageNo,
+                pageSize: pageSize
+            }),
+            success: function (res) {
+                if(res && res.code === 200){
+                    if(res.data && res.data.page) {
+                        $("#tableData").datagrid('loadData', res.data.page);
+                    }
+                }
+            },
+            //此处添加错误处理
+            error: function () {
+                $.messager.alert('查询提示', '查询数据后台异常，请稍后再试！', 'error');
+                return;
+            }
+        });
+    }
+
+    //重置按钮
+    $("#searchResetBtn").unbind().bind({
+        click: function () {
+            $("#searchProduct_no").val("");
+            $("#searchProduct_name").val("");
+            $("#searchProduct_type").val("");
+            //加载完以后重新初始化
+            $("#searchBtn").click();
+        }
+    });
+
+</script>
+</body>
+</html>
