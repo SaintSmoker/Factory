@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @MapperScan("com.ds.factory.datasource.mappers")
 public class FactoryApplication {
         //管理员测试用户名：admin；密码：123456
+        //get
     public static void main(String[] args) {
         SpringApplication.run(FactoryApplication.class, args);
     }
