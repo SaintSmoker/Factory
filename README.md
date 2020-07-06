@@ -24,10 +24,10 @@
 刘达维|201700800438    |   DavidLIuqaq      | 786567730@qq.com
 
 
-![image](https://github.com/SaintSmoker/Factory/blob/master/ReadMePicture/01.png)
+![image](https://gitee.com/zeraora/Factory/blob/master/ReadMePicture/01.png)
 
-![image](https://github.com/SaintSmoker/Factory/blob/master/ReadMePicture/02.png)
+![image](https://gitee.com/zeraora/Factory/blob/master/ReadMePicture/02.png)
 
-![image](https://github.com/SaintSmoker/Factory/blob/master/ReadMePicture/03.png)
+![image](https://gitee.com/zeraora/Factory/blob/master/ReadMePicture/03.png)
 
-![image](https://github.com/SaintSmoker/Factory/blob/master/ReadMePicture/04.png)
+![image](https://gitee.com/zeraora/Factory/blob/master/ReadMePicture/04.png)
