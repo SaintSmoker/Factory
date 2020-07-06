@@ -22,8 +22,12 @@
     </select>
 
     <select id="exist_or_notByName"  resultType="java.lang.Integer">
-                 SELECT count(*) FROM Product_Criteria WHERE Product_name = #{Product_name}
-         </select>
+             SELECT count(*) FROM Product_Criteria WHERE Product_name = #{Product_name}
+     </select>
+
+    <select id="pictures_url"  resultType="java.lang.String">
+             SELECT pictures FROM Product_Criteria WHERE Product_no = #{Product_no}
+     </select>
 
     <sql id="Example_Where_Clause">
     <where>

@@ -11,6 +11,7 @@ public interface Product_CriteriaMapper {
     List<Product_Criteria> selectByConstraint(@Param("Product_no") String Product_no,@Param("Product_name") String Product_name,@Param("Product_type") String Product_type);
 
     int exist_or_not(@Param("Product_no") String Product_no);
+    String pictures_url(@Param("Product_no") String Product_no);
     int exist_or_notByName(@Param("Product_name") String Product_name);
     String select_Biggest_Product_no();
     Product_Criteria selectByPrimaryKey(@Param("Product_no") String Product_no);

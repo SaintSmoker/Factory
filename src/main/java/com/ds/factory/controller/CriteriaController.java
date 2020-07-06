@@ -5,12 +5,16 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.ds.factory.constants.BusinessConstants;
 import com.ds.factory.constants.ExceptionConstants;
-import com.ds.factory.datasource.entities.Product_Criteria;
-import com.ds.factory.datasource.entities.Raw_Materials_Criteria;
-import com.ds.factory.datasource.entities.Staff;
+import com.ds.factory.datasource.entities.*;
+import com.ds.factory.datasource.mappers.Product_CriteriaMapper;
 import com.ds.factory.service.Service.LogService;
 import com.ds.factory.service.Service.Product_CriteriaService;
 import com.ds.factory.service.Service.Raw_Materials_CriteriaService;
+import com.ds.factory.utils.Constants;
+import com.ds.factory.utils.ErpInfo;
+import com.ds.factory.utils.PageQueryInfo;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +23,9 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.*;
+
+import static com.ds.factory.utils.ResponseJsonUtil.returnJson;
 
 @RestController
 @RequestMapping(value = "/criteria")
@@ -33,6 +40,26 @@ public class CriteriaController {
 
     @Resource
     private Raw_Materials_CriteriaService raw_materials_criteriaService;
+
+    @Resource
+    private Product_CriteriaMapper product_criteriaMapper;
+
+    @ResponseBody
+    @RequestMapping(value = "/pictures_url", method = RequestMethod.POST)
+    public JsonResult<Map<String, String>> client_purchase(@RequestParam("Product_no") String Product_no, HttpServletRequest request)throws Exception{
+        JsonResult<Map<String, String>> result = new JsonResult<>();
+        String pictures_url=product_criteriaMapper.pictures_url(Product_no)==null?"":product_criteriaMapper.pictures_url(Product_no);
+        Map<String, String> amountMap = new HashMap<>();
+        amountMap.put("pictures_url", pictures_url);
+        result.setData(amountMap);
+        Staff sta=(Staff)request.getSession().getAttribute("user");
+        logService.insertLog(BusinessConstants.LOG_MODULE_NAME_PRODUCT_CRITERIA,
+                "查看产品图片, id: "+sta.getId()+"的用户查看"+Product_no+"的图片",
+                ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
+        return result;
+    }
+
+
 
     @PostMapping("/batchDeleteProductByIds")
     @ResponseBody
