@@ -22,3 +22,12 @@
 刘自轩|201700800449    |    09nat           | 1625280370@qq.com
 张哲源|201700800500    |    tonyzhang1998   | 1224934012@qq.com
 刘达维|201700800438    |   DavidLIuqaq      | 786567730@qq.com
+
+
+![image](https://github.com/SaintSmoker/Factory/blob/master/ReadMePicture/01.png)
+
+![image](https://github.com/SaintSmoker/Factory/blob/master/ReadMePicture/02.png)
+
+![image](https://github.com/SaintSmoker/Factory/blob/master/ReadMePicture/03.png)
+
+![image](https://github.com/SaintSmoker/Factory/blob/master/ReadMePicture/04.png)
