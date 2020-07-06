@@ -25,6 +25,39 @@
             SELECT  COALESCE(sum(Money),0)  FROM Payment WHERE flag=0 and DATE_FORMAT( Payment_date, '%Y%m' ) = DATE_FORMAT( CURDATE( ) , '%Y%m' )
     </select>
 
+    <select id="Count_Sum_By_Date" resultType="java.lang.Integer">
+          select count(*)
+          FROM Payment
+          where  flag=0 and to_days(Payment_date) = to_days(#{Payment_date,jdbcType=TIMESTAMP})
+                and Order_no like '%${Order_no}%' and Staff_no_accountant like '%${Staff_no_accountant}%'
+                and Payment_no like '%${Payment_no}%'
+    </select>
+
+    <select id="Money_Sum_By_Date" resultType="java.lang.Integer">
+          select COALESCE(sum(Money),0)
+          FROM Payment
+          where  flag=0 and to_days(Payment_date) = to_days(#{Payment_date,jdbcType=TIMESTAMP})
+                and Order_no like '%${Order_no}%' and Staff_no_accountant like '%${Staff_no_accountant}%'
+                and Payment_no like '%${Payment_no}%'
+    </select>
+
+
+    <select id="Count_Sum_No_Date" resultType="java.lang.Integer">
+          select count(*)
+          FROM Payment
+          where  flag=0
+                and Order_no like '%${Order_no}%' and Staff_no_accountant like '%${Staff_no_accountant}%'
+                and Payment_no like '%${Payment_no}%'
+    </select>
+
+    <select id="Money_Sum_No_Date" resultType="java.lang.Integer">
+          select COALESCE(sum(Money),0)
+          FROM Payment
+          where  flag=0
+                and Order_no like '%${Order_no}%' and Staff_no_accountant like '%${Staff_no_accountant}%'
+                and Payment_no like '%${Payment_no}%'
+    </select>
+
 
     <sql id="Example_Where_Clause">
     <where>

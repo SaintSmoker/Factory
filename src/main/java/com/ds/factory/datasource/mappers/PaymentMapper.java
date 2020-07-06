@@ -11,6 +11,14 @@ import java.util.List;
 public interface PaymentMapper {
     int count_sum();
     int money_sum();
+    int Count_Sum_By_Date(@Param("Payment_date") Date Payment_date, @Param("Order_no") String Order_no,
+                          @Param("Staff_no_accountant") String Staff_no_accountant, @Param("Payment_no") String Payment_no);
+    int Money_Sum_By_Date(@Param("Payment_date") Date Payment_date, @Param("Order_no") String Order_no,
+                          @Param("Staff_no_accountant") String Staff_no_accountant, @Param("Payment_no") String Payment_no);
+    int Count_Sum_No_Date( @Param("Order_no") String Order_no, @Param("Staff_no_accountant") String Staff_no_accountant,
+                          @Param("Payment_no") String Payment_no);
+    int Money_Sum_No_Date(@Param("Order_no") String Order_no, @Param("Staff_no_accountant") String Staff_no_accountant,
+                          @Param("Payment_no") String Payment_no);
 
     List<Payment> selectByConstraint(@Param("Payment_date") Date Payment_date, @Param("Order_no") String Order_no,
                                      @Param("Staff_no_accountant") String Staff_no_accountant, @Param("Payment_no") String Payment_no);

@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.ds.factory.constants.BusinessConstants;
 import com.ds.factory.constants.ExceptionConstants;
 import com.ds.factory.datasource.entities.*;
+import com.ds.factory.datasource.mappers.PaymentMapper;
 import com.ds.factory.service.Service.LogService;
 import com.ds.factory.service.Service.PaymentService;
 import com.ds.factory.service.Service.UserBusinessService;
@@ -31,6 +32,9 @@ public class PaymentController {
 
     @Resource
     LogService logService;
+
+    @Resource
+    private PaymentMapper paymentMapper;
 
     @Resource
     private UserBusinessService userBusinessService;
@@ -85,6 +89,23 @@ public class PaymentController {
         //获取分页查询后的数据
         PageInfo<Payment> pageInfo = new PageInfo<>(list);
         objectMap.put("page", queryInfo);
+
+        int count =0;
+        int sum=0;
+        if(obj.getDate("date")==null||(obj.getDate("date")+"").compareTo("")==0)
+        {
+            count = paymentMapper.Count_Sum_No_Date(order_no,staff_no,payment_no);
+            sum = paymentMapper.Money_Sum_No_Date(order_no,staff_no,payment_no);
+        }
+        else
+        {
+            count = paymentMapper.Count_Sum_By_Date(date,order_no,staff_no,payment_no);
+            sum = paymentMapper.Money_Sum_By_Date(date,order_no,staff_no,payment_no);
+        }
+
+        objectMap.put("count_resources",count);
+        objectMap.put("sum_resources",sum);
+
         if (list == null) {
             queryInfo.setRows(new ArrayList<Object>());
             queryInfo.setTotal(BusinessConstants.DEFAULT_LIST_NULL_NUMBER);
