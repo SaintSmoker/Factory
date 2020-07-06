@@ -23,11 +23,3 @@
 张哲源|201700800500    |    tonyzhang1998   | 1224934012@qq.com
 刘达维|201700800438    |   DavidLIuqaq      | 786567730@qq.com
 
-
-![image](https://gitee.com/zeraora/Factory/blob/master/ReadMePicture/01.png)
-
-![image](https://gitee.com/zeraora/Factory/blob/master/ReadMePicture/02.png)
-
-![image](https://gitee.com/zeraora/Factory/blob/master/ReadMePicture/03.png)
-
-![image](https://gitee.com/zeraora/Factory/blob/master/ReadMePicture/04.png)
