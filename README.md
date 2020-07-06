@@ -1,5 +1,9 @@
 #### 这是2020年山东大学（威海）项目实训的小组大作业
 
+*码云仓库网址：https://gitee.com/zeraora/Factory    （定期同步GitHub仓库内容，便于审阅）
+
+*GitHub仓库网址：https://github.com/SaintSmoker/Factory     （项目工作平台）
+
 * 语言：JAVA + HTML + CSS + MYSQL语句 + JS(JAVASCRIPT)
 
 * 环境：JDK 1.8，Maven，MYSQL5.5+
