@@ -388,7 +388,8 @@ public class FunctionsController {
 
         Staff sta=(Staff)request.getSession().getAttribute("user");
         logService.insertLog(BusinessConstants.LOG_MODULE_NAME_FUNCTIONS,
-                new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_BATCH_delete).append(", id: "+sta.getId()).toString(),
+                new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_BATCH_delete).append(", id: "+sta.getId()).toString()+
+                "删除信息ID组："+ids,
                 ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
         return result;
     }
@@ -410,11 +411,7 @@ public class FunctionsController {
         }else {
             depot.setEnabled(false);
         }
-//        if (obj.get("State").toString().equals("on")){
-//            depot.setState(true);
-//        }else {
-//            depot.setState(false);
-//        }
+
         JSONObject result = ExceptionConstants.standardSuccess();
         try{
             String[] PNumber=depot.getPnumber().split("；");
@@ -431,7 +428,8 @@ public class FunctionsController {
 
             Staff sta=(Staff)request.getSession().getAttribute("user");
             logService.insertLog(BusinessConstants.LOG_MODULE_NAME_FUNCTIONS,
-                    new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_ADD).append(", id: "+sta.getId()).toString(),
+                    new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_ADD).append(", id: "+sta.getId()).toString()+
+                    "添加信息："+depot,
                     ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
 
         }catch(Exception e){
@@ -458,18 +456,15 @@ public class FunctionsController {
         }else {
             depot.setEnabled(false);
         }
-//        if (obj.get("State").toString().equals("on")){
-//            depot.setState(true);
-//        }else {
-//            depot.setState(false);
-//        }
+
         JSONObject result = ExceptionConstants.standardSuccess();
         try{
             functionsMapper.updateByPrimaryKeySelective(depot);
 
             Staff sta=(Staff)request.getSession().getAttribute("user");
             logService.insertLog(BusinessConstants.LOG_MODULE_NAME_FUNCTIONS,
-                    new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_EDIT).append(", id: "+sta.getId()).toString(),
+                    new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_EDIT).append(", id: "+sta.getId()).toString()+
+                            "修改信息："+depot,
                     ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
         }catch(Exception e){
             DSException.writeFail(logger, e);

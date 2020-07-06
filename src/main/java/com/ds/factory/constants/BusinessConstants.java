@@ -184,17 +184,18 @@ public class BusinessConstants {
     public static final String LOG_MODULE_NAME_ORGANIZATION= "机构";
     public static final String LOG_INTERFACE_NAME_ORGANIZATION= "organization";
     public static final String LOG_MODULE_NAME_ORDER= "订单";
+    public static final String LOG_MODULE_NAME_ORDER_DETAILS= "订单详情";
     public static final String LOG_MODULE_NAME_PAYMENT= "收款";
     public static final String LOG_MODULE_NAME_WAREHOUSE= "仓库";
     public static final String LOG_MODULE_NAME_PRODUCT_WAREHOUSE= "成品仓库";
     public static final String LOG_MODULE_NAME_MATERIALS_WAREHOUSE= "原料仓库";
     public static final String LOG_MODULE_NAME_EXPIRED= "过期食品";
     public static final String LOG_MODULE_NAME_MANUFACTURE= "生产制造";
-    public static final String LOG_MODULE_NAME_RAW_MATERIALS_CRITERIA= "原料目录";
+    public static final String LOG_MODULE_NAME_RAW_MATERIALS_CRITERIA= "原料标准信息";
     public static final String LOG_MODULE_NAME_MANUFACTURE_RESULT= "生产进度";
-    public static final String LOG_MODULE_NAME_PRODUCT_CRITERIA= "生产计划";
+    public static final String LOG_MODULE_NAME_PRODUCT_CRITERIA= "产品标准信息";
     public static final String LOG_MODULE_NAME_PURCHASE= "商品购买";
-    public static final String LOG_MODULE_NAME_INGREDIENT= "产品标准";
+    public static final String LOG_MODULE_NAME_INGREDIENT= "配方";
     public static final String LOG_MODULE_NAME_EXPORT= "出库单";
     public static final String LOG_MODULE_NAME_REFUND= "退货单";
 

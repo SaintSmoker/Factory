@@ -320,6 +320,7 @@ public class ProduceController {
         String[] count=counts.split(",");
         String[] unit=units.split(",");
         List<Product_Purchase_Details> list=new ArrayList<Product_Purchase_Details>();
+
         for(int i=0;i<id.length;i++)
         {
             if(id[i]==null||count[i]==null||unit[i]==null||
@@ -333,11 +334,18 @@ public class ProduceController {
             product_purchase_details.setPurchase_numbers(Long.parseLong(count[i]==null||count[i].trim().compareTo("")==0?"0":count[i].trim()));
             list.add(product_purchase_details);
         }
+        String details=list.get(0)+"";
+        for(int i=1;i<list.size();i++)
+        {
+            details+="； "+list.get(i);
+        }
+
         order_formService.Add_new_Order_with_Details(list,client_no);
         //log
         Staff sta=(Staff)request.getSession().getAttribute("user");
         logService.insertLog(BusinessConstants.LOG_MODULE_NAME_PURCHASE,
-                new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_BUY).append(", id: "+sta.getId()).toString(),
+                new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_BUY).append(", id: "+sta.getId()).toString()
+                +"购买信息："+details,
                 ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
         return result;
     }
@@ -348,7 +356,7 @@ public class ProduceController {
     public Object addDesign(@RequestParam("info") String beanJson, HttpServletRequest request)throws Exception{
         JSONObject result = ExceptionConstants.standardSuccess();
         Manufacture_Design manufacture_design= JSON.parseObject(beanJson, Manufacture_Design.class);
-
+        String temp=manufacture_design.getOrder_no_details().trim();
         String[] order_no_details_s=manufacture_design.getOrder_no_details().split("；");
         if(order_no_details_s.length==1)
             manufacture_designService.insertManufacture_Design(manufacture_design);
@@ -360,11 +368,13 @@ public class ProduceController {
                 manufacture_designService.insertManufacture_Design(manufacture_design);
             }
         }
+        manufacture_design.setOrder_no_details(temp);
+
         //log
         Staff sta=(Staff)request.getSession().getAttribute("user");
         logService.insertLog(BusinessConstants.LOG_MODULE_NAME_PRODUCT_CRITERIA,
-                new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_ADD).append(", id: "+sta.getId()).toString(),
-                ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
+                new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_ADD).append(", id: "+sta.getId()).toString()
+                +"添加生产计划系列："+manufacture_design, ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
         return result;
     }
 
@@ -394,8 +404,8 @@ public class ProduceController {
         //log
         Staff sta=(Staff)request.getSession().getAttribute("user");
         logService.insertLog(BusinessConstants.LOG_MODULE_NAME_PRODUCT_CRITERIA,
-                new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_EDIT).append(", id: "+sta.getId()).toString(),
-                ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
+                new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_EDIT).append(", id: "+sta.getId()).toString()
+                        +"修改信息："+manufacture_design, ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
         return result;
     }
 
@@ -412,7 +422,8 @@ public class ProduceController {
         //log
         Staff sta=(Staff)request.getSession().getAttribute("user");
         logService.insertLog(BusinessConstants.LOG_MODULE_NAME_PRODUCT_CRITERIA,
-                new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_DELETE).append(", id: "+sta.getId()).toString(),
+                new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_DELETE).append(", id: "+sta.getId()).toString()
+                        +"删除信息ID组："+ids,
                 ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
         return result;
     }
@@ -444,9 +455,9 @@ public class ProduceController {
         list.add(product_criteriaService.selectByProduct_no(no));
         //log
         Staff sta=(Staff)request.getSession().getAttribute("user");
-        logService.insertLog(BusinessConstants.LOG_MODULE_NAME_PRODUCT_CRITERIA,
-                new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_SEARCH).append(", id: "+sta.getId()).toString(),
-                ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
+        logService.insertLog(BusinessConstants.LOG_MODULE_NAME_INGREDIENT,
+                new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_SEARCH).append(", id: "+sta.getId()).toString()
+                +"获得产品号为 “"+no+"” 的商品配方信息", ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
         System.out.println(list.size());
         //获取分页查询后的数据
         PageInfo<Product_Criteria> pageInfo = new PageInfo<>(list);
@@ -502,7 +513,7 @@ public class ProduceController {
         }
         //log
         Staff sta=(Staff)request.getSession().getAttribute("user");
-        logService.insertLog(BusinessConstants.LOG_MODULE_NAME_INGREDIENT,
+        logService.insertLog(BusinessConstants.LOG_MODULE_NAME_RAW_MATERIALS_CRITERIA,
                 new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_SEARCH).append(", id: "+sta.getId()).toString(),
                 ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
         //获取分页查询后的数据
@@ -544,7 +555,7 @@ public class ProduceController {
         list.add(raw_materials_criteriaService.selectByKey(no));
         //log
         Staff sta=(Staff)request.getSession().getAttribute("user");
-        logService.insertLog(BusinessConstants.LOG_MODULE_NAME_MATERIALS_WAREHOUSE,
+        logService.insertLog(BusinessConstants.LOG_MODULE_NAME_RAW_MATERIALS_CRITERIA,
                 new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_SEARCH).append(", id: "+sta.getId()).toString(),
                 ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
 
@@ -586,7 +597,7 @@ public class ProduceController {
         list.add(product_criteriaService.selectByProduct_no(no));
         //log
         Staff sta=(Staff)request.getSession().getAttribute("user");
-        logService.insertLog(BusinessConstants.LOG_MODULE_NAME_PRODUCT_WAREHOUSE,
+        logService.insertLog(BusinessConstants.LOG_MODULE_NAME_PRODUCT_CRITERIA,
                 new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_SEARCH).append(", id: "+sta.getId()).toString(),
                 ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
 

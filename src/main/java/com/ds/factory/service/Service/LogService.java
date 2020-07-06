@@ -240,6 +240,10 @@ public class LogService {
                 moduleName = BusinessConstants.LOG_MODULE_NAME_EXPORT; break;
             case BusinessConstants.LOG_MODULE_NAME_REFUND:
                 moduleName = BusinessConstants.LOG_MODULE_NAME_REFUND; break;
+            case BusinessConstants.LOG_MODULE_NAME_RAW_MATERIALS_CRITERIA:
+                moduleName = BusinessConstants.LOG_MODULE_NAME_RAW_MATERIALS_CRITERIA; break;
+            case BusinessConstants.LOG_MODULE_NAME_ORDER_DETAILS:
+                moduleName = BusinessConstants.LOG_MODULE_NAME_ORDER_DETAILS; break;
 
         }
         return moduleName;
@@ -253,13 +257,12 @@ public class LogService {
         log.setCreatetime(new Date());
         Byte status = 0;
         log.setStatus(status);
-        log.setContentdetails(type + getModule(apiName));
+        log.setContentdetails((type + getModule(apiName)));
         log.setRemark(type + getModule(apiName));
-        System.out.print(type);
         try{
             log.setOperation(apiName);
             logMapper.insertSelective(log);
-            System.out.println(log.toString());
+
         }catch(Exception e){
             DSException.writeFail(logger, e);
         }

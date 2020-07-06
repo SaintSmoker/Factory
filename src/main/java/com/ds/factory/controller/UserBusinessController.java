@@ -98,8 +98,8 @@ public class UserBusinessController {
             }
             Staff sta=(Staff)request.getSession().getAttribute("user");
             logService.insertLog(BusinessConstants.LOG_MODULE_NAME_USER_BUSINESS,
-                    new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_EDIT +"  按钮修改").append(", id: "+sta.getId()).toString(),
-                    ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
+                    new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_EDIT +"  按钮修改").append(", id: "+sta.getId()).toString()
+                    +"修改信息： “"+userBusinessId+"” 的按钮设置", ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
         } catch (Exception e) {
             e.printStackTrace();
             res.code = 500;
@@ -111,7 +111,6 @@ public class UserBusinessController {
 
     @RequestMapping(value = "/batchDeleteUserBusinessByIds")
     public Object batchDeleteUserBusinessByIds(@RequestParam("ids") String ids, HttpServletRequest request) throws Exception {
-
         JSONObject result = ExceptionConstants.standardSuccess();
         int i= userBusinessService.batchDeleteUserBusinessByIds(ids);
         if(i<1){
@@ -122,8 +121,8 @@ public class UserBusinessController {
         }
         Staff sta=(Staff)request.getSession().getAttribute("user");
         logService.insertLog(BusinessConstants.LOG_MODULE_NAME_USER_BUSINESS,
-                new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_BATCH_delete).append(", id: "+sta.getId()).toString(),
-                ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
+                new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_BATCH_delete).append(", id: "+sta.getId()).toString()
+                +"删除信息ID组："+ids, ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
         return result;
     }
 
@@ -131,14 +130,13 @@ public class UserBusinessController {
     @ResponseBody
     public Object update(@RequestParam("info") String beanJson,@RequestParam("id") Long id, HttpServletRequest request)throws Exception{
         JSONObject result = ExceptionConstants.standardSuccess();
-        System.out.println(id);
         UserBusiness userBusiness= JSON.parseObject(beanJson, UserBusiness.class);
         userBusiness.setId(id);
         userBusinessService.updateSelective(userBusiness);
         Staff sta=(Staff)request.getSession().getAttribute("user");
         logService.insertLog(BusinessConstants.LOG_MODULE_NAME_USER_BUSINESS,
-                new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_EDIT).append(", id: "+sta.getId()).toString(),
-                ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
+                new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_EDIT).append(", id: "+sta.getId()).toString()
+                +"修改信息："+userBusiness, ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
         return result;
     }
 }

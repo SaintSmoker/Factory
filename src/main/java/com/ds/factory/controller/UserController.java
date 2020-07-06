@@ -78,7 +78,6 @@ public class UserController {
                                   @RequestParam(value = "password", required = false) String password,
                                   HttpServletRequest request)throws Exception {
         logger.info("============用户登录 login 方法调用开始==============");
-        System.out.println(loginame+"      "+password);
         String msgTip = "";
         Staff user=null;
         BaseResponseInfo res = new BaseResponseInfo();
@@ -185,6 +184,10 @@ public class UserController {
             if(state==1){
                 res.code=200;
                 res.data=loginame;
+
+                logService.insertLog("新用户注册",
+                        new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_ADD).append(", 新用户: “"+loginame+"”  已经成功加入").toString(),
+                        ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
             }else{
                 res.code=500;
             }
@@ -217,7 +220,6 @@ public class UserController {
             currentPage = BusinessConstants.DEFAULT_PAGINATION_PAGE_NUMBER;
         }
         PageHelper.startPage(currentPage,pageSize,true);
-        //List<Staff> list = staffService.selectByConstraint();
         List<Staff> list = staffService.selectByConstrain(userName,loginName);
         //获取分页查询后的数据
         PageInfo<Staff> pageInfo = new PageInfo<>(list);
@@ -286,10 +288,9 @@ public class UserController {
         }
         PageHelper.startPage(currentPage,pageSize,true);
         List<Log> list = logService.selectByConstrain(operation,clientIp,status,begin,end);
-        //System.out.println(list.size());
         List<Log2> list2=new ArrayList<Log2>();
         SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-       // String str1 = sdf1.format(date);
+
         for(int i=0;i<list.size();i++)
         {
             Log2 log=new Log2();
@@ -376,10 +377,11 @@ public class UserController {
         Staff sta= JSON.parseObject(beanJson, Staff.class);
         sta.setPassword("e10adc3949ba59abbe56e057f20f883e");
         staffService.insertSelective(sta);
-
+        sta.setPassword("“密保信息，管理员无权查看，初始密码默认123456”");
         Staff sta1=(Staff)request.getSession().getAttribute("user");
         logService.insertLog(BusinessConstants.LOG_MODULE_NAME_USER,
-                new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_ADD).append(", id: "+sta1.getId()).toString(),
+                new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_ADD).append(", id: "+sta1.getId()).toString()+
+                        "添加信息："+sta,
                 ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
 
         return result;
@@ -397,7 +399,8 @@ public class UserController {
 
         Staff sta=(Staff)request.getSession().getAttribute("user");
         logService.insertLog(BusinessConstants.LOG_MODULE_NAME_USER,
-                new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_BATCH_delete).append(", id: "+sta.getId()).toString(),
+                new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_BATCH_delete).append(", id: "+sta.getId()).toString()+
+                        "删除用户ID组："+ids,
                 ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
 
         return result;
@@ -440,7 +443,6 @@ public class UserController {
             amountMap.put("payment_money", payment_money);
 
             result.setData(amountMap);
-            //这里举个例子，如果觉得setData穿的信息不够，还可以用setMessage方法多传一个字符串过去
             result.setMessage("这是签到界面");
         } catch (Exception e) {
 
@@ -459,7 +461,8 @@ public class UserController {
         staffService.updateByPrimaryKeySelective(rmw);
         Staff sta=(Staff)request.getSession().getAttribute("user");
         logService.insertLog(BusinessConstants.LOG_MODULE_NAME_USER,
-                new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_EDIT).append(", id: "+sta.getId()).toString(),
+                new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_EDIT).append(", id: "+sta.getId()).toString()+
+                        "修改信息："+rmw,
                 ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
         return result;
     }
