@@ -350,7 +350,7 @@ public class UserController {
         }
         PageHelper.startPage(currentPage,pageSize,true);
         List<Unit> list = product_criteriaService.SelectUnit();
-        System.out.println(list.get(0));
+
         //获取分页查询后的数据
         PageInfo<Unit> pageInfo = new PageInfo<>(list);
         objectMap.put("page", queryInfo);
@@ -412,7 +412,7 @@ public class UserController {
     public JsonResult<Map<String, Integer>> getUserAmount() {
         JsonResult<Map<String, Integer>> result = new JsonResult<>();
         //Staff sta=(Staff)request.getSession().getAttribute("user");
-        System.out.println("111111111111");
+
         try {
             Integer order_details = order_detailsMapper.count_sum();
             Integer users = staffMapper.count_sum();

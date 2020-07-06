@@ -87,7 +87,6 @@ public class Product_WarehouseImpl implements Product_WarehouseService {
         while(flag)
         {
             biggest_num++;  biggest=""+biggest_num;
-            //System.out.println(no_+"");
             switch (biggest.length())
             {//0000  0001
                 case 1: biggest="0000000"+biggest;  break;

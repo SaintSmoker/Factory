@@ -47,7 +47,6 @@ public class Order_FormServiceImpl implements Order_FormService {
             String duration=product_criteria.getManufacture_duration();
             String duration_unit=duration.split("-")[duration.split("-").length-1];
             int duration_number=Integer.parseInt(duration.split("-")[0]);
-            System.out.println(duration_number+"    "+duration_unit);
 
             Date delivery=new Date(); //取时间
             Calendar calendar = new GregorianCalendar();
@@ -98,7 +97,6 @@ public class Order_FormServiceImpl implements Order_FormService {
         while(flag)
         {
             biggest_num++;  biggest=""+biggest_num;
-            //System.out.println(no_+"");
             switch (biggest.length())
             {//0000  0001
                 case 1: biggest="0000000"+biggest;  break;
@@ -129,7 +127,6 @@ public class Order_FormServiceImpl implements Order_FormService {
         order.setOrder_sum_amount(Long.parseLong(""+sum_money));
 
         Client c=clientMapper.selectByPrimaryKey(Client_no);
-        System.out.println(c);
         if(c==null || c.getClient_type()==null|| c.getClient_type().trim().compareTo("")==0 )
         {
             c.setCredit(Long.parseLong("5"));c.setClient_type("VIP01");

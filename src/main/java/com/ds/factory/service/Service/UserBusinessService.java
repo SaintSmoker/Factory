@@ -120,7 +120,6 @@ public class UserBusinessService {
     }
 
     public List<UserBusiness> getBasicData(String keyId, String type)throws Exception{
-        System.out.println(keyId+"*****"+type);
         UserBusinessExample example = new UserBusinessExample();
         example.createCriteria().andKeyidEqualTo(keyId).andTypeEqualTo(type)
                 .andDeleteFlagNotEqualTo(BusinessConstants.DELETE_FLAG_DELETED);

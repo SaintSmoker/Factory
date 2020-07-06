@@ -41,7 +41,7 @@ public class Raw_Materials_CriteriaImpl implements Raw_Materials_CriteriaService
         while(flag)
         {
             biggest_num++;  biggest=""+biggest_num;
-            //System.out.println(no_+"");
+
             switch (biggest.length())
             {//00 0000  0001
                 case 1: biggest="0000"+biggest;  break;

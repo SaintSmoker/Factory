@@ -103,8 +103,6 @@ public class PaymentServiceImpl implements PaymentService {
             if(difference_upper<=0)
                 return 0;
             int difference=Integer.parseInt(Money+"");
-            System.out.println(difference+"");
-            System.out.println(difference_upper+"");
 
             switch(Details.trim())
             {
@@ -141,7 +139,6 @@ public class PaymentServiceImpl implements PaymentService {
         else if(Details.compareTo("退款")==0){
             if(Integer.parseInt(Money+"")>0)
                 Money=Long.parseLong(""+(-Integer.parseInt(Money+"")));
-            System.out.println(""+Money);
             Refund_Application red=new Refund_Application();
             red.setOrder_no(Order_no);
             red.setReason("");

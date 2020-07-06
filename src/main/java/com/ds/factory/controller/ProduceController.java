@@ -385,7 +385,6 @@ public class ProduceController {
         JSONObject result = ExceptionConstants.standardSuccess();
         Manufacture_Design manufacture_design= JSON.parseObject(beanJson, Manufacture_Design.class);
 
-        System.out.println(manufacture_design);
         String no=(id+"").trim();
         //0000 0000 01
         switch (no.length()){
@@ -441,7 +440,7 @@ public class ProduceController {
             parameterMap.put(keyEach,obj.getString(keyEach));
         }
         String no=parameterMap.get("no");
-        System.out.println("11"+no);
+
         PageQueryInfo queryInfo = new PageQueryInfo();
         Map<String, Object> objectMap = new HashMap<String, Object>();
         if (pageSize == null || pageSize <= 0) {
@@ -458,7 +457,7 @@ public class ProduceController {
         logService.insertLog(BusinessConstants.LOG_MODULE_NAME_INGREDIENT,
                 new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_SEARCH).append(", id: "+sta.getId()).toString()
                 +"获得产品号为 “"+no+"” 的商品配方信息", ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
-        System.out.println(list.size());
+
         //获取分页查询后的数据
         PageInfo<Product_Criteria> pageInfo = new PageInfo<>(list);
         objectMap.put("page", queryInfo);
@@ -486,7 +485,6 @@ public class ProduceController {
             parameterMap.put(keyEach,obj.getString(keyEach));
         }
         String no=parameterMap.get("no");
-        System.out.println("11"+no);
         PageQueryInfo queryInfo = new PageQueryInfo();
         Map<String, Object> objectMap = new HashMap<String, Object>();
         if (pageSize == null || pageSize <= 0) {

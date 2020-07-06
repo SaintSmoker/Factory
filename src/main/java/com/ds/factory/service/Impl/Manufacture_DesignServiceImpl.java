@@ -75,7 +75,6 @@ public class Manufacture_DesignServiceImpl implements Manufacture_DesignService 
         String duration_unit=duration.split("-")[duration.split("-").length-1];
         int duration_number=Integer.parseInt(duration.split("-")[0]);
 
-        System.out.println(duration_number+"    "+duration_unit);
         Date deadline=new Date(); //取时间
         Calendar calendar = new GregorianCalendar();
         calendar.setTime(deadline);
@@ -121,7 +120,6 @@ public class Manufacture_DesignServiceImpl implements Manufacture_DesignService 
                 if(i!=old_raw_materials_details.length-1) sum+="；";
             }
             sum="原料所需："+sum;
-            System.out.println(sum);
             manufacture.setRaw_materials_requirement(sum);
             manufacture.setManufacture_no(old_design.getManufacture_no().trim());
             manufacture.setDetails("该生产计划新增子订单："+manufacture.getOrder_no_details());
@@ -139,8 +137,6 @@ public class Manufacture_DesignServiceImpl implements Manufacture_DesignService 
             manufacture_result.setOrder_no_details(manufacture.getOrder_no_details());
             manufacture_result.setManufacture_no(manufacture.getManufacture_no());
             manufacture_result.setUpdate_date(new Date());
-            System.out.println(manufacture_result);
-            System.out.println(manufacture);
             manufacture_resultMapper.updateByPrimaryKeySelective(manufacture_result);
             manufacture_designMapper.updateByPrimaryKeySelective(manufacture);
             return 0;
@@ -190,7 +186,6 @@ public class Manufacture_DesignServiceImpl implements Manufacture_DesignService 
             while(flag)
             {
                 biggest_num++;  biggest=""+biggest_num;
-                //System.out.println(no_+"");
                 switch (biggest.length())
                 {//00 0000  0001
                     case 1: biggest="000000000"+biggest;    break;
@@ -219,8 +214,6 @@ public class Manufacture_DesignServiceImpl implements Manufacture_DesignService 
             manufacture_result.setStaff_no_manufacture("");
             manufacture_result.setStock_no("0");
             manufacture_result.setUpdate_date(new Date());
-            System.out.println(manufacture_result);
-            System.out.println(manufacture);
             manufacture.setDetails("该生产计划新增子订单："+manufacture.getOrder_no_details());
             manufacture_resultMapper.deleteTrue(biggest);
             manufacture_resultMapper.insertSelective(manufacture_result);

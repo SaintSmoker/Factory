@@ -104,16 +104,13 @@ public class Order_DetailsServiceImpl implements Order_DetailsService {
     @Override
     public Date selectOrder_Create_DateByOrder_no_details(String Order_no_details) {
         String Order_no=Order_no_details.split("-")[0];
-        System.out.println(Order_no);
         Order_Form o2=order_formMapper.selectByPrimaryKey(Order_no);
         return o2.getOrder_Create_date();
     }
 
     @Override
     public int deleteByPrimaryKey(String Order_no_Details) {
-        System.out.println(Order_no_Details);
         Order_Details o=order_detailsMapper.selectByPrimaryKey(Order_no_Details);
-        System.out.println(o);
         if(o==null||o.getClient_no()==null || o.getClient_no().trim().compareTo("")==0 )
             return 0;
 
@@ -121,8 +118,6 @@ public class Order_DetailsServiceImpl implements Order_DetailsService {
         o.setCheck(Long.parseLong("1"));
 
         String Order_no=Order_no_Details.split("-")[0];
-        System.out.println(Order_no);
-
         Client c=clientMapper.selectByPrimaryKey(o.getClient_no());
         if(c==null || c.getClient_type().trim().compareTo("")==0 || c.getClient_type()==null ||
                 (c.getCredit()+"").trim().compareTo("")==0 || c.getCredit()==null) return 0;
@@ -186,7 +181,6 @@ public class Order_DetailsServiceImpl implements Order_DetailsService {
         o.setCheck(Long.parseLong("1"));
 
         String Order_no=Order_no_Details.split("-")[0];
-        System.out.println(Order_no);
         Order_Form o2=new Order_Form();
         o2.setOrder_no(Order_no);
         o2.setCheck(Long.parseLong("1"));

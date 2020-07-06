@@ -93,14 +93,12 @@ public class ClientServiceImpl implements ClientService {
         if(clientMapper.countBy_Name_and_Password(name,temp)==1) return 3;
 
         String select_Biggest_Client_no=clientMapper.select_Biggest_Client_no();
-        System.out.println(select_Biggest_Client_no);
         String no="";
         int no_=Integer.parseInt(select_Biggest_Client_no);
         boolean flag=true;
         while(flag)
         {
             no_++;  no=""+no_;
-            //System.out.println(no_+"");
             switch (no.length())
             {
                 case 1: no="00000"+no;  break;
@@ -122,7 +120,6 @@ public class ClientServiceImpl implements ClientService {
         s.setClient_no(no);
         s.setClient_name(name);
         s.setPassword(password);
-        System.out.println(s);
         int i=insert_Client_details(s);
         if(i==1)    return 6;
         else        return 5;
@@ -136,7 +133,6 @@ public class ClientServiceImpl implements ClientService {
             e.printStackTrace();
             logger.error(">>>>>>>>>>>>>>转化MD5字符串错误 ：" + e.getMessage());
         }
-        System.out.println(password);
         if(clientMapper.countBy_Name_and_Password(name,password)!=1)return null;
         return clientMapper.selectBy_Name_and_Password(name,password);
     }

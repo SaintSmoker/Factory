@@ -42,7 +42,7 @@ public class Export_FoodServiceImpl implements Export_RecordService {
 
     @Override
     public int insertExport_Record(Export_Record export_record) {
-        System.out.println(export_record);
+
         if(export_record.getOrder_no_details()==null
                 ||export_record.getOrder_no_details().trim().compareTo("")==0
                 ||order_detailsMapper.exist_or_not(export_record.getOrder_no_details().trim())==0)
@@ -58,7 +58,7 @@ public class Export_FoodServiceImpl implements Export_RecordService {
         while(flag)
         {
             biggest_num++;  biggest=""+biggest_num;
-            //System.out.println(no_+"");
+
             switch (biggest.length())
             {//00 0000  0001
                 case 1: biggest="000000000"+biggest;    break;

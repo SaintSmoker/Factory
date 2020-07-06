@@ -102,7 +102,7 @@ public class Expired_FoodServiceImpl implements Expired_FoodService {
         while(flag)
         {
             biggest_num++;  biggest=""+biggest_num;
-            //System.out.println(no_+"");
+
             switch (biggest.length())
             {//00 0000  0001
                 case 1: biggest="000000000"+biggest;  break;
