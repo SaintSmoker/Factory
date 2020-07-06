@@ -49,19 +49,15 @@ public class ClientController {
                           @RequestParam(value = Constants.CURRENT_PAGE, required = false) Integer currentPage,
                           @RequestParam(value = Constants.SEARCH, required = false) String search,
                           HttpServletRequest request)throws Exception {
-        //Object userInfo = request.getSession().getAttribute("user");
-        //System.out.println(userInfo);
-
 
         Map<String, String> parameterMap = ParamUtils.requestToMap(request);
         parameterMap.put(Constants.SEARCH, search);
-        //System.out.println(search);
         JSONObject obj= JSON.parseObject(search);
 
         String no=obj.getString("no")==null?"":obj.getString("no").trim();
         String name=obj.getString("name")==null?"":obj.getString("name").trim();
         String type=obj.getString("type")==null?"":obj.getString("type").trim();
-        //System.out.println(type);
+
         PageQueryInfo queryInfo = new PageQueryInfo();
         Map<String, Object> objectMap = new HashMap<String, Object>();
         if (pageSize != null && pageSize <= 0) {
@@ -104,7 +100,8 @@ public class ClientController {
 
         Staff sta=(Staff)request.getSession().getAttribute("user");
         logService.insertLog(BusinessConstants.LOG_MODULE_NAME_client,
-                new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_BATCH_delete).append(", id: "+sta.getId()).toString(),
+                new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_BATCH_delete).append(", id: "+sta.getId()).toString() +
+                "删除信息ID组："+ids,
                 ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
 
         return result;
@@ -117,10 +114,11 @@ public class ClientController {
         JSONObject result = ExceptionConstants.standardSuccess();
         Client client= JSON.parseObject(beanJson, Client.class);
         clientService.insert_Client_details(client);
-
+        client.setPassword("“密保信息，管理员无权查看，初始密码默认123456”");
         Staff sta=(Staff)request.getSession().getAttribute("user");
         logService.insertLog(BusinessConstants.LOG_MODULE_NAME_client,
-                new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_ADD).append(", id: "+sta.getId()).toString(),
+                new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_ADD).append(", id: "+sta.getId()).toString() +
+                "添加信息："+client,
                 ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
 
         return result;
@@ -147,7 +145,8 @@ public class ClientController {
 
         Staff sta=(Staff)request.getSession().getAttribute("user");
         logService.insertLog(BusinessConstants.LOG_MODULE_NAME_client,
-                new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_EDIT).append(", id: "+sta.getId()).toString(),
+                new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_EDIT).append(", id: "+sta.getId()).toString() +
+                "修改信息："+client,
                 ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
         return result;
     }

@@ -126,12 +126,12 @@ public class OrderController {
         List<Order_Details> list = order_detailsService.selectByConstraint(no,client_no,product_no,check);
         //log
         Staff sta=(Staff)request.getSession().getAttribute("user");
-        logService.insertLog(BusinessConstants.LOG_MODULE_NAME_ORDER,
+        logService.insertLog(BusinessConstants.LOG_MODULE_NAME_ORDER_DETAILS,
                 new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_SEARCH).append(", id: "+sta.getId()).toString(),
                 ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
         List<Order_Details2> list2=new ArrayList<Order_Details2>();
         SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        // String str1 = sdf1.format(date);
+
         for(int i=0;i<list.size();i++)
         {
             Order_Details2 order_details2=new Order_Details2();
@@ -184,9 +184,9 @@ public class OrderController {
         List<Order_Details> list = order_detailsService.selectByOrder_no(order_no);
         //log
         Staff sta=(Staff)request.getSession().getAttribute("user");
-        logService.insertLog(BusinessConstants.LOG_MODULE_NAME_ORDER,
-                new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_SEARCH).append(", id: "+sta.getId()).toString(),
-                ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
+        logService.insertLog(BusinessConstants.LOG_MODULE_NAME_ORDER_DETAILS,
+                new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_SEARCH).append(", id: "+sta.getId()).toString()
+                +"  获取订单号为“"+order_no+"”的订单的子订单详情", ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
         List<Order_Details2> list2=new ArrayList<Order_Details2>();
         SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         // String str1 = sdf1.format(date);
@@ -241,11 +241,12 @@ public class OrderController {
         //log
         Staff sta=(Staff)request.getSession().getAttribute("user");
         logService.insertLog(BusinessConstants.LOG_MODULE_NAME_ORDER,
-                new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_SEARCH).append(", id: "+sta.getId()).toString(),
+                new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_SEARCH).append(", id: "+sta.getId()).toString()
+                        +"  获取订单号为“"+order_no+"”的订单的子订单详情",
                 ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
         List<Order_Details2> list2=new ArrayList<Order_Details2>();
         SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        // String str1 = sdf1.format(date);
+
         Order_Form o= order_formService.selectByPrimaryKey(order_no);
         for(int i=0;i<list.size();i++)
         {
@@ -377,8 +378,8 @@ public class OrderController {
         //log
         Staff sta=(Staff)request.getSession().getAttribute("user");
         logService.insertLog(BusinessConstants.LOG_MODULE_NAME_ORDER,
-                new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_DELETE).append(", id: "+sta.getId()).toString(),
-                ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
+                new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_DELETE).append(", id: "+sta.getId()).toString()
+                        +"删除信息ID组："+ids, ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
         return result;
     }
 
@@ -391,8 +392,8 @@ public class OrderController {
         //log
         Staff sta=(Staff)request.getSession().getAttribute("user");
         logService.insertLog(BusinessConstants.LOG_MODULE_NAME_REFUND,
-                new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_ADD).append(", id: "+sta.getId()).toString(),
-                ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
+                new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_ADD).append(", id: "+sta.getId()).toString()
+                +"添加信息："+red, ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
         return result;
     }
 
@@ -405,8 +406,8 @@ public class OrderController {
         //log
         Staff sta=(Staff)request.getSession().getAttribute("user");
         logService.insertLog(BusinessConstants.LOG_MODULE_NAME_ORDER,
-                new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_ADD).append(", id: "+sta.getId()).toString(),
-                ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
+                new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_ADD).append(", id: "+sta.getId()).toString()
+                +"添加信息："+red, ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
         return result;
     }
 
@@ -422,8 +423,8 @@ public class OrderController {
         //log
         Staff sta=(Staff)request.getSession().getAttribute("user");
         logService.insertLog(BusinessConstants.LOG_MODULE_NAME_ORDER,
-                new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_DELETE).append(", id: "+sta.getId()).toString(),
-                ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
+                new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_DELETE).append(", id: "+sta.getId()).toString()
+                        +"删除信息ID组："+ids, ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
         return result;
     }
 
@@ -439,8 +440,8 @@ public class OrderController {
         //log
         Staff sta=(Staff)request.getSession().getAttribute("user");
         logService.insertLog(BusinessConstants.LOG_MODULE_NAME_REFUND,
-                new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_EDIT).append(", id: "+sta.getId()).toString(),
-                ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
+                new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_EDIT).append(", id: "+sta.getId()).toString()
+                +"修改信息："+refund_application, ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
         return result;
     }
 
@@ -454,8 +455,8 @@ public class OrderController {
         //log
         Staff sta=(Staff)request.getSession().getAttribute("user");
         logService.insertLog(BusinessConstants.LOG_MODULE_NAME_EXPORT,
-                new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_ADD).append(", id: "+sta.getId()).toString(),
-                ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
+                new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_ADD).append(", id: "+sta.getId()).toString()
+                +"添加信息："+rec, ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
         return result;
     }
 
@@ -471,8 +472,8 @@ public class OrderController {
         //log
         Staff sta=(Staff)request.getSession().getAttribute("user");
         logService.insertLog(BusinessConstants.LOG_MODULE_NAME_EXPORT,
-                new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_DELETE).append(", id: "+sta.getId()).toString(),
-                ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
+                new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_DELETE).append(", id: "+sta.getId()).toString()
+                +"删除信息ID组："+ids, ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
         return result;
     }
 
@@ -487,8 +488,8 @@ public class OrderController {
         export_recordService.updateSelective(rmw);
         Staff sta=(Staff)request.getSession().getAttribute("user");
         logService.insertLog(BusinessConstants.LOG_MODULE_NAME_EXPORT,
-                new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_EDIT).append(", id: "+sta.getId()).toString(),
-                ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
+                new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_EDIT).append(", id: "+sta.getId()).toString()
+                +"修改信息："+rmw, ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
         return result;
     }
 

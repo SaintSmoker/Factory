@@ -70,7 +70,7 @@ public class PaymentController {
 
         List<Payment2> list2=new ArrayList<Payment2>();
         SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        // String str1 = sdf1.format(date);
+
         for(int i=0;i<list.size();i++)
         {
             Payment2 log=new Payment2();
@@ -94,6 +94,7 @@ public class PaymentController {
         queryInfo.setTotal(pageInfo.getTotal());
         return returnJson(objectMap, ErpInfo.OK.name, ErpInfo.OK.code);
     }
+
     @PostMapping("/add")
     @ResponseBody
     public Object add(@RequestParam("info") String beanJson, HttpServletRequest request)throws Exception{
@@ -103,7 +104,7 @@ public class PaymentController {
         //log
         Staff sta=(Staff)request.getSession().getAttribute("user");
         logService.insertLog(BusinessConstants.LOG_MODULE_NAME_PAYMENT,
-                new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_ADD).append(", id: "+sta.getId()).toString(),
+                new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_ADD).append(", id: "+sta.getId()).toString()+"添加信息："+payment,
                 ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
         return result;
     }
@@ -118,7 +119,7 @@ public class PaymentController {
         //log
         Staff sta=(Staff)request.getSession().getAttribute("user");
         logService.insertLog(BusinessConstants.LOG_MODULE_NAME_PAYMENT,
-                new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_EDIT).append(", id: "+sta.getId()).toString(),
+                new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_EDIT).append(", id: "+sta.getId()).toString()+"修改信息："+payment,
                 ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
         return result;
     }

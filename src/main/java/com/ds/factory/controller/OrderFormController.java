@@ -72,11 +72,11 @@ public class OrderFormController {
         {
             order_formService.deleteByPrimaryKey(Order_no);
         }
-        //log
+
         Staff sta=(Staff)request.getSession().getAttribute("user");
         logService.insertLog(BusinessConstants.LOG_MODULE_NAME_ORDER,
-                new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_EDIT).append(", id: "+sta.getId()).toString(),
-                ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
+                new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_EDIT).append(", id: "+sta.getId()).toString()
+                +"修改信息："+order_form, ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
         return result;
     }
 
