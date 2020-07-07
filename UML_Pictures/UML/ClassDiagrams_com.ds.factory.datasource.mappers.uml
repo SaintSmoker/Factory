@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>com.ds.factory.datasource.mappers</OriginalElement>
+  <nodes>
+    <node x="2026.0" y="1273.0">com.ds.factory.datasource.mappers.ClientMapper</node>
+    <node x="975.0" y="1829.0">com.ds.factory.datasource.mappers.FunctionsMapper</node>
+    <node x="0.0" y="2599.0">com.ds.factory.datasource.mappers.Product_PopularityMapper</node>
+    <node x="469.0" y="2599.0">com.ds.factory.datasource.mappers.UserBusinessMapperEx</node>
+    <node x="461.0" y="0.0">com.ds.factory.datasource.mappers.Manufacture_DesignMapper</node>
+    <node x="575.0" y="1273.0">com.ds.factory.datasource.mappers.Manufacture_ResultMapper</node>
+    <node x="1140.0" y="1273.0">com.ds.factory.datasource.mappers.Product_CriteriaMapper</node>
+    <node x="0.0" y="1273.0">com.ds.factory.datasource.mappers.Export_RecordMapper</node>
+    <node x="1881.0" y="1829.0">com.ds.factory.datasource.mappers.RoleMapper</node>
+    <node x="1108.0" y="2599.0">com.ds.factory.datasource.mappers.UnitMapper</node>
+    <node x="0.0" y="671.0">com.ds.factory.datasource.mappers.Order_FormMapper</node>
+    <node x="1650.0" y="1273.0">com.ds.factory.datasource.mappers.StaffMapper</node>
+    <node x="461.0" y="2296.0">com.ds.factory.datasource.mappers.FunctionsMapperEx</node>
+    <node x="0.0" y="2296.0">com.ds.factory.datasource.mappers.StaffMapperEx</node>
+    <node x="483.0" y="671.0">com.ds.factory.datasource.mappers.Order_DetailsMapper</node>
+    <node x="988.0" y="671.0">com.ds.factory.datasource.mappers.Expired_FoodMapper</node>
+    <node x="1092.0" y="0.0">com.ds.factory.datasource.mappers.Raw_Materials_WarehouseMapper</node>
+    <node x="869.0" y="2599.0">com.ds.factory.datasource.mappers.DepartmentMapper</node>
+    <node x="1476.0" y="671.0">com.ds.factory.datasource.mappers.Refund_ApplicationMapper</node>
+    <node x="0.0" y="1829.0">com.ds.factory.datasource.mappers.Raw_Materials_CriteriaMapper</node>
+    <node x="982.0" y="2296.0">com.ds.factory.datasource.mappers.RoleMapperEx</node>
+    <node x="1720.0" y="0.0">com.ds.factory.datasource.mappers.Product_WarehouseMapper</node>
+    <node x="0.0" y="0.0">com.ds.factory.datasource.mappers.PaymentMapper</node>
+    <node x="1403.0" y="2296.0">com.ds.factory.datasource.mappers.LogMapperEx</node>
+    <node x="1410.0" y="1829.0">com.ds.factory.datasource.mappers.UserBusinessMapper</node>
+    <node x="584.0" y="1829.0">com.ds.factory.datasource.mappers.LogMapper</node>
+  </nodes>
+  <notes />
+  <edges />
+  <settings layout="Hierarchic Group" zoom="0.11387240356083086" x="1219.5" y="1338.0" />
+  <SelectedNodes>
+    <node>com.ds.factory.datasource.mappers.ClientMapper</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Fields</Category>
+    <Category>Constructors</Category>
+    <Category>Methods</Category>
+    <Category>Properties</Category>
+    <Category>Inner Classes</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

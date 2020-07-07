@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>com.ds.factory.service.Service</OriginalElement>
+  <nodes>
+    <node x="1235.0" y="0.0">com.ds.factory.service.Service.RoleService</node>
+    <node x="1619.0" y="1060.0">com.ds.factory.service.Service.PaymentService</node>
+    <node x="772.0" y="0.0">com.ds.factory.service.Service.ClientService</node>
+    <node x="557.0" y="1060.0">com.ds.factory.service.Service.Manufacture_DesignService</node>
+    <node x="0.0" y="1386.0">com.ds.factory.service.Service.Raw_Materials_WarehouseService</node>
+    <node x="0.0" y="1646.0">com.ds.factory.service.Service.Raw_Materials_CriteriaService</node>
+    <node x="0.0" y="1060.0">com.ds.factory.service.Service.Export_RecordService</node>
+    <node x="1447.0" y="1386.0">com.ds.factory.service.Service.Refund_ApplicationService</node>
+    <node x="489.0" y="1646.0">com.ds.factory.service.Service.Product_CriteriaService</node>
+    <node x="1147.0" y="1386.0">com.ds.factory.service.Service.ICommonQuery</node>
+    <node x="592.0" y="1386.0">com.ds.factory.service.Service.Product_WarehouseService</node>
+    <node x="568.0" y="599.0">com.ds.factory.service.Service.Order_DetailsService</node>
+    <node x="0.0" y="599.0">com.ds.factory.service.Service.LogService</node>
+    <node x="403.0" y="0.0">com.ds.factory.service.Service.FunctionsService</node>
+    <node x="1149.0" y="1060.0">com.ds.factory.service.Service.Expired_FoodService</node>
+    <node x="1046.0" y="599.0">com.ds.factory.service.Service.Order_FormService</node>
+    <node x="0.0" y="0.0">com.ds.factory.service.Service.UserBusinessService</node>
+    <node x="1553.0" y="599.0">com.ds.factory.service.Service.StaffService</node>
+    <node x="941.0" y="1646.0">com.ds.factory.service.Service.Manufacture_ResultService</node>
+  </nodes>
+  <notes />
+  <edges />
+  <settings layout="Hierarchic Group" zoom="0.16347177848775293" x="1008.5" y="929.0" />
+  <SelectedNodes>
+    <node>com.ds.factory.service.Service.RoleService</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Fields</Category>
+    <Category>Constructors</Category>
+    <Category>Methods</Category>
+    <Category>Properties</Category>
+    <Category>Inner Classes</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

@@ -1,0 +1,562 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>com.ds.factory.dao.Example</OriginalElement>
+  <nodes>
+    <node x="376.0" y="2408.0">com.ds.factory.dao.Example.StaffExample.Criterion</node>
+    <node x="1083.5" y="2408.0">com.ds.factory.dao.Example.ClientExample.Criterion</node>
+    <node x="1791.0" y="2408.0">com.ds.factory.dao.Example.Expired_FoodExample.Criterion</node>
+    <node x="1421.0" y="5315.0">com.ds.factory.dao.Example.RoleExample.GeneratedCriteria</node>
+    <node x="2498.5" y="2408.0">com.ds.factory.dao.Example.Raw_Materials_CriteriaExample.Criterion</node>
+    <node x="2492.5" y="6199.0">com.ds.factory.dao.Example.UserBusinessExample.Criterion</node>
+    <node x="3206.0" y="2408.0">com.ds.factory.dao.Example.Order_FormExample.Criterion</node>
+    <node x="387.6" y="0.0">com.ds.factory.dao.Example.StaffExample</node>
+    <node x="1804.3" y="7759.0">com.ds.factory.dao.Example.RoleExample.Criteria</node>
+    <node x="1415.0" y="328.0">com.ds.factory.dao.Example.Expired_FoodExample.GeneratedCriteria</node>
+    <node x="0.0" y="328.0">com.ds.factory.dao.Example.StaffExample.GeneratedCriteria</node>
+    <node x="386.5" y="4888.0">com.ds.factory.dao.Example.StaffExample.Criteria</node>
+    <node x="380.1" y="9323.0">com.ds.factory.dao.Example.FunctionsExample.Criteria</node>
+    <node x="3216.5" y="4888.0">com.ds.factory.dao.Example.Order_FormExample.Criteria</node>
+    <node x="368.0" y="7119.0">com.ds.factory.dao.Example.FunctionsExample.Criterion</node>
+    <node x="3913.5" y="2408.0">com.ds.factory.dao.Example.Refund_ApplicationExample.Criterion</node>
+    <node x="1089.5" y="6590.0">com.ds.factory.dao.Example.LogExample.Criterion</node>
+    <node x="4621.0" y="2408.0">com.ds.factory.dao.Example.Manufacture_DesignExample.Criterion</node>
+    <node x="2830.0" y="328.0">com.ds.factory.dao.Example.Order_FormExample.GeneratedCriteria</node>
+    <node x="5328.5" y="2408.0">com.ds.factory.dao.Example.Product_CriteriaExample.Criterion</node>
+    <node x="5339.0" y="4888.0">com.ds.factory.dao.Example.Product_CriteriaExample.Criteria</node>
+    <node x="6046.5" y="4888.0">com.ds.factory.dao.Example.PaymentExample.Criteria</node>
+    <node x="6755.1" y="0.0">com.ds.factory.dao.Example.Order_DetailsExample</node>
+    <node x="4630.066666666667" y="0.0">com.ds.factory.dao.Example.Manufacture_DesignExample</node>
+    <node x="6036.0" y="2408.0">com.ds.factory.dao.Example.PaymentExample.Criterion</node>
+    <node x="7075.0" y="328.0">com.ds.factory.dao.Example.Raw_Materials_WarehouseExample.GeneratedCriteria</node>
+    <node x="7782.5" y="328.0">com.ds.factory.dao.Example.Product_WarehouseExample.GeneratedCriteria</node>
+    <node x="1100.4" y="4987.0">com.ds.factory.dao.Example.LogExample</node>
+    <node x="8877.6" y="0.0">com.ds.factory.dao.Example.Manufacture_ResultExample</node>
+    <node x="6743.5" y="2408.0">com.ds.factory.dao.Example.Order_DetailsExample.Criterion</node>
+    <node x="8866.0" y="2408.0">com.ds.factory.dao.Example.Manufacture_ResultExample.Criterion</node>
+    <node x="1802.6" y="0.0">com.ds.factory.dao.Example.Expired_FoodExample</node>
+    <node x="8158.5" y="2408.0">com.ds.factory.dao.Example.Product_WarehouseExample.Criterion</node>
+    <node x="8490.0" y="328.0">com.ds.factory.dao.Example.Manufacture_ResultExample.GeneratedCriteria</node>
+    <node x="1095.1" y="0.0">com.ds.factory.dao.Example.ClientExample</node>
+    <node x="1094.0" y="4888.0">com.ds.factory.dao.Example.ClientExample.Criteria</node>
+    <node x="8169.0" y="4888.0">com.ds.factory.dao.Example.Product_WarehouseExample.Criteria</node>
+    <node x="6047.6" y="0.0">com.ds.factory.dao.Example.PaymentExample</node>
+    <node x="2509.0" y="4888.0">com.ds.factory.dao.Example.Raw_Materials_CriteriaExample.Criteria</node>
+    <node x="1804.8" y="4987.0">com.ds.factory.dao.Example.RoleExample</node>
+    <node x="1801.5" y="4888.0">com.ds.factory.dao.Example.Expired_FoodExample.Criteria</node>
+    <node x="1793.0" y="6337.0">com.ds.factory.dao.Example.RoleExample.Criterion</node>
+    <node x="1097.2" y="8265.0">com.ds.factory.dao.Example.LogExample.Criteria</node>
+    <node x="4631.5" y="4888.0">com.ds.factory.dao.Example.Manufacture_DesignExample.Criteria</node>
+    <node x="699.5000000000001" y="5315.0">com.ds.factory.dao.Example.LogExample.GeneratedCriteria</node>
+    <node x="3925.1" y="0.0">com.ds.factory.dao.Example.Refund_ApplicationExample</node>
+    <node x="7439.166666666667" y="0.0">com.ds.factory.dao.Example.Raw_Materials_WarehouseExample</node>
+    <node x="2504.6" y="7483.0">com.ds.factory.dao.Example.UserBusinessExample.Criteria</node>
+    <node x="7451.0" y="2408.0">com.ds.factory.dao.Example.Raw_Materials_WarehouseExample.Criterion</node>
+    <node x="3537.5" y="328.0">com.ds.factory.dao.Example.Refund_ApplicationExample.GeneratedCriteria</node>
+    <node x="5660.0" y="328.0">com.ds.factory.dao.Example.PaymentExample.GeneratedCriteria</node>
+    <node x="2504.5" y="4987.0">com.ds.factory.dao.Example.UserBusinessExample</node>
+    <node x="4952.5" y="328.0">com.ds.factory.dao.Example.Product_CriteriaExample.GeneratedCriteria</node>
+    <node x="380.0" y="4987.0">com.ds.factory.dao.Example.FunctionsExample</node>
+    <node x="5340.1" y="0.0">com.ds.factory.dao.Example.Product_CriteriaExample</node>
+    <node x="9584.0" y="4888.0">com.ds.factory.dao.Example.Export_RecordExample.Criteria</node>
+    <node x="9197.5" y="328.0">com.ds.factory.dao.Example.Export_RecordExample.GeneratedCriteria</node>
+    <node x="6367.5" y="328.0">com.ds.factory.dao.Example.Order_DetailsExample.GeneratedCriteria</node>
+    <node x="8170.1" y="0.0">com.ds.factory.dao.Example.Product_WarehouseExample</node>
+    <node x="7461.5" y="4888.0">com.ds.factory.dao.Example.Raw_Materials_WarehouseExample.Criteria</node>
+    <node x="2122.5" y="328.0">com.ds.factory.dao.Example.Raw_Materials_CriteriaExample.GeneratedCriteria</node>
+    <node x="9573.5" y="2408.0">com.ds.factory.dao.Example.Export_RecordExample.Criterion</node>
+    <node x="4245.0" y="328.0">com.ds.factory.dao.Example.Manufacture_DesignExample.GeneratedCriteria</node>
+    <node x="0.0" y="5315.0">com.ds.factory.dao.Example.FunctionsExample.GeneratedCriteria</node>
+    <node x="707.5" y="328.0">com.ds.factory.dao.Example.ClientExample.GeneratedCriteria</node>
+    <node x="3217.6" y="0.0">com.ds.factory.dao.Example.Order_FormExample</node>
+    <node x="8876.5" y="4888.0">com.ds.factory.dao.Example.Manufacture_ResultExample.Criteria</node>
+    <node x="2124.5" y="5315.0">com.ds.factory.dao.Example.UserBusinessExample.GeneratedCriteria</node>
+    <node x="2497.4333333333334" y="0.0">com.ds.factory.dao.Example.Raw_Materials_CriteriaExample</node>
+    <node x="6754.0" y="4888.0">com.ds.factory.dao.Example.Order_DetailsExample.Criteria</node>
+    <node x="9585.1" y="0.0">com.ds.factory.dao.Example.Export_RecordExample</node>
+    <node x="3924.0" y="4888.0">com.ds.factory.dao.Example.Refund_ApplicationExample.Criteria</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="com.ds.factory.dao.Example.Raw_Materials_CriteriaExample.Criteria" target="com.ds.factory.dao.Example.Raw_Materials_CriteriaExample">
+      <point x="24.75" y="-27.0" />
+      <point x="2583.25" y="4863.0" />
+      <point x="2779.0" y="4863.0" />
+      <point x="2779.0" y="303.0" />
+      <point x="2696.6" y="303.0" />
+      <point x="79.66666666666652" y="139.0" />
+    </edge>
+    <edge source="com.ds.factory.dao.Example.Product_WarehouseExample.Criteria" target="com.ds.factory.dao.Example.Product_WarehouseExample">
+      <point x="24.75" y="-27.0" />
+      <point x="8243.25" y="4863.0" />
+      <point x="8439.0" y="4863.0" />
+      <point x="8439.0" y="303.0" />
+      <point x="8352.6" y="303.0" />
+      <point x="73.0" y="139.0" />
+    </edge>
+    <edge source="com.ds.factory.dao.Example.FunctionsExample.Criterion" target="com.ds.factory.dao.Example.FunctionsExample">
+      <point x="0.0" y="-175.0" />
+      <point x="503.0" y="5290.0" />
+      <point x="489.5" y="5290.0" />
+      <point x="0.0" y="139.0" />
+    </edge>
+    <edge source="com.ds.factory.dao.Example.ClientExample.Criteria" target="com.ds.factory.dao.Example.ClientExample.GeneratedCriteria">
+      <point x="-24.75" y="-27.0" />
+      <point x="1118.75" y="4863.0" />
+      <point x="885.5" y="4863.0" />
+      <point x="0.0" y="2255.0" />
+    </edge>
+    <edge source="com.ds.factory.dao.Example.ClientExample.GeneratedCriteria" target="com.ds.factory.dao.Example.ClientExample">
+      <point x="0.0" y="-2255.0" />
+      <point x="885.5" y="303.0" />
+      <point x="1131.6" y="303.0" />
+      <point x="-73.0" y="139.0" />
+    </edge>
+    <edge source="com.ds.factory.dao.Example.Product_CriteriaExample.Criterion" target="com.ds.factory.dao.Example.Product_CriteriaExample">
+      <point x="0.0" y="-175.0" />
+      <point x="5463.5" y="303.0" />
+      <point x="5449.6" y="303.0" />
+      <point x="0.0" y="139.0" />
+    </edge>
+    <edge source="com.ds.factory.dao.Example.Export_RecordExample.Criteria" target="com.ds.factory.dao.Example.Export_RecordExample">
+      <point x="24.75" y="-27.0" />
+      <point x="9658.25" y="4863.0" />
+      <point x="9854.0" y="4863.0" />
+      <point x="9854.0" y="303.0" />
+      <point x="9767.6" y="303.0" />
+      <point x="73.0" y="139.0" />
+    </edge>
+    <edge source="com.ds.factory.dao.Example.LogExample.Criterion" target="com.ds.factory.dao.Example.LogExample">
+      <point x="0.0" y="-175.0" />
+      <point x="1224.5" y="5290.0" />
+      <point x="1209.9" y="5290.0" />
+      <point x="0.0" y="139.0" />
+    </edge>
+    <edge source="com.ds.factory.dao.Example.Expired_FoodExample.Criteria" target="com.ds.factory.dao.Example.Expired_FoodExample.GeneratedCriteria">
+      <point x="-24.75" y="-27.0" />
+      <point x="1826.25" y="4863.0" />
+      <point x="1593.0" y="4863.0" />
+      <point x="0.0" y="2255.0" />
+    </edge>
+    <edge source="com.ds.factory.dao.Example.PaymentExample.Criterion" target="com.ds.factory.dao.Example.PaymentExample">
+      <point x="0.0" y="-175.0" />
+      <point x="6171.0" y="303.0" />
+      <point x="6157.1" y="303.0" />
+      <point x="0.0" y="139.0" />
+    </edge>
+    <edge source="com.ds.factory.dao.Example.Order_DetailsExample.Criteria" target="com.ds.factory.dao.Example.Order_DetailsExample.GeneratedCriteria">
+      <point x="-24.75" y="-27.0" />
+      <point x="6778.75" y="4863.0" />
+      <point x="6545.5" y="4863.0" />
+      <point x="0.0" y="2255.0" />
+    </edge>
+    <edge source="com.ds.factory.dao.Example.Raw_Materials_WarehouseExample.Criteria" target="com.ds.factory.dao.Example.Raw_Materials_WarehouseExample">
+      <point x="24.75" y="-27.0" />
+      <point x="7535.75" y="4863.0" />
+      <point x="7731.5" y="4863.0" />
+      <point x="7731.5" y="303.0" />
+      <point x="7652.5" y="303.0" />
+      <point x="85.33333333333303" y="139.0" />
+    </edge>
+    <edge source="com.ds.factory.dao.Example.Refund_ApplicationExample.Criterion" target="com.ds.factory.dao.Example.Refund_ApplicationExample">
+      <point x="0.0" y="-175.0" />
+      <point x="4048.5" y="303.0" />
+      <point x="4034.6" y="303.0" />
+      <point x="0.0" y="139.0" />
+    </edge>
+    <edge source="com.ds.factory.dao.Example.Manufacture_ResultExample.Criteria" target="com.ds.factory.dao.Example.Manufacture_ResultExample.GeneratedCriteria">
+      <point x="-24.75" y="-27.0" />
+      <point x="8901.25" y="4863.0" />
+      <point x="8668.0" y="4863.0" />
+      <point x="0.0" y="2255.0" />
+    </edge>
+    <edge source="com.ds.factory.dao.Example.Order_FormExample.Criteria" target="com.ds.factory.dao.Example.Order_FormExample">
+      <point x="24.75" y="-27.0" />
+      <point x="3290.75" y="4863.0" />
+      <point x="3486.5" y="4863.0" />
+      <point x="3486.5" y="303.0" />
+      <point x="3400.1" y="303.0" />
+      <point x="73.0" y="139.0" />
+    </edge>
+    <edge source="com.ds.factory.dao.Example.LogExample.Criteria" target="com.ds.factory.dao.Example.LogExample">
+      <point x="24.75" y="-27.0" />
+      <point x="1171.45" y="8240.0" />
+      <point x="1370.0" y="8240.0" />
+      <point x="1370.0" y="5290.0" />
+      <point x="1282.9" y="5290.0" />
+      <point x="73.0" y="139.0" />
+    </edge>
+    <edge source="com.ds.factory.dao.Example.Manufacture_DesignExample.Criteria" target="com.ds.factory.dao.Example.Manufacture_DesignExample">
+      <point x="24.75" y="-27.0" />
+      <point x="4705.75" y="4863.0" />
+      <point x="4901.5" y="4863.0" />
+      <point x="4901.5" y="303.0" />
+      <point x="4815.9" y="303.0" />
+      <point x="74.33333333333303" y="139.0" />
+    </edge>
+    <edge source="com.ds.factory.dao.Example.Expired_FoodExample.GeneratedCriteria" target="com.ds.factory.dao.Example.Expired_FoodExample">
+      <point x="0.0" y="-2255.0" />
+      <point x="1593.0" y="303.0" />
+      <point x="1839.1" y="303.0" />
+      <point x="-73.0" y="139.0" />
+    </edge>
+    <edge source="com.ds.factory.dao.Example.StaffExample.Criterion" target="com.ds.factory.dao.Example.StaffExample">
+      <point x="0.0" y="-175.0" />
+      <point x="511.0" y="303.0" />
+      <point x="497.1" y="303.0" />
+      <point x="0.0" y="139.0" />
+    </edge>
+    <edge source="com.ds.factory.dao.Example.Manufacture_ResultExample.GeneratedCriteria" target="com.ds.factory.dao.Example.Manufacture_ResultExample">
+      <point x="0.0" y="-2255.0" />
+      <point x="8668.0" y="303.0" />
+      <point x="8914.1" y="303.0" />
+      <point x="-73.0" y="139.0" />
+    </edge>
+    <edge source="com.ds.factory.dao.Example.Manufacture_ResultExample.Criterion" target="com.ds.factory.dao.Example.Manufacture_ResultExample">
+      <point x="0.0" y="-175.0" />
+      <point x="9001.0" y="303.0" />
+      <point x="8987.1" y="303.0" />
+      <point x="0.0" y="139.0" />
+    </edge>
+    <edge source="com.ds.factory.dao.Example.Export_RecordExample.Criteria" target="com.ds.factory.dao.Example.Export_RecordExample.GeneratedCriteria">
+      <point x="-24.75" y="-27.0" />
+      <point x="9608.75" y="4863.0" />
+      <point x="9375.5" y="4863.0" />
+      <point x="0.0" y="2255.0" />
+    </edge>
+    <edge source="com.ds.factory.dao.Example.Order_FormExample.GeneratedCriteria" target="com.ds.factory.dao.Example.Order_FormExample">
+      <point x="0.0" y="-2255.0" />
+      <point x="3008.0" y="303.0" />
+      <point x="3254.1" y="303.0" />
+      <point x="-73.0" y="139.0" />
+    </edge>
+    <edge source="com.ds.factory.dao.Example.Manufacture_DesignExample.Criterion" target="com.ds.factory.dao.Example.Manufacture_DesignExample">
+      <point x="0.0" y="-175.0" />
+      <point x="4756.0" y="303.0" />
+      <point x="4741.566666666667" y="303.0" />
+      <point x="0.0" y="139.0" />
+    </edge>
+    <edge source="com.ds.factory.dao.Example.Manufacture_DesignExample.GeneratedCriteria" target="com.ds.factory.dao.Example.Manufacture_DesignExample">
+      <point x="0.0" y="-2255.0" />
+      <point x="4423.0" y="303.0" />
+      <point x="4667.233333333334" y="303.0" />
+      <point x="-74.33333333333303" y="139.0" />
+    </edge>
+    <edge source="com.ds.factory.dao.Example.Export_RecordExample.GeneratedCriteria" target="com.ds.factory.dao.Example.Export_RecordExample">
+      <point x="0.0" y="-2255.0" />
+      <point x="9375.5" y="303.0" />
+      <point x="9621.6" y="303.0" />
+      <point x="-73.0" y="139.0" />
+    </edge>
+    <edge source="com.ds.factory.dao.Example.UserBusinessExample.Criterion" target="com.ds.factory.dao.Example.UserBusinessExample">
+      <point x="0.0" y="-175.0" />
+      <point x="2627.5" y="5290.0" />
+      <point x="2614.0" y="5290.0" />
+      <point x="0.0" y="139.0" />
+    </edge>
+    <edge source="com.ds.factory.dao.Example.Raw_Materials_CriteriaExample.Criterion" target="com.ds.factory.dao.Example.Raw_Materials_CriteriaExample">
+      <point x="0.0" y="-175.0" />
+      <point x="2633.5" y="303.0" />
+      <point x="2616.9333333333334" y="303.0" />
+      <point x="0.0" y="139.0" />
+    </edge>
+    <edge source="com.ds.factory.dao.Example.UserBusinessExample.GeneratedCriteria" target="com.ds.factory.dao.Example.UserBusinessExample">
+      <point x="0.0" y="-1059.0" />
+      <point x="2298.5" y="5290.0" />
+      <point x="2541.0" y="5290.0" />
+      <point x="-73.0" y="139.0" />
+    </edge>
+    <edge source="com.ds.factory.dao.Example.RoleExample.GeneratedCriteria" target="com.ds.factory.dao.Example.RoleExample">
+      <point x="0.0" y="-1197.0" />
+      <point x="1597.0" y="5290.0" />
+      <point x="1841.3" y="5290.0" />
+      <point x="-73.0" y="139.0" />
+    </edge>
+    <edge source="com.ds.factory.dao.Example.ClientExample.Criterion" target="com.ds.factory.dao.Example.ClientExample">
+      <point x="0.0" y="-175.0" />
+      <point x="1218.5" y="303.0" />
+      <point x="1204.6" y="303.0" />
+      <point x="0.0" y="139.0" />
+    </edge>
+    <edge source="com.ds.factory.dao.Example.RoleExample.Criteria" target="com.ds.factory.dao.Example.RoleExample.GeneratedCriteria">
+      <point x="-24.75" y="-27.0" />
+      <point x="1829.05" y="7734.0" />
+      <point x="1597.0" y="7734.0" />
+      <point x="0.0" y="1197.0" />
+    </edge>
+    <edge source="com.ds.factory.dao.Example.Order_FormExample.Criterion" target="com.ds.factory.dao.Example.Order_FormExample">
+      <point x="0.0" y="-175.0" />
+      <point x="3341.0" y="303.0" />
+      <point x="3327.1" y="303.0" />
+      <point x="0.0" y="139.0" />
+    </edge>
+    <edge source="com.ds.factory.dao.Example.Order_DetailsExample.GeneratedCriteria" target="com.ds.factory.dao.Example.Order_DetailsExample">
+      <point x="0.0" y="-2255.0" />
+      <point x="6545.5" y="303.0" />
+      <point x="6791.6" y="303.0" />
+      <point x="-73.0" y="139.0" />
+    </edge>
+    <edge source="com.ds.factory.dao.Example.StaffExample.GeneratedCriteria" target="com.ds.factory.dao.Example.StaffExample">
+      <point x="0.0" y="-2255.0" />
+      <point x="178.0" y="303.0" />
+      <point x="424.1" y="303.0" />
+      <point x="-73.0" y="139.0" />
+    </edge>
+    <edge source="com.ds.factory.dao.Example.Raw_Materials_WarehouseExample.Criteria" target="com.ds.factory.dao.Example.Raw_Materials_WarehouseExample.GeneratedCriteria">
+      <point x="-24.75" y="-27.0" />
+      <point x="7486.25" y="4863.0" />
+      <point x="7253.0" y="4863.0" />
+      <point x="0.0" y="2255.0" />
+    </edge>
+    <edge source="com.ds.factory.dao.Example.LogExample.GeneratedCriteria" target="com.ds.factory.dao.Example.LogExample">
+      <point x="-1.1368683772161603E-13" y="-1450.0" />
+      <point x="884.5" y="5290.0" />
+      <point x="1136.9" y="5290.0" />
+      <point x="-73.0" y="139.0" />
+    </edge>
+    <edge source="com.ds.factory.dao.Example.Order_FormExample.Criteria" target="com.ds.factory.dao.Example.Order_FormExample.GeneratedCriteria">
+      <point x="-24.75" y="-27.0" />
+      <point x="3241.25" y="4863.0" />
+      <point x="3008.0" y="4863.0" />
+      <point x="0.0" y="2255.0" />
+    </edge>
+    <edge source="com.ds.factory.dao.Example.Product_WarehouseExample.GeneratedCriteria" target="com.ds.factory.dao.Example.Product_WarehouseExample">
+      <point x="0.0" y="-2255.0" />
+      <point x="7960.5" y="303.0" />
+      <point x="8206.6" y="303.0" />
+      <point x="-73.0" y="139.0" />
+    </edge>
+    <edge source="com.ds.factory.dao.Example.RoleExample.Criterion" target="com.ds.factory.dao.Example.RoleExample">
+      <point x="0.0" y="-175.0" />
+      <point x="1928.0" y="5290.0" />
+      <point x="1914.3" y="5290.0" />
+      <point x="0.0" y="139.0" />
+    </edge>
+    <edge source="com.ds.factory.dao.Example.LogExample.Criteria" target="com.ds.factory.dao.Example.LogExample.GeneratedCriteria">
+      <point x="-24.75" y="-27.0" />
+      <point x="1121.95" y="8240.0" />
+      <point x="884.5000000000001" y="8240.0" />
+      <point x="0.0" y="1450.0" />
+    </edge>
+    <edge source="com.ds.factory.dao.Example.FunctionsExample.GeneratedCriteria" target="com.ds.factory.dao.Example.FunctionsExample">
+      <point x="0.0" y="-1979.0" />
+      <point x="174.0" y="5290.0" />
+      <point x="416.5" y="5290.0" />
+      <point x="-73.0" y="139.0" />
+    </edge>
+    <edge source="com.ds.factory.dao.Example.Refund_ApplicationExample.Criteria" target="com.ds.factory.dao.Example.Refund_ApplicationExample">
+      <point x="24.75" y="-27.0" />
+      <point x="3998.25" y="4863.0" />
+      <point x="4194.0" y="4863.0" />
+      <point x="4194.0" y="303.0" />
+      <point x="4107.6" y="303.0" />
+      <point x="73.00000000000045" y="139.0" />
+    </edge>
+    <edge source="com.ds.factory.dao.Example.FunctionsExample.Criteria" target="com.ds.factory.dao.Example.FunctionsExample.GeneratedCriteria">
+      <point x="-24.75" y="-27.0" />
+      <point x="404.85" y="9298.0" />
+      <point x="174.0" y="9298.0" />
+      <point x="0.0" y="1979.0" />
+    </edge>
+    <edge source="com.ds.factory.dao.Example.Order_DetailsExample.Criteria" target="com.ds.factory.dao.Example.Order_DetailsExample">
+      <point x="24.75" y="-27.0" />
+      <point x="6828.25" y="4863.0" />
+      <point x="7024.0" y="4863.0" />
+      <point x="7024.0" y="303.0" />
+      <point x="6937.6" y="303.0" />
+      <point x="73.0" y="139.0" />
+    </edge>
+    <edge source="com.ds.factory.dao.Example.Refund_ApplicationExample.Criteria" target="com.ds.factory.dao.Example.Refund_ApplicationExample.GeneratedCriteria">
+      <point x="-24.75" y="-27.0" />
+      <point x="3948.75" y="4863.0" />
+      <point x="3715.5" y="4863.0" />
+      <point x="0.0" y="2255.0" />
+    </edge>
+    <edge source="com.ds.factory.dao.Example.Product_WarehouseExample.Criteria" target="com.ds.factory.dao.Example.Product_WarehouseExample.GeneratedCriteria">
+      <point x="-24.75" y="-27.0" />
+      <point x="8193.75" y="4863.0" />
+      <point x="7960.5" y="4863.0" />
+      <point x="0.0" y="2255.0" />
+    </edge>
+    <edge source="com.ds.factory.dao.Example.FunctionsExample.Criteria" target="com.ds.factory.dao.Example.FunctionsExample">
+      <point x="24.75" y="-27.0" />
+      <point x="454.35" y="9298.0" />
+      <point x="648.5" y="9298.0" />
+      <point x="648.5" y="5290.0" />
+      <point x="562.5" y="5290.0" />
+      <point x="73.0" y="139.0" />
+    </edge>
+    <edge source="com.ds.factory.dao.Example.UserBusinessExample.Criteria" target="com.ds.factory.dao.Example.UserBusinessExample.GeneratedCriteria">
+      <point x="-24.75" y="-27.0" />
+      <point x="2529.35" y="7458.0" />
+      <point x="2298.5" y="7458.0" />
+      <point x="0.0" y="1059.0" />
+    </edge>
+    <edge source="com.ds.factory.dao.Example.Export_RecordExample.Criterion" target="com.ds.factory.dao.Example.Export_RecordExample">
+      <point x="0.0" y="-175.0" />
+      <point x="9708.5" y="303.0" />
+      <point x="9694.6" y="303.0" />
+      <point x="0.0" y="139.0" />
+    </edge>
+    <edge source="com.ds.factory.dao.Example.Raw_Materials_WarehouseExample.GeneratedCriteria" target="com.ds.factory.dao.Example.Raw_Materials_WarehouseExample">
+      <point x="0.0" y="-2255.0" />
+      <point x="7253.0" y="303.0" />
+      <point x="7481.833333333334" y="303.0" />
+      <point x="-85.33333333333303" y="139.0" />
+    </edge>
+    <edge source="com.ds.factory.dao.Example.Product_CriteriaExample.Criteria" target="com.ds.factory.dao.Example.Product_CriteriaExample">
+      <point x="24.75" y="-27.0" />
+      <point x="5413.25" y="4863.0" />
+      <point x="5609.0" y="4863.0" />
+      <point x="5609.0" y="303.0" />
+      <point x="5522.6" y="303.0" />
+      <point x="73.0" y="139.0" />
+    </edge>
+    <edge source="com.ds.factory.dao.Example.PaymentExample.GeneratedCriteria" target="com.ds.factory.dao.Example.PaymentExample">
+      <point x="0.0" y="-2255.0" />
+      <point x="5838.0" y="303.0" />
+      <point x="6084.1" y="303.0" />
+      <point x="-73.0" y="139.0" />
+    </edge>
+    <edge source="com.ds.factory.dao.Example.StaffExample.Criteria" target="com.ds.factory.dao.Example.StaffExample.GeneratedCriteria">
+      <point x="-24.75" y="-27.0" />
+      <point x="411.25" y="4863.0" />
+      <point x="178.0" y="4863.0" />
+      <point x="0.0" y="2255.0" />
+    </edge>
+    <edge source="com.ds.factory.dao.Example.Manufacture_DesignExample.Criteria" target="com.ds.factory.dao.Example.Manufacture_DesignExample.GeneratedCriteria">
+      <point x="-24.75" y="-27.0" />
+      <point x="4656.25" y="4863.0" />
+      <point x="4423.0" y="4863.0" />
+      <point x="0.0" y="2255.0" />
+    </edge>
+    <edge source="com.ds.factory.dao.Example.ClientExample.Criteria" target="com.ds.factory.dao.Example.ClientExample">
+      <point x="24.75" y="-27.0" />
+      <point x="1168.25" y="4863.0" />
+      <point x="1364.0" y="4863.0" />
+      <point x="1364.0" y="303.0" />
+      <point x="1277.6" y="303.0" />
+      <point x="73.0" y="139.0" />
+    </edge>
+    <edge source="com.ds.factory.dao.Example.Manufacture_ResultExample.Criteria" target="com.ds.factory.dao.Example.Manufacture_ResultExample">
+      <point x="24.75" y="-27.0" />
+      <point x="8950.75" y="4863.0" />
+      <point x="9146.5" y="4863.0" />
+      <point x="9146.5" y="303.0" />
+      <point x="9060.1" y="303.0" />
+      <point x="73.0" y="139.0" />
+    </edge>
+    <edge source="com.ds.factory.dao.Example.Product_CriteriaExample.GeneratedCriteria" target="com.ds.factory.dao.Example.Product_CriteriaExample">
+      <point x="0.0" y="-2255.0" />
+      <point x="5130.5" y="303.0" />
+      <point x="5376.6" y="303.0" />
+      <point x="-73.0" y="139.0" />
+    </edge>
+    <edge source="com.ds.factory.dao.Example.Product_CriteriaExample.Criteria" target="com.ds.factory.dao.Example.Product_CriteriaExample.GeneratedCriteria">
+      <point x="-24.75" y="-27.0" />
+      <point x="5363.75" y="4863.0" />
+      <point x="5130.5" y="4863.0" />
+      <point x="0.0" y="2255.0" />
+    </edge>
+    <edge source="com.ds.factory.dao.Example.Raw_Materials_WarehouseExample.Criterion" target="com.ds.factory.dao.Example.Raw_Materials_WarehouseExample">
+      <point x="0.0" y="-175.0" />
+      <point x="7586.0" y="303.0" />
+      <point x="7567.166666666667" y="303.0" />
+      <point x="0.0" y="139.0" />
+    </edge>
+    <edge source="com.ds.factory.dao.Example.Raw_Materials_CriteriaExample.GeneratedCriteria" target="com.ds.factory.dao.Example.Raw_Materials_CriteriaExample">
+      <point x="0.0" y="-2255.0" />
+      <point x="2300.5" y="303.0" />
+      <point x="2537.266666666667" y="303.0" />
+      <point x="-79.66666666666652" y="139.0" />
+    </edge>
+    <edge source="com.ds.factory.dao.Example.PaymentExample.Criteria" target="com.ds.factory.dao.Example.PaymentExample.GeneratedCriteria">
+      <point x="-24.75" y="-27.0" />
+      <point x="6071.25" y="4863.0" />
+      <point x="5838.0" y="4863.0" />
+      <point x="0.0" y="2255.0" />
+    </edge>
+    <edge source="com.ds.factory.dao.Example.StaffExample.Criteria" target="com.ds.factory.dao.Example.StaffExample">
+      <point x="24.75" y="-27.0" />
+      <point x="460.75" y="4863.0" />
+      <point x="656.5" y="4863.0" />
+      <point x="656.5" y="303.0" />
+      <point x="570.1" y="303.0" />
+      <point x="73.0" y="139.0" />
+    </edge>
+    <edge source="com.ds.factory.dao.Example.Order_DetailsExample.Criterion" target="com.ds.factory.dao.Example.Order_DetailsExample">
+      <point x="0.0" y="-175.0" />
+      <point x="6878.5" y="303.0" />
+      <point x="6864.6" y="303.0" />
+      <point x="0.0" y="139.0" />
+    </edge>
+    <edge source="com.ds.factory.dao.Example.UserBusinessExample.Criteria" target="com.ds.factory.dao.Example.UserBusinessExample">
+      <point x="24.75" y="-27.0" />
+      <point x="2578.85" y="7458.0" />
+      <point x="2773.0" y="7458.0" />
+      <point x="2773.0" y="5290.0" />
+      <point x="2687.0" y="5290.0" />
+      <point x="73.0" y="139.0" />
+    </edge>
+    <edge source="com.ds.factory.dao.Example.Raw_Materials_CriteriaExample.Criteria" target="com.ds.factory.dao.Example.Raw_Materials_CriteriaExample.GeneratedCriteria">
+      <point x="-24.75" y="-27.0" />
+      <point x="2533.75" y="4863.0" />
+      <point x="2300.5" y="4863.0" />
+      <point x="0.0" y="2255.0" />
+    </edge>
+    <edge source="com.ds.factory.dao.Example.Refund_ApplicationExample.GeneratedCriteria" target="com.ds.factory.dao.Example.Refund_ApplicationExample">
+      <point x="0.0" y="-2255.0" />
+      <point x="3715.5" y="303.0" />
+      <point x="3961.6" y="303.0" />
+      <point x="-73.0" y="139.0" />
+    </edge>
+    <edge source="com.ds.factory.dao.Example.Expired_FoodExample.Criteria" target="com.ds.factory.dao.Example.Expired_FoodExample">
+      <point x="24.75" y="-27.0" />
+      <point x="1875.75" y="4863.0" />
+      <point x="2071.5" y="4863.0" />
+      <point x="2071.5" y="303.0" />
+      <point x="1985.1" y="303.0" />
+      <point x="73.0" y="139.0" />
+    </edge>
+    <edge source="com.ds.factory.dao.Example.PaymentExample.Criteria" target="com.ds.factory.dao.Example.PaymentExample">
+      <point x="24.75" y="-27.0" />
+      <point x="6120.75" y="4863.0" />
+      <point x="6316.5" y="4863.0" />
+      <point x="6316.5" y="303.0" />
+      <point x="6230.1" y="303.0" />
+      <point x="73.0" y="139.0" />
+    </edge>
+    <edge source="com.ds.factory.dao.Example.Product_WarehouseExample.Criterion" target="com.ds.factory.dao.Example.Product_WarehouseExample">
+      <point x="0.0" y="-175.0" />
+      <point x="8293.5" y="303.0" />
+      <point x="8279.6" y="303.0" />
+      <point x="0.0" y="139.0" />
+    </edge>
+    <edge source="com.ds.factory.dao.Example.RoleExample.Criteria" target="com.ds.factory.dao.Example.RoleExample">
+      <point x="24.75" y="-27.0" />
+      <point x="1878.55" y="7734.0" />
+      <point x="2073.5" y="7734.0" />
+      <point x="2073.5" y="5290.0" />
+      <point x="1987.3" y="5290.0" />
+      <point x="73.0" y="139.0" />
+    </edge>
+    <edge source="com.ds.factory.dao.Example.Expired_FoodExample.Criterion" target="com.ds.factory.dao.Example.Expired_FoodExample">
+      <point x="0.0" y="-175.0" />
+      <point x="1926.0" y="303.0" />
+      <point x="1912.1" y="303.0" />
+      <point x="0.0" y="139.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="0.03267000106416942" x="4927.0" y="4688.5" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Fields</Category>
+    <Category>Constructors</Category>
+    <Category>Methods</Category>
+    <Category>Properties</Category>
+    <Category>Inner Classes</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

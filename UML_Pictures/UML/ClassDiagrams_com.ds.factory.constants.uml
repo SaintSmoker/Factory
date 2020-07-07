@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>com.ds.factory.constants</OriginalElement>
+  <nodes>
+    <node x="0.0" y="0.0">com.ds.factory.constants.ExceptionConstants</node>
+    <node x="503.0" y="0.0">com.ds.factory.constants.BusinessConstants</node>
+  </nodes>
+  <notes />
+  <edges />
+  <settings layout="Hierarchic Group" zoom="0.07941024314536989" x="437.0" y="1923.0" />
+  <SelectedNodes>
+    <node>com.ds.factory.constants.ExceptionConstants</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Fields</Category>
+    <Category>Constructors</Category>
+    <Category>Methods</Category>
+    <Category>Properties</Category>
+    <Category>Inner Classes</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

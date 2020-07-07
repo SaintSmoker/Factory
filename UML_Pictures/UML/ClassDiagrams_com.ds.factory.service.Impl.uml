@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>com.ds.factory.service.Impl</OriginalElement>
+  <nodes>
+    <node x="1149.0" y="576.0">com.ds.factory.service.Impl.PaymentServiceImpl</node>
+    <node x="470.0" y="1017.0">com.ds.factory.service.Impl.Raw_Materials_WarehouseImpl</node>
+    <node x="1006.0" y="1389.0">com.ds.factory.service.Impl.Raw_Materials_CriteriaImpl</node>
+    <node x="592.0" y="576.0">com.ds.factory.service.Impl.Export_FoodServiceImpl</node>
+    <node x="1062.0" y="1017.0">com.ds.factory.service.Impl.Product_WarehouseImpl</node>
+    <node x="0.0" y="1017.0">com.ds.factory.service.Impl.Expired_FoodServiceImpl</node>
+    <node x="0.0" y="1389.0">com.ds.factory.service.Impl.Refund_ApplicationServiceImpl</node>
+    <node x="1448.0" y="0.0">com.ds.factory.service.Impl.StaffServiceImpl</node>
+    <node x="554.0" y="1389.0">com.ds.factory.service.Impl.Product_CriteriaImpl</node>
+    <node x="0.0" y="0.0">com.ds.factory.service.Impl.Order_FormServiceImpl</node>
+    <node x="0.0" y="1712.0">com.ds.factory.service.Impl.Manufacture_ResultServiceImpl</node>
+    <node x="970.0" y="0.0">com.ds.factory.service.Impl.Order_DetailsServiceImpl</node>
+    <node x="507.0" y="0.0">com.ds.factory.service.Impl.ClientServiceImpl</node>
+    <node x="0.0" y="576.0">com.ds.factory.service.Impl.Manufacture_DesignServiceImpl</node>
+  </nodes>
+  <notes />
+  <edges />
+  <settings layout="Hierarchic Group" zoom="0.15816589386913962" x="912.5" y="960.5" />
+  <SelectedNodes>
+    <node>com.ds.factory.service.Impl.PaymentServiceImpl</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Fields</Category>
+    <Category>Constructors</Category>
+    <Category>Methods</Category>
+    <Category>Properties</Category>
+    <Category>Inner Classes</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

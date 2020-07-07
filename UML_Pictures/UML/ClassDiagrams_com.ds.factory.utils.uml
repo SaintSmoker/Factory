@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>com.ds.factory.utils</OriginalElement>
+  <nodes>
+    <node x="0.0" y="0.0">com.ds.factory.utils.Tools</node>
+    <node x="457.0" y="1435.0">com.ds.factory.utils.BusinessRunTimeException</node>
+    <node x="1317.0" y="1176.0">com.ds.factory.utils.ExtJsonUtils.ExtExtractor</node>
+    <node x="1524.0" y="1435.0">com.ds.factory.utils.BaseResponseInfo</node>
+    <node x="309.0" y="0.0">com.ds.factory.utils.StringUtil</node>
+    <node x="647.0" y="1176.0">com.ds.factory.utils.ExtJsonUtils.NPDoubleSerializer</node>
+    <node x="0.0" y="1435.0">com.ds.factory.utils.ErpInfo</node>
+    <node x="982.0" y="1176.0">com.ds.factory.utils.ExtJsonUtils.NPFloatCodec</node>
+    <node x="276.0" y="1827.0">com.ds.factory.utils.PageQueryInfo</node>
+    <node x="202.57142857142867" y="1336.0">com.ds.factory.utils.ResponseJsonUtil.ResponseFilter</node>
+    <node x="0.0" y="1827.0">com.ds.factory.utils.JshException</node>
+    <node x="355.00000000000006" y="1131.5">com.ds.factory.utils.ExtJsonUtils.ExtFilter</node>
+    <node x="0.0" y="1120.0">com.ds.factory.utils.ResponseJsonUtil</node>
+    <node x="1279.0" y="1435.0">com.ds.factory.utils.ResponseCode</node>
+    <node x="1527.0" y="973.0">com.ds.factory.utils.Constants</node>
+    <node x="198.0" y="1514.0">com.ds.factory.utils.ExceptionCodeConstants.UserExceptionCode</node>
+    <node x="869.0" y="973.0">com.ds.factory.utils.ExtJsonUtils</node>
+    <node x="209.0" y="1435.0">com.ds.factory.utils.ExceptionCodeConstants</node>
+    <node x="834.0" y="1435.0">com.ds.factory.utils.ParamUtils</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="com.ds.factory.utils.ExceptionCodeConstants.UserExceptionCode" target="com.ds.factory.utils.ExceptionCodeConstants">
+      <point x="0.0" y="-73.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="com.ds.factory.utils.ResponseJsonUtil.ResponseFilter" target="com.ds.factory.utils.ResponseJsonUtil">
+      <point x="-65.25" y="-27.0" />
+      <point x="267.82142857142867" y="1311.0" />
+      <point x="167.5" y="1311.0" />
+      <point x="0.0" y="83.0" />
+    </edge>
+    <edge source="com.ds.factory.utils.ExtJsonUtils.ExtExtractor" target="com.ds.factory.utils.ExtJsonUtils">
+      <point x="0.0" y="-27.0" />
+      <point x="1399.5" y="1090.0" />
+      <point x="1049.25" y="1090.0" />
+      <point x="77.25000000000006" y="48.5" />
+    </edge>
+    <edge source="com.ds.factory.utils.ResponseJsonUtil.ResponseFilter" target="com.ds.factory.utils.ExtJsonUtils.ExtFilter">
+      <point x="65.25" y="-27.0" />
+      <point x="398.32142857142867" y="1311.0" />
+      <point x="491.00000000000006" y="1311.0" />
+      <point x="0.0" y="71.5" />
+    </edge>
+    <edge source="com.ds.factory.utils.ExtJsonUtils.NPDoubleSerializer" target="com.ds.factory.utils.ExtJsonUtils">
+      <point x="0.0" y="-27.0" />
+      <point x="804.5" y="1100.0" />
+      <point x="946.25" y="1100.0" />
+      <point x="-25.75" y="48.5" />
+    </edge>
+    <edge source="com.ds.factory.utils.ExtJsonUtils.NPFloatCodec" target="com.ds.factory.utils.ExtJsonUtils">
+      <point x="0.0" y="-27.0" />
+      <point x="1139.5" y="1100.0" />
+      <point x="997.7500000000001" y="1100.0" />
+      <point x="25.750000000000057" y="48.5" />
+    </edge>
+    <edge source="com.ds.factory.utils.ExtJsonUtils.ExtFilter" target="com.ds.factory.utils.ExtJsonUtils">
+      <point x="0.0" y="-71.5" />
+      <point x="491.00000000000006" y="1090.0" />
+      <point x="894.75" y="1090.0" />
+      <point x="-77.25" y="48.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="0.15956340956340956" x="885.5" y="952.0" />
+  <SelectedNodes>
+    <node>com.ds.factory.utils.Tools</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Fields</Category>
+    <Category>Constructors</Category>
+    <Category>Methods</Category>
+    <Category>Properties</Category>
+    <Category>Inner Classes</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>com.ds.factory.datasource.entities</OriginalElement>
+  <nodes>
+    <node x="699.5" y="380.0">com.ds.factory.datasource.entities.StaffEx</node>
+    <node x="524.0" y="2595.0">com.ds.factory.datasource.entities.Expired_Food</node>
+    <node x="659.0" y="2941.0">com.ds.factory.datasource.entities.Log</node>
+    <node x="1234.0" y="2595.0">com.ds.factory.datasource.entities.Export_Record</node>
+    <node x="1770.0" y="2595.0">com.ds.factory.datasource.entities.Product_Warehouse</node>
+    <node x="2525.5" y="0.0">com.ds.factory.datasource.entities.Functions</node>
+    <node x="561.0" y="3244.0">com.ds.factory.datasource.entities.Department</node>
+    <node x="728.5" y="0.0">com.ds.factory.datasource.entities.Staff</node>
+    <node x="968.0" y="2595.0">com.ds.factory.datasource.entities.Manufacture_Design2</node>
+    <node x="936.5" y="0.0">com.ds.factory.datasource.entities.Manufacture_Design</node>
+    <node x="1421.0" y="2941.0">com.ds.factory.datasource.entities.Client</node>
+    <node x="0.0" y="2595.0">com.ds.factory.datasource.entities.Raw_Materials_Warehouse</node>
+    <node x="1787.0" y="2941.0">com.ds.factory.datasource.entities.Order_Details2</node>
+    <node x="2434.0" y="2941.0">com.ds.factory.datasource.entities.Raw_Materials_Criteria</node>
+    <node x="2696.5" y="0.0">com.ds.factory.datasource.entities.Order_Form</node>
+    <node x="2297.0" y="2595.0">com.ds.factory.datasource.entities.Refund_Application</node>
+    <node x="2059.5" y="0.0">com.ds.factory.datasource.entities.Product_Criteria</node>
+    <node x="2818.0" y="2595.0">com.ds.factory.datasource.entities.Manufacture_Result</node>
+    <node x="0.0" y="328.0">com.ds.factory.datasource.entities.UserBusinessExample.GeneratedCriteria</node>
+    <node x="2821.0" y="2941.0">com.ds.factory.datasource.entities.Payment2</node>
+    <node x="1045.0" y="2941.0">com.ds.factory.datasource.entities.Payment</node>
+    <node x="2259.0" y="2941.0">com.ds.factory.datasource.entities.Role</node>
+    <node x="368.0" y="1212.0">com.ds.factory.datasource.entities.UserBusinessExample.Criterion</node>
+    <node x="3046.0" y="2941.0">com.ds.factory.datasource.entities.Unit</node>
+    <node x="380.0" y="0.0">com.ds.factory.datasource.entities.UserBusinessExample</node>
+    <node x="0.0" y="3244.0">com.ds.factory.datasource.entities.Product_Purchase_Details</node>
+    <node x="437.0" y="2941.0">com.ds.factory.datasource.entities.Order_Form2</node>
+    <node x="3236.0" y="2941.0">com.ds.factory.datasource.entities.UserBusiness</node>
+    <node x="2026.0" y="2941.0">com.ds.factory.datasource.entities.Manufacture_Result2</node>
+    <node x="0.0" y="2941.0">com.ds.factory.datasource.entities.Order_Details</node>
+    <node x="852.0" y="2941.0">com.ds.factory.datasource.entities.Log2</node>
+    <node x="380.1" y="2496.0">com.ds.factory.datasource.entities.UserBusinessExample.Criteria</node>
+    <node x="1582.5" y="0.0">com.ds.factory.datasource.entities.Product_Popularity</node>
+    <node x="357.0" y="3244.0">com.ds.factory.datasource.entities.JsonResult</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="com.ds.factory.datasource.entities.UserBusinessExample.Criteria" target="com.ds.factory.datasource.entities.UserBusinessExample.GeneratedCriteria">
+      <point x="-24.75" y="-27.0" />
+      <point x="404.85" y="2471.0" />
+      <point x="174.0" y="2471.0" />
+      <point x="0.0" y="1059.0" />
+    </edge>
+    <edge source="com.ds.factory.datasource.entities.UserBusinessExample.Criteria" target="com.ds.factory.datasource.entities.UserBusinessExample">
+      <point x="24.75" y="-27.0" />
+      <point x="454.35" y="2471.0" />
+      <point x="648.5" y="2471.0" />
+      <point x="648.5" y="303.0" />
+      <point x="562.5" y="303.0" />
+      <point x="73.0" y="139.0" />
+    </edge>
+    <edge source="com.ds.factory.datasource.entities.UserBusinessExample.Criterion" target="com.ds.factory.datasource.entities.UserBusinessExample">
+      <point x="0.0" y="-175.0" />
+      <point x="503.0" y="303.0" />
+      <point x="489.5" y="303.0" />
+      <point x="0.0" y="139.0" />
+    </edge>
+    <edge source="com.ds.factory.datasource.entities.UserBusinessExample.GeneratedCriteria" target="com.ds.factory.datasource.entities.UserBusinessExample">
+      <point x="0.0" y="-1059.0" />
+      <point x="174.0" y="303.0" />
+      <point x="416.5" y="303.0" />
+      <point x="-73.0" y="139.0" />
+    </edge>
+    <edge source="com.ds.factory.datasource.entities.StaffEx" target="com.ds.factory.datasource.entities.Staff">
+      <point x="0.0" y="-61.5" />
+      <point x="0.0" y="165.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="0.08950437317784257" x="1681.0" y="1704.9999999999998" />
+  <SelectedNodes>
+    <node>com.ds.factory.datasource.entities.Staff</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Fields</Category>
+    <Category>Constructors</Category>
+    <Category>Methods</Category>
+    <Category>Properties</Category>
+    <Category>Inner Classes</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
