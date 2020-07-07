@@ -122,6 +122,21 @@
             <version>1.2.10</version>
         </dependency>
 
+
+        <!--  Redis  缓存 -->
+
+
+
+        <!--   RabbitMQ  消息队列  -->
+        <dependency>
+            <groupId>com.rabbitmq</groupId>
+            <artifactId>amqp-client</artifactId>
+            <version>5.0.0</version>
+        </dependency>
+
+
+
+
     </dependencies>
 
     <build>
