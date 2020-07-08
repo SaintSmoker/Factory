@@ -59,6 +59,13 @@
     </div>
 </div>
 
+<div id="picture_table_show" class="easyui-window " title="Details" style=" width:850px;padding:10px 20px"
+     closed="true" modal="true" cache="false" collapsible="false" cloable="true">
+    <div>
+        <table id="tableDeDeData" style="top:300px;border-bottom-color:#FFFFFF"></table>
+    </div>
+</div>
+
 
 <script type="text/javascript">
     //初始化界面
@@ -370,7 +377,15 @@
                 },
                 {title: '生产周期', field: 'manufacture_duration', width: 80},
                 {title: '保质期', field: 'guarantee_period', width: 80},
-                {title: '单价', field: 'unit_Price', width: 40}
+                {title: '单价', field: 'unit_Price', width: 40},
+                {
+                    title: '查看图片', field: 'op', align: "center", width: 130, formatter: function (value, rec, index) {
+                        var str = '';
+                        var rowInfo = product_no;
+                        str += '<img title="查看" src="/js/easyui-1.3.5/themes/icons/list.png" style="cursor: pointer;" onclick="showPicture(\'' + rowInfo + '\');"/>';
+                        return str;
+                    }
+                }
             ]],
             onLoadError: function () {
                 $.messager.alert('页面加载提示', '页面加载异常，请稍后再试！', 'error');
@@ -408,6 +423,56 @@
                 return;
             }
         });}
+
+
+    /*********************pictures******************************/
+
+    function showPicture(rowInfo) {
+        $(function () {
+            $('#picture_table_show').window('open').window('setTitle', '产品号'+rowInfo+' 的图片详情');
+            initTableDeDeData(rowInfo);
+        });
+    }
+
+    function initTableDeDeData(product_no) {
+        $("#tableDeDeData").html("");
+        // alert(product_no)
+        $.ajax({
+            type: "post",
+            url: "/criteria/pictures_url",
+            dataType: "json",
+            async: false,
+            data: ({
+                Product_no: product_no
+            }),
+            success: function (data) {
+                var amount = data.data;
+                var pictures_url = amount.pictures_url;
+                // alert(pictures_url);
+                var urls=pictures_url.split("；");
+                var tds="";
+                for(var i=0;i<urls.length;i++)
+                {
+                    tds+="<td><img width='400' height='400' src='/images/product_images/"+product_no+"/"+urls[i]+"'></td>";
+                }
+                // alert(pictures_url.length+"***"+pictures_url)
+                if(pictures_url.length!=0)
+                    $("#tableDeDeData").append("<tr>"+tds+"</tr>");
+                else
+                    alert("【图片缺失，待商家更新】");
+            },
+            //此处添加错误处理
+            error: function () {
+                $.messager.alert('提示', '异常，请稍后再试！', 'error');
+                return;
+            }
+        });
+
+    }
+
+
+    /*********************pictures*****************************/
+
 </script>
 </body>
 </html>
