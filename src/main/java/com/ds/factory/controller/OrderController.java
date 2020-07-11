@@ -7,14 +7,23 @@ import com.ds.factory.constants.ExceptionConstants;
 import com.ds.factory.datasource.entities.*;
 import com.ds.factory.service.Service.*;
 import com.ds.factory.utils.*;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.springframework.amqp.core.AmqpTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import redis.clients.jedis.Jedis;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -38,7 +47,11 @@ public class OrderController {
     @Resource
     Refund_ApplicationService refund_applicationService;
 
+    @Autowired
+    AmqpTemplate messageQueue;
+
     @GetMapping(value = "/getAllOrder")
+    @CrossOrigin
     public String getAllProductWarehouseList(@RequestParam(value = Constants.PAGE_SIZE, required = false) Integer pageSize,
                                              @RequestParam(value = Constants.CURRENT_PAGE, required = false) Integer currentPage,
                                              @RequestParam(value = Constants.SEARCH, required = false) String search,
@@ -96,10 +109,17 @@ public class OrderController {
         }
         queryInfo.setRows(list2);
         queryInfo.setTotal(pageInfo.getTotal());
+
+        String message="";
+        for(int i=0;i<list.size();i++) {
+            message+=list.get(i);
+        }
+        messageQueue.convertAndSend("Factory",message.toString());
         return returnJson(objectMap, ErpInfo.OK.name, ErpInfo.OK.code);
     }
 
     @GetMapping(value = "/getAllOrderDetail")
+    @CrossOrigin
     public String getAllOrderDetail(@RequestParam(value = Constants.PAGE_SIZE, required = false) Integer pageSize,
                                              @RequestParam(value = Constants.CURRENT_PAGE, required = false) Integer currentPage,
                                              @RequestParam(value = Constants.SEARCH, required = false) String search, HttpServletRequest request)throws Exception {
@@ -123,7 +143,46 @@ public class OrderController {
             currentPage = BusinessConstants.DEFAULT_PAGINATION_PAGE_NUMBER;
         }
         PageHelper.startPage(currentPage,pageSize,true);
-        List<Order_Details> list = order_detailsService.selectByConstraint(no,client_no,product_no,check);
+
+        String Jedis_String = "Order_Details--Order_No:"+no+"; Client_no:"+client_no
+                +"; Product_no:"+product_no+"; Check:"+check;
+        List<Order_Details> list =new ArrayList<Order_Details>();
+        Jedis jedis=new Jedis("192.168.216.231",6379);//原先是6379
+        String jsonString=jedis.get(Jedis_String);
+        if(jsonString!=null)
+        {
+            ObjectMapper objectMapper=new ObjectMapper();
+            TypeReference<List<Order_Details>> typeReference =
+                    new TypeReference<List<Order_Details>>() {};
+            byte[] data=jsonString.getBytes();
+            try {
+                list=objectMapper.readValue(data, typeReference);
+                System.out.println("***** ***** ***** ***** ***** *****");
+            } catch (JsonParseException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (JsonMappingException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+        else
+        {
+            System.out.println("##### ##### ##### ##### ##### #####");
+            list = order_detailsService.selectByConstraint(no,client_no,product_no,check);
+            ObjectMapper objectMapper=new ObjectMapper();
+            try {
+                String jsonString2 = objectMapper.writeValueAsString(list);
+                jedis.set(Jedis_String, jsonString2);
+            } catch (JsonProcessingException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+
         //log
         Staff sta=(Staff)request.getSession().getAttribute("user");
         logService.insertLog(BusinessConstants.LOG_MODULE_NAME_ORDER_DETAILS,
@@ -155,12 +214,19 @@ public class OrderController {
         }
         queryInfo.setRows(list2);
         queryInfo.setTotal(pageInfo.getTotal());
+
+        String message="";
+        for(int i=0;i<list.size();i++) {
+            message+=list.get(i);
+        }
+        messageQueue.convertAndSend("Factory",message.toString());
         return returnJson(objectMap, ErpInfo.OK.name, ErpInfo.OK.code);
     }
 
 
 
     @GetMapping(value = "/getAllOrderDetail2")
+    @CrossOrigin
     public String getAllOrderDetail2(@RequestParam(value = Constants.PAGE_SIZE, required = false) Integer pageSize,
                                     @RequestParam(value = Constants.CURRENT_PAGE, required = false) Integer currentPage,
                                     @RequestParam(value = Constants.SEARCH, required = false) String search, HttpServletRequest request)throws Exception {
@@ -212,11 +278,18 @@ public class OrderController {
         }
         queryInfo.setRows(list2);
         queryInfo.setTotal(pageInfo.getTotal());
+
+        String message="";
+        for(int i=0;i<list.size();i++) {
+            message+=list.get(i);
+        }
+        messageQueue.convertAndSend("Factory",message.toString());
         return returnJson(objectMap, ErpInfo.OK.name, ErpInfo.OK.code);
     }
 
 
     @GetMapping(value = "/getAllOrderDetail3")
+    @CrossOrigin
     public String getAllOrderDetail3(@RequestParam(value = Constants.PAGE_SIZE, required = false) Integer pageSize,
                                      @RequestParam(value = Constants.CURRENT_PAGE, required = false) Integer currentPage,
                                      @RequestParam(value = Constants.SEARCH, required = false) String search, HttpServletRequest request)throws Exception {
@@ -271,10 +344,17 @@ public class OrderController {
         }
         queryInfo.setRows(list2);
         queryInfo.setTotal(pageInfo.getTotal());
+
+        String message="";
+        for(int i=0;i<list.size();i++) {
+            message+=list.get(i);
+        }
+        messageQueue.convertAndSend("Factory",message.toString());
         return returnJson(objectMap, ErpInfo.OK.name, ErpInfo.OK.code);
     }
 
     @GetMapping(value = "/getAllExportRecord")
+    @CrossOrigin
     public String getAllExportRecord(@RequestParam(value = Constants.PAGE_SIZE, required = false) Integer pageSize,
                                     @RequestParam(value = Constants.CURRENT_PAGE, required = false) Integer currentPage,
                                     @RequestParam(value = Constants.SEARCH, required = false) String search,
@@ -302,6 +382,7 @@ public class OrderController {
         }
         PageHelper.startPage(currentPage,pageSize,true);
         List<Export_Record> list = export_recordService.selectByConstraint(delivery_date,export_no,staff_no,order_no_details,target_place,source_place);
+
         //log
         Staff sta=(Staff)request.getSession().getAttribute("user");
         logService.insertLog(BusinessConstants.LOG_MODULE_NAME_EXPORT,
@@ -317,10 +398,17 @@ public class OrderController {
         }
         queryInfo.setRows(list);
         queryInfo.setTotal(pageInfo.getTotal());
+
+        String message="";
+        for(int i=0;i<list.size();i++) {
+            message+=list.get(i);
+        }
+        messageQueue.convertAndSend("Factory",message.toString());
         return returnJson(objectMap, ErpInfo.OK.name, ErpInfo.OK.code);
     }
 
     @GetMapping(value = "/getAllRefund")
+    @CrossOrigin
     public String getAllRefund(@RequestParam(value = Constants.PAGE_SIZE, required = false) Integer pageSize,
                                      @RequestParam(value = Constants.CURRENT_PAGE, required = false) Integer currentPage,
                                      @RequestParam(value = Constants.SEARCH, required = false) String search,
@@ -347,7 +435,47 @@ public class OrderController {
             currentPage = BusinessConstants.DEFAULT_PAGINATION_PAGE_NUMBER;
         }
         PageHelper.startPage(currentPage,pageSize,true);
-        List<Refund_Application> list = refund_applicationService.selectByConstraint(refund_no,order_no,client_no,staff_no,permission);
+
+
+        String Jedis_String = "Refund_Application--Refund_No:"+refund_no+"; Order_No:"+order_no+
+                "; Client_No:"+client_no+"; Staff_No:"+staff_no+"; Permission:"+permission;
+        List<Refund_Application> list =new ArrayList<Refund_Application>();
+        Jedis jedis=new Jedis("192.168.216.231",6379);//原先是6379
+        String jsonString=jedis.get(Jedis_String);
+        if(jsonString!=null)
+        {
+            ObjectMapper objectMapper=new ObjectMapper();
+            TypeReference<List<Refund_Application>> typeReference =
+                    new TypeReference<List<Refund_Application>>() {};
+            byte[] data=jsonString.getBytes();
+            try {
+                list=objectMapper.readValue(data, typeReference);
+                System.out.println("***** ***** ***** ***** ***** *****");
+            } catch (JsonParseException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (JsonMappingException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+        else
+        {
+            System.out.println("##### ##### ##### ##### ##### #####");
+            list = refund_applicationService.selectByConstraint(refund_no,order_no,client_no,staff_no,permission);
+            ObjectMapper objectMapper=new ObjectMapper();
+            try {
+                String jsonString2 = objectMapper.writeValueAsString(list);
+                jedis.set(Jedis_String, jsonString2);
+            } catch (JsonProcessingException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+
         //log
         Staff sta=(Staff)request.getSession().getAttribute("user");
         logService.insertLog(BusinessConstants.LOG_MODULE_NAME_REFUND,
@@ -363,11 +491,18 @@ public class OrderController {
         }
         queryInfo.setRows(list);
         queryInfo.setTotal(pageInfo.getTotal());
+
+        String message="";
+        for(int i=0;i<list.size();i++) {
+            message+=list.get(i);
+        }
+        messageQueue.convertAndSend("Factory",message.toString());
         return returnJson(objectMap, ErpInfo.OK.name, ErpInfo.OK.code);
     }
 
     @PostMapping("/batchDeleteOrderByIds")
     @ResponseBody
+    @CrossOrigin
     public Object batchDeleteClientByIds(@RequestParam("ids") String ids,HttpServletRequest request)throws Exception{
         JSONObject result = ExceptionConstants.standardSuccess();
         String[] id=ids.split(",");
@@ -380,11 +515,13 @@ public class OrderController {
         logService.insertLog(BusinessConstants.LOG_MODULE_NAME_ORDER,
                 new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_DELETE).append(", id: "+sta.getId()).toString()
                         +"删除信息ID组："+ids, ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
+        messageQueue.convertAndSend("Factory",ids.toString());
         return result;
     }
 
     @PostMapping("/addRefund")
     @ResponseBody
+    @CrossOrigin
     public Object add(@RequestParam("info") String beanJson, HttpServletRequest request)throws Exception{
         JSONObject result = ExceptionConstants.standardSuccess();
         Refund_Application red= JSON.parseObject(beanJson, Refund_Application.class);
@@ -394,11 +531,13 @@ public class OrderController {
         logService.insertLog(BusinessConstants.LOG_MODULE_NAME_REFUND,
                 new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_ADD).append(", id: "+sta.getId()).toString()
                 +"添加信息："+red, ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
+        messageQueue.convertAndSend("Factory",red.toString());
         return result;
     }
 
     @PostMapping("/addOrderdetails")
     @ResponseBody
+    @CrossOrigin
     public Object addOrderdetails(@RequestParam("info") String beanJson, HttpServletRequest request)throws Exception{
         JSONObject result = ExceptionConstants.standardSuccess();
         Order_Details red= JSON.parseObject(beanJson, Order_Details.class);
@@ -408,11 +547,13 @@ public class OrderController {
         logService.insertLog(BusinessConstants.LOG_MODULE_NAME_ORDER,
                 new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_ADD).append(", id: "+sta.getId()).toString()
                 +"添加信息："+red, ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
+        messageQueue.convertAndSend("Factory",red.toString());
         return result;
     }
 
     @PostMapping("/batDeleteOrderdetailsByIds")
     @ResponseBody
+    @CrossOrigin
     public Object batDeleteOrderdetailsByIds(@RequestParam("ids") String ids, HttpServletRequest request)throws Exception{
         JSONObject result = ExceptionConstants.standardSuccess();
         String[] id=ids.split(",");
@@ -425,11 +566,13 @@ public class OrderController {
         logService.insertLog(BusinessConstants.LOG_MODULE_NAME_ORDER,
                 new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_DELETE).append(", id: "+sta.getId()).toString()
                         +"删除信息ID组："+ids, ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
+        messageQueue.convertAndSend("Factory",ids.toString());
         return result;
     }
 
     @PostMapping("/RefundUpdate")
     @ResponseBody
+    @CrossOrigin
     public Object update(@RequestParam("info") String beanJson,@RequestParam("id") Long id,@RequestParam("clientno")
             String clientno,@RequestParam("refund_no") String refund_no, HttpServletRequest request)throws Exception{
         JSONObject result = ExceptionConstants.standardSuccess();
@@ -442,12 +585,14 @@ public class OrderController {
         logService.insertLog(BusinessConstants.LOG_MODULE_NAME_REFUND,
                 new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_EDIT).append(", id: "+sta.getId()).toString()
                 +"修改信息："+refund_application, ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
+        messageQueue.convertAndSend("Factory",refund_application.toString());
         return result;
     }
 
 
     @PostMapping("/addExport")
     @ResponseBody
+    @CrossOrigin
     public Object addExport(@RequestParam("info") String beanJson, HttpServletRequest request)throws Exception{
         JSONObject result = ExceptionConstants.standardSuccess();
         Export_Record rec= JSON.parseObject(beanJson, Export_Record.class);
@@ -457,11 +602,13 @@ public class OrderController {
         logService.insertLog(BusinessConstants.LOG_MODULE_NAME_EXPORT,
                 new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_ADD).append(", id: "+sta.getId()).toString()
                 +"添加信息："+rec, ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
+        messageQueue.convertAndSend("Factory",rec.toString());
         return result;
     }
 
     @PostMapping("/batchDeleteExportrecordByIds")
     @ResponseBody
+    @CrossOrigin
     public Object batchDeleteExportrecordByIds(@RequestParam("ids") String ids, HttpServletRequest request)throws Exception{
         JSONObject result = ExceptionConstants.standardSuccess();
         String[] id=ids.split(",");
@@ -474,11 +621,13 @@ public class OrderController {
         logService.insertLog(BusinessConstants.LOG_MODULE_NAME_EXPORT,
                 new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_DELETE).append(", id: "+sta.getId()).toString()
                 +"删除信息ID组："+ids, ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
+        messageQueue.convertAndSend("Factory",ids.toString());
         return result;
     }
 
     @PostMapping("/updateExport")
     @ResponseBody
+    @CrossOrigin
     public Object updateExport(@RequestParam("info") String beanJson,@RequestParam("id") String id,
                                 @RequestParam(value = "Product_no", required = false) String Product_no,
                                 @RequestParam(value = "prodate", required = false) Date prodate, HttpServletRequest request)throws Exception{
@@ -490,6 +639,7 @@ public class OrderController {
         logService.insertLog(BusinessConstants.LOG_MODULE_NAME_EXPORT,
                 new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_EDIT).append(", id: "+sta.getId()).toString()
                 +"修改信息："+rmw, ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
+        messageQueue.convertAndSend("Factory",rmw.toString());
         return result;
     }
 

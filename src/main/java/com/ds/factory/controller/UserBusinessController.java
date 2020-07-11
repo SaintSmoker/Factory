@@ -14,6 +14,8 @@ import com.ds.factory.utils.BaseResponseInfo;
 import com.ds.factory.utils.ErpInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.amqp.core.AmqpTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -40,7 +42,11 @@ public class UserBusinessController {
     @Resource
     private UserBusinessService userBusinessService;
 
+    @Autowired
+    AmqpTemplate messageQueue;
+
     @GetMapping(value = "/getBasicData")
+    @CrossOrigin
     public BaseResponseInfo getBasicData(@RequestParam(value = "KeyId") String keyId,
                                          @RequestParam(value = "Type") String type,
                                          HttpServletRequest request)throws Exception {
@@ -65,6 +71,7 @@ public class UserBusinessController {
     }
 
     @GetMapping(value = "/checkIsValueExist")
+    @CrossOrigin
     public String checkIsValueExist(@RequestParam(value ="type", required = false) String type,
                                    @RequestParam(value ="keyId", required = false) String keyId,
                                    HttpServletRequest request)throws Exception {
@@ -86,6 +93,7 @@ public class UserBusinessController {
      * @return
      */
     @PostMapping(value = "/updateBtnStr")
+    @CrossOrigin
     public BaseResponseInfo updateBtnStr(@RequestParam(value ="userBusinessId", required = false) Long userBusinessId,
                                     @RequestParam(value ="btnStr", required = false) String btnStr,
                                     HttpServletRequest request)throws Exception {
@@ -110,6 +118,7 @@ public class UserBusinessController {
 
 
     @RequestMapping(value = "/batchDeleteUserBusinessByIds")
+    @CrossOrigin
     public Object batchDeleteUserBusinessByIds(@RequestParam("ids") String ids, HttpServletRequest request) throws Exception {
         JSONObject result = ExceptionConstants.standardSuccess();
         int i= userBusinessService.batchDeleteUserBusinessByIds(ids);
@@ -123,11 +132,13 @@ public class UserBusinessController {
         logService.insertLog(BusinessConstants.LOG_MODULE_NAME_USER_BUSINESS,
                 new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_BATCH_delete).append(", id: "+sta.getId()).toString()
                 +"删除信息ID组："+ids, ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
+        messageQueue.convertAndSend("Factory",ids.toString());
         return result;
     }
 
     @PostMapping("/update")
     @ResponseBody
+    @CrossOrigin
     public Object update(@RequestParam("info") String beanJson,@RequestParam("id") Long id, HttpServletRequest request)throws Exception{
         JSONObject result = ExceptionConstants.standardSuccess();
         UserBusiness userBusiness= JSON.parseObject(beanJson, UserBusiness.class);
@@ -137,6 +148,7 @@ public class UserBusinessController {
         logService.insertLog(BusinessConstants.LOG_MODULE_NAME_USER_BUSINESS,
                 new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_EDIT).append(", id: "+sta.getId()).toString()
                 +"修改信息："+userBusiness, ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
+        messageQueue.convertAndSend("Factory",userBusiness.toString());
         return result;
     }
 }

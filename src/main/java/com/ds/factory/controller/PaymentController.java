@@ -12,6 +12,8 @@ import com.ds.factory.service.Service.UserBusinessService;
 import com.ds.factory.utils.*;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.springframework.amqp.core.AmqpTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -39,7 +41,11 @@ public class PaymentController {
     @Resource
     private UserBusinessService userBusinessService;
 
+    @Autowired
+    AmqpTemplate messageQueue;
+
     @GetMapping(value = "/getAllPayment")
+    @CrossOrigin
     public String getList(@RequestParam(value = Constants.PAGE_SIZE, required = false) Integer pageSize,
                           @RequestParam(value = Constants.CURRENT_PAGE, required = false) Integer currentPage,
                           @RequestParam(value = Constants.SEARCH, required = false) String search,
@@ -113,11 +119,17 @@ public class PaymentController {
         }
         queryInfo.setRows(list2);
         queryInfo.setTotal(pageInfo.getTotal());
+        String message="";
+        for(int i=0;i<list.size();i++) {
+            message+=list.get(i);
+        }
+        messageQueue.convertAndSend("Factory",message.toString());
         return returnJson(objectMap, ErpInfo.OK.name, ErpInfo.OK.code);
     }
 
     @PostMapping("/add")
     @ResponseBody
+    @CrossOrigin
     public Object add(@RequestParam("info") String beanJson, HttpServletRequest request)throws Exception{
         JSONObject result = ExceptionConstants.standardSuccess();
         Payment payment= JSON.parseObject(beanJson, Payment.class);
@@ -127,11 +139,13 @@ public class PaymentController {
         logService.insertLog(BusinessConstants.LOG_MODULE_NAME_PAYMENT,
                 new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_ADD).append(", id: "+sta.getId()).toString()+"添加信息："+payment,
                 ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
+        messageQueue.convertAndSend("Factory",payment.toString());
         return result;
     }
 
     @PostMapping("/PayUpdate")
     @ResponseBody
+    @CrossOrigin
     public Object update(@RequestParam("info") String beanJson,@RequestParam("id") String id, HttpServletRequest request)throws Exception{
         JSONObject result = ExceptionConstants.standardSuccess();
         Payment payment= JSON.parseObject(beanJson, Payment.class);
@@ -142,6 +156,7 @@ public class PaymentController {
         logService.insertLog(BusinessConstants.LOG_MODULE_NAME_PAYMENT,
                 new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_EDIT).append(", id: "+sta.getId()).toString()+"修改信息："+payment,
                 ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
+        messageQueue.convertAndSend("Factory",payment.toString());
         return result;
     }
 }

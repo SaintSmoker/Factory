@@ -9,14 +9,23 @@ import com.ds.factory.constants.ExceptionConstants;
 import com.ds.factory.datasource.entities.*;
 import com.ds.factory.service.Service.*;
 import com.ds.factory.utils.*;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.springframework.amqp.core.AmqpTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import redis.clients.jedis.Jedis;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -36,7 +45,11 @@ public class WarehouseController {
     @Resource
     Raw_Materials_WarehouseService raw_materials_warehouseService;
 
+    @Autowired
+    AmqpTemplate messageQueue;
+
     @GetMapping(value = "/getAllProductWarehouse")
+    @CrossOrigin
     public String getAllProductWarehouseList(@RequestParam(value = Constants.PAGE_SIZE, required = false) Integer pageSize,
                           @RequestParam(value = Constants.CURRENT_PAGE, required = false) Integer currentPage,
                           @RequestParam(value = Constants.SEARCH, required = false) String search,
@@ -62,7 +75,47 @@ public class WarehouseController {
             currentPage = BusinessConstants.DEFAULT_PAGINATION_PAGE_NUMBER;
         }
         PageHelper.startPage(currentPage,pageSize,true);
-        List<Product_Warehouse> list = product_warehouseService.selectByConstraint(stock_no,product_no,staff_no,storage_address,manufacture_date);
+
+        String Jedis_String = "Product_Warehouse--Stock_No:"+stock_no+"; Product_No:"+product_no+
+                "; Staff_No:"+staff_no + "; Manufacture_Date:"+manufacture_date +
+                "; Storage_Address:"+storage_address;
+        List<Product_Warehouse> list =new ArrayList<Product_Warehouse>();
+        Jedis jedis=new Jedis("192.168.216.231",6379);//原先是6379
+        String jsonString=jedis.get(Jedis_String);
+        if(jsonString!=null)
+        {
+            ObjectMapper objectMapper=new ObjectMapper();
+            TypeReference<List<Product_Warehouse>> typeReference =
+                    new TypeReference<List<Product_Warehouse>>() {};
+            byte[] data=jsonString.getBytes();
+            try {
+                list=objectMapper.readValue(data, typeReference);
+                System.out.println("***** ***** ***** ***** ***** *****");
+            } catch (JsonParseException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (JsonMappingException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+        else
+        {
+            System.out.println("##### ##### ##### ##### ##### #####");
+            list = product_warehouseService.selectByConstraint(stock_no,product_no,staff_no,storage_address,manufacture_date);
+            ObjectMapper objectMapper=new ObjectMapper();
+            try {
+                String jsonString2 = objectMapper.writeValueAsString(list);
+                jedis.set(Jedis_String, jsonString2);
+            } catch (JsonProcessingException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+
 
         Staff sta=(Staff)request.getSession().getAttribute("user");
         logService.insertLog(BusinessConstants.LOG_MODULE_NAME_PRODUCT_WAREHOUSE,
@@ -78,10 +131,16 @@ public class WarehouseController {
         }
         queryInfo.setRows(list);
         queryInfo.setTotal(pageInfo.getTotal());
+        String message="";
+        for(int i=0;i<list.size();i++) {
+            message+=list.get(i);
+        }
+        messageQueue.convertAndSend("Factory",message.toString());
         return returnJson(objectMap, ErpInfo.OK.name, ErpInfo.OK.code);
     }
 
     @GetMapping(value = "/getAllMaterialsWarehouse")
+    @CrossOrigin
     public String getAllMaterialsList(@RequestParam(value = Constants.PAGE_SIZE, required = false) Integer pageSize,
                           @RequestParam(value = Constants.CURRENT_PAGE, required = false) Integer currentPage,
                           @RequestParam(value = Constants.SEARCH, required = false) String search,
@@ -108,7 +167,47 @@ public class WarehouseController {
             currentPage = BusinessConstants.DEFAULT_PAGINATION_PAGE_NUMBER;
         }
         PageHelper.startPage(currentPage,pageSize,true);
-        List<Raw_Materials_Warehouse> list = raw_materials_warehouseService.selectByConstraint(no,material_no,storage_address,staff_no_storage,product_date);
+
+        String Jedis_String = "Raw_Materials_Warehouse--Stock_No:"+no+"; Material_no:"+material_no+
+                "; Staff_No:"+staff_no_storage + "; Manufacture_Date:"+product_date +
+                "; Storage_Address:"+storage_address;
+        List<Raw_Materials_Warehouse> list =new ArrayList<Raw_Materials_Warehouse>();
+        Jedis jedis=new Jedis("192.168.216.231",6379);//原先是6379
+        String jsonString=jedis.get(Jedis_String);
+        if(jsonString!=null)
+        {
+            ObjectMapper objectMapper=new ObjectMapper();
+            TypeReference<List<Raw_Materials_Warehouse>> typeReference =
+                    new TypeReference<List<Raw_Materials_Warehouse>>() {};
+            byte[] data=jsonString.getBytes();
+            try {
+                list=objectMapper.readValue(data, typeReference);
+                System.out.println("***** ***** ***** ***** ***** *****");
+            } catch (JsonParseException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (JsonMappingException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+        else
+        {
+            System.out.println("##### ##### ##### ##### ##### #####");
+            list = raw_materials_warehouseService.selectByConstraint(no,material_no,storage_address,staff_no_storage,product_date);
+            ObjectMapper objectMapper=new ObjectMapper();
+            try {
+                String jsonString2 = objectMapper.writeValueAsString(list);
+                jedis.set(Jedis_String, jsonString2);
+            } catch (JsonProcessingException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+
 
         Staff sta=(Staff)request.getSession().getAttribute("user");
         logService.insertLog(BusinessConstants.LOG_MODULE_NAME_MATERIALS_WAREHOUSE,
@@ -124,10 +223,16 @@ public class WarehouseController {
         }
         queryInfo.setRows(list);
         queryInfo.setTotal(pageInfo.getTotal());
+        String message="";
+        for(int i=0;i<list.size();i++) {
+            message+=list.get(i);
+        }
+        messageQueue.convertAndSend("Factory",message.toString());
         return returnJson(objectMap, ErpInfo.OK.name, ErpInfo.OK.code);
     }
 
     @GetMapping(value = "/getAllExpired")
+    @CrossOrigin
     public String getAllExpiredList(@RequestParam(value = Constants.PAGE_SIZE, required = false) Integer pageSize,
                                       @RequestParam(value = Constants.CURRENT_PAGE, required = false) Integer currentPage,
                                       @RequestParam(value = Constants.SEARCH, required = false) String search,
@@ -169,11 +274,17 @@ public class WarehouseController {
         }
         queryInfo.setRows(list);
         queryInfo.setTotal(pageInfo.getTotal());
+        String message="";
+        for(int i=0;i<list.size();i++) {
+            message+=list.get(i);
+        }
+        messageQueue.convertAndSend("Factory",message.toString());
         return returnJson(objectMap, ErpInfo.OK.name, ErpInfo.OK.code);
     }
 
     @PostMapping("/add")
     @ResponseBody
+    @CrossOrigin
     public Object add(@RequestParam("info") String beanJson, HttpServletRequest request)throws Exception{
         JSONObject result = ExceptionConstants.standardSuccess();
         Raw_Materials_Warehouse raw= JSON.parseObject(beanJson, Raw_Materials_Warehouse.class);
@@ -184,11 +295,13 @@ public class WarehouseController {
                 new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_ADD).append(", id: "+sta.getId()).toString()+
                 "添加信息："+raw,
                 ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
+        messageQueue.convertAndSend("Factory",raw.toString());
         return result;
     }
 
     @PostMapping("/batchDeleteRawMaterialsByIds")
     @ResponseBody
+    @CrossOrigin
     public Object batchDeleteRawMaterialsByIds(@RequestParam("ids") String ids, HttpServletRequest request)throws Exception{
         JSONObject result = ExceptionConstants.standardSuccess();
         String[] id=ids.split(",");
@@ -201,11 +314,13 @@ public class WarehouseController {
         logService.insertLog(BusinessConstants.LOG_MODULE_NAME_MATERIALS_WAREHOUSE,
                 new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_DELETE).append(", id: "+sta.getId()).toString()
                 +"删除信息ID组："+ids, ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
+        messageQueue.convertAndSend("Factory",ids.toString());
         return result;
     }
 
     @PostMapping("/batchDeleteProductWarehouseByIds")
     @ResponseBody
+    @CrossOrigin
     public Object batchDeleteProductWarehouseByIds(@RequestParam("ids") String ids, HttpServletRequest request)throws Exception{
         JSONObject result = ExceptionConstants.standardSuccess();
         String[] id=ids.split(",");
@@ -218,12 +333,14 @@ public class WarehouseController {
         logService.insertLog(BusinessConstants.LOG_MODULE_NAME_PRODUCT_WAREHOUSE,
                 new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_DELETE).append(", id: "+sta.getId()).toString()
                         +"删除信息ID组："+ids, ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
+        messageQueue.convertAndSend("Factory",ids.toString());
         return result;
     }
 
 
     @PostMapping("/batchDeleteExpiredFoodByIds")
     @ResponseBody
+    @CrossOrigin
     public Object batchDeleteExpiredFoodByIds(@RequestParam("ids") String ids, HttpServletRequest request)throws Exception{
         JSONObject result = ExceptionConstants.standardSuccess();
         String[] id=ids.split(",");
@@ -236,11 +353,13 @@ public class WarehouseController {
         logService.insertLog(BusinessConstants.LOG_MODULE_NAME_EXPIRED,
                 new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_DELETE).append(", id: "+sta.getId()).toString()
                         +"删除信息ID组："+ids, ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
+        messageQueue.convertAndSend("Factory",ids.toString());
         return result;
     }
 
     @PostMapping("/Productadd")
     @ResponseBody
+    @CrossOrigin
     public Object Productadd(@RequestParam("info") String beanJson, HttpServletRequest request)throws Exception{
         JSONObject result = ExceptionConstants.standardSuccess();
         Product_Warehouse raw= JSON.parseObject(beanJson, Product_Warehouse.class);
@@ -250,11 +369,13 @@ public class WarehouseController {
         logService.insertLog(BusinessConstants.LOG_MODULE_NAME_PRODUCT_WAREHOUSE,
                 new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_ADD).append(", id: "+sta.getId()).toString()+
                 "添加信息："+raw, ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
+        messageQueue.convertAndSend("Factory",raw.toString());
         return result;
     }
 
     @PostMapping("/update")
     @ResponseBody
+    @CrossOrigin
     public Object update(@RequestParam("info") String beanJson,@RequestParam("id") Long id,
                          @RequestParam(value = "Product_no", required = false) String Product_no,
                          @RequestParam(value = "prodate", required = false) Date prodate, HttpServletRequest request)throws Exception{
@@ -269,11 +390,13 @@ public class WarehouseController {
         logService.insertLog(BusinessConstants.LOG_MODULE_NAME_PRODUCT_WAREHOUSE,
                 new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_EDIT).append(", id: "+sta.getId()).toString()+"修改信息："+raw,
                 ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
+        messageQueue.convertAndSend("Factory",raw.toString());
         return result;
     }
 
     @PostMapping("/updateMaterials")
     @ResponseBody
+    @CrossOrigin
     public Object updateMaterials(@RequestParam("info") String beanJson,@RequestParam("id") String id,
                          @RequestParam(value = "Product_no", required = false) String Product_no,
                          @RequestParam(value = "prodate", required = false) Date prodate, HttpServletRequest request)throws Exception{
@@ -285,12 +408,14 @@ public class WarehouseController {
         logService.insertLog(BusinessConstants.LOG_MODULE_NAME_PRODUCT_WAREHOUSE,
                 new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_EDIT).append(", id: "+sta.getId()).toString()+"修改信息："+rmw,
                 ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
+        messageQueue.convertAndSend("Factory",rmw.toString());
         return result;
     }
 
 
     @PostMapping("/updateExpired")
     @ResponseBody
+    @CrossOrigin
     public Object updateExpired(@RequestParam("info") String beanJson,@RequestParam("id") String id,
                                   @RequestParam(value = "Product_no", required = false) String Product_no,
                                   @RequestParam(value = "prodate", required = false) Date prodate, HttpServletRequest request)throws Exception{
@@ -302,12 +427,14 @@ public class WarehouseController {
         logService.insertLog(BusinessConstants.LOG_MODULE_NAME_EXPIRED,
                 new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_EDIT).append(", id: "+sta.getId()).toString()+"修改信息："+rmw,
                 ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
+        messageQueue.convertAndSend("Factory",rmw.toString());
         return result;
     }
 
 
     @PostMapping("/updateproductwarehouse")
     @ResponseBody
+    @CrossOrigin
     public Object updateproductwarehouse(@RequestParam("info") String beanJson,@RequestParam("id") String id,
                                 @RequestParam(value = "Product_no", required = false) String Product_no,
                                 @RequestParam(value = "prodate", required = false) Date prodate, HttpServletRequest request)throws Exception{
@@ -319,6 +446,7 @@ public class WarehouseController {
         logService.insertLog(BusinessConstants.LOG_MODULE_NAME_PRODUCT_WAREHOUSE,
                 new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_EDIT).append(", id: "+sta.getId()).toString()
                 +"修改信息："+rmw, ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
+        messageQueue.convertAndSend("Factory",rmw.toString());
         return result;
     }
 }

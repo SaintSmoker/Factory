@@ -7,6 +7,16 @@ server:
       timeout: 36000
 
 spring:
+  sleuth:
+    sampler:
+      probability: 1
+
+  rabbitmq:
+    host: 192.168.216.231
+    port: 5672
+    username: admin
+    password: admin
+
   datasource:
     url: jdbc:mysql://127.0.0.1:3306/DS_erp?serverTimezone=CTT&useUnicode=true&characterEncoding=utf8&useCursorFetch=true&defaultFetchSize=500&allowMultiQueries=true&rewriteBatchedStatements=true&useSSL=false
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -46,10 +56,10 @@ server:
 spring:
   profiles: factory2
 server:
-  port: 8500
+  port: 8008
 
 ---
 spring:
   profiles: factory3
 server:
-  port: 8600
+  port: 9100

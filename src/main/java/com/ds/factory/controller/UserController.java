@@ -8,19 +8,28 @@ import com.ds.factory.datasource.entities.*;
 import com.ds.factory.datasource.mappers.*;
 import com.ds.factory.service.Service.*;
 import com.ds.factory.utils.*;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.tomcat.util.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.amqp.core.AmqpTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import com.ds.factory.constants.BusinessConstants;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import redis.clients.jedis.Jedis;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -69,11 +78,15 @@ public class UserController {
     @Resource
     private StaffMapper staffMapper;
 
+    @Autowired
+    AmqpTemplate messageQueue;
+
     private static String message = "成功";
     private static final String HTTP = "http://";
     private static final String CODE_OK = "200";
 
     @PostMapping(value = "/login")
+    @CrossOrigin
     public BaseResponseInfo login(@RequestParam(value = "loginame", required = false) String loginame,
                                   @RequestParam(value = "password", required = false) String password,
                                   HttpServletRequest request)throws Exception {
@@ -81,6 +94,7 @@ public class UserController {
         String msgTip = "";
         Staff user=null;
         BaseResponseInfo res = new BaseResponseInfo();
+//        System.out.println(password);
         try {
             String username = loginame.trim();
             password = password.trim();
@@ -149,10 +163,12 @@ public class UserController {
             res.code = 500;
             res.data = "用户登录失败";
         }
+        messageQueue.convertAndSend("Factory","登入");
         return res;
     }
 
     @GetMapping(value = "/getUserSession")
+    @CrossOrigin
     public @ResponseBody BaseResponseInfo getSessionUser(HttpServletRequest request)throws Exception {
         BaseResponseInfo res = new BaseResponseInfo();
         try {
@@ -174,6 +190,7 @@ public class UserController {
     }
 
     @PostMapping(value = "/registerUser")
+    @CrossOrigin
     public Object registerUser(@RequestParam(value = "loginame", required = false) String loginame,
                                @RequestParam(value = "password", required = false) String password,
                                HttpServletRequest request)throws Exception{
@@ -194,10 +211,12 @@ public class UserController {
         }else{
             res.code=500;
         }
+        messageQueue.convertAndSend("Factory","注册");
         return res;
     }
 
     @GetMapping(value = "/getAllStaff")
+    @CrossOrigin
     public String getList(@RequestParam(value = Constants.PAGE_SIZE, required = false) Integer pageSize,
                           @RequestParam(value = Constants.CURRENT_PAGE, required = false) Integer currentPage,
                           @RequestParam(value = Constants.SEARCH, required = false) String search,
@@ -236,11 +255,16 @@ public class UserController {
         logService.insertLog(BusinessConstants.LOG_MODULE_NAME_USER,
                 new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_SEARCH).append(", id: "+sta.getId()).toString(),
                 ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
-
+        String message="";
+        for(int i=0;i<list.size();i++) {
+            message+=list.get(i);
+        }
+        messageQueue.convertAndSend("Factory",message.toString());
         return returnJson(objectMap, ErpInfo.OK.name, ErpInfo.OK.code);
     }
 
     @GetMapping(value = "/logout")
+    @CrossOrigin
     public BaseResponseInfo logout(HttpServletRequest request, HttpServletResponse response)throws Exception {
         BaseResponseInfo res = new BaseResponseInfo();
         try {
@@ -257,10 +281,12 @@ public class UserController {
             res.code = 500;
             res.data = "退出失败";
         }
+        messageQueue.convertAndSend("Factory","登出");
         return res;
     }
 
     @GetMapping(value = "/loglist")
+    @CrossOrigin
     public String loglist(@RequestParam(value = Constants.PAGE_SIZE, required = false) Integer pageSize,
                           @RequestParam(value = Constants.CURRENT_PAGE, required = false) Integer currentPage,
                           @RequestParam(value = Constants.SEARCH, required = false) String search,
@@ -321,13 +347,14 @@ public class UserController {
         logService.insertLog("登录日志",
                 new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_SEARCH).append(", id: "+sta.getId()).toString(),
                 ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
-
+        messageQueue.convertAndSend("Factory","登录日志查询");
         return returnJson(objectMap, ErpInfo.OK.name, ErpInfo.OK.code);
     }
 
 
 
     @GetMapping(value = "/unitlist")
+    @CrossOrigin
     public String unitlist(@RequestParam(value = Constants.PAGE_SIZE, required = false) Integer pageSize,
                           @RequestParam(value = Constants.CURRENT_PAGE, required = false) Integer currentPage,
                           @RequestParam(value = Constants.SEARCH, required = false) String search,
@@ -349,7 +376,43 @@ public class UserController {
             currentPage = BusinessConstants.DEFAULT_PAGINATION_PAGE_NUMBER;
         }
         PageHelper.startPage(currentPage,pageSize,true);
-        List<Unit> list = product_criteriaService.SelectUnit();
+
+        String Jedis_String = "Unit";
+        List<Unit> list =new ArrayList<Unit>();
+        Jedis jedis=new Jedis("192.168.216.231",6379);//原先是6379
+        String jsonString=jedis.get(Jedis_String);
+        if(jsonString!=null)
+        {
+            ObjectMapper objectMapper=new ObjectMapper();
+            TypeReference<List<Unit>> typeReference = new TypeReference<List<Unit>>() {};
+            byte[] data=jsonString.getBytes();
+            try {
+                list=objectMapper.readValue(data, typeReference);
+                System.out.println("***** ***** ***** ***** ***** *****");
+            } catch (JsonParseException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (JsonMappingException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+        else
+        {
+            System.out.println("##### ##### ##### ##### ##### #####");
+            list = product_criteriaService.SelectUnit();
+            ObjectMapper objectMapper=new ObjectMapper();
+            try {
+                String jsonString2 = objectMapper.writeValueAsString(list);
+                jedis.set(Jedis_String, jsonString2);
+            } catch (JsonProcessingException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
 
         //获取分页查询后的数据
         PageInfo<Unit> pageInfo = new PageInfo<>(list);
@@ -366,12 +429,17 @@ public class UserController {
         logService.insertLog(BusinessConstants.LOG_MODULE_NAME_UNIT,
                 new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_SEARCH).append(", id: "+sta.getId()).toString(),
                 ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
-
+        String message="";
+        for(int i=0;i<list.size();i++) {
+            message+=list.get(i);
+        }
+        messageQueue.convertAndSend("Factory",message.toString());
         return returnJson(objectMap, ErpInfo.OK.name, ErpInfo.OK.code);
     }
 
     @PostMapping("/addUser")
     @ResponseBody
+    @CrossOrigin
     public Object addUser(@RequestParam("info") String beanJson, HttpServletRequest request)throws Exception{
         JSONObject result = ExceptionConstants.standardSuccess();
         Staff sta= JSON.parseObject(beanJson, Staff.class);
@@ -383,12 +451,13 @@ public class UserController {
                 new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_ADD).append(", id: "+sta1.getId()).toString()+
                         "添加信息："+sta,
                 ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
-
+        messageQueue.convertAndSend("Factory",sta.toString());
         return result;
     }
 
     @PostMapping("/batchDeleteUser")
     @ResponseBody
+    @CrossOrigin
     public Object batchDeleteClientByIds(@RequestParam("ids") String ids,HttpServletRequest request)throws Exception{
         JSONObject result = ExceptionConstants.standardSuccess();
         String[] id=ids.split(",");
@@ -402,13 +471,14 @@ public class UserController {
                 new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_BATCH_delete).append(", id: "+sta.getId()).toString()+
                         "删除用户ID组："+ids,
                 ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
-
+        messageQueue.convertAndSend("Factory",ids.toString());
         return result;
     }
 
 
     @ResponseBody
     @RequestMapping(value = "/getUserAmount", method = RequestMethod.POST)
+    @CrossOrigin
     public JsonResult<Map<String, Integer>> getUserAmount() {
         JsonResult<Map<String, Integer>> result = new JsonResult<>();
         //Staff sta=(Staff)request.getSession().getAttribute("user");
@@ -454,6 +524,7 @@ public class UserController {
 
     @PostMapping("/updateUser")
     @ResponseBody
+    @CrossOrigin
     public Object updateUser(@RequestParam("info") String beanJson,@RequestParam("id") Long id, HttpServletRequest request)throws Exception{
         JSONObject result = ExceptionConstants.standardSuccess();
         Staff rmw=JSON.parseObject(beanJson, Staff.class);
@@ -464,6 +535,7 @@ public class UserController {
                 new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_EDIT).append(", id: "+sta.getId()).toString()+
                         "修改信息："+rmw,
                 ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
+        messageQueue.convertAndSend("Factory",rmw.toString());
         return result;
     }
 }

@@ -7,14 +7,23 @@ import com.ds.factory.constants.ExceptionConstants;
 import com.ds.factory.datasource.entities.*;
 import com.ds.factory.service.Service.*;
 import com.ds.factory.utils.*;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.springframework.amqp.core.AmqpTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import redis.clients.jedis.Jedis;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -47,7 +56,11 @@ public class ProduceController {
     @Resource
     LogService logService;
 
+    @Autowired
+    AmqpTemplate messageQueue;
+
     @GetMapping(value = "/getAllmanufacture")
+    @CrossOrigin
     public String getAllmanufacture(@RequestParam(value = Constants.PAGE_SIZE, required = false) Integer pageSize,
                                              @RequestParam(value = Constants.CURRENT_PAGE, required = false) Integer currentPage,
                                              @RequestParam(value = Constants.SEARCH, required = false) String search,
@@ -111,10 +124,16 @@ public class ProduceController {
         }
         queryInfo.setRows(list2);
         queryInfo.setTotal(pageInfo.getTotal());
+        String message="";
+        for(int i=0;i<list.size();i++) {
+            message+=list.get(i);
+        }
+        messageQueue.convertAndSend("Factory",message.toString());
         return returnJson(objectMap, ErpInfo.OK.name, ErpInfo.OK.code);
     }
 
     @GetMapping(value = "/getAllrawmaterialscriteria")
+    @CrossOrigin
     public String getAllRawMaterialsCriteria(@RequestParam(value = Constants.PAGE_SIZE, required = false) Integer pageSize,
                                     @RequestParam(value = Constants.CURRENT_PAGE, required = false) Integer currentPage,
                                     @RequestParam(value = Constants.SEARCH, required = false) String search,
@@ -138,7 +157,45 @@ public class ProduceController {
             currentPage = BusinessConstants.DEFAULT_PAGINATION_PAGE_NUMBER;
         }
         PageHelper.startPage(currentPage,pageSize,true);
-        List<Raw_Materials_Criteria> list = raw_materials_criteriaService.selectByConstraint(no,name,type);
+
+        String Jedis_String = "Raw_Materials_Criteria--No:"+no+"; Name:"+name+"; Type:"+type;
+        List<Raw_Materials_Criteria> list =new ArrayList<Raw_Materials_Criteria>();
+        Jedis jedis=new Jedis("192.168.216.231",6379);//原先是6379
+        String jsonString=jedis.get(Jedis_String);
+        if(jsonString!=null)
+        {
+            ObjectMapper objectMapper=new ObjectMapper();
+            TypeReference<List<Raw_Materials_Criteria>> typeReference =
+                    new TypeReference<List<Raw_Materials_Criteria>>() {};
+            byte[] data=jsonString.getBytes();
+            try {
+                list=objectMapper.readValue(data, typeReference);
+                System.out.println("***** ***** ***** ***** ***** *****");
+            } catch (JsonParseException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (JsonMappingException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+        else
+        {
+            System.out.println("##### ##### ##### ##### ##### #####");
+            list = raw_materials_criteriaService.selectByConstraint(no,name,type);
+            ObjectMapper objectMapper=new ObjectMapper();
+            try {
+                String jsonString2 = objectMapper.writeValueAsString(list);
+                jedis.set(Jedis_String, jsonString2);
+            } catch (JsonProcessingException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+
         //log
         Staff sta=(Staff)request.getSession().getAttribute("user");
         logService.insertLog(BusinessConstants.LOG_MODULE_NAME_RAW_MATERIALS_CRITERIA,
@@ -155,10 +212,16 @@ public class ProduceController {
         }
         queryInfo.setRows(list);
         queryInfo.setTotal(pageInfo.getTotal());
+        String message="";
+        for(int i=0;i<list.size();i++) {
+            message+=list.get(i);
+        }
+        messageQueue.convertAndSend("Factory",message.toString());
         return returnJson(objectMap, ErpInfo.OK.name, ErpInfo.OK.code);
     }
 
     @GetMapping(value = "/getAllmanufacture_result")
+    @CrossOrigin
     public String getAllmanufacture_result(@RequestParam(value = Constants.PAGE_SIZE, required = false) Integer pageSize,
                                              @RequestParam(value = Constants.CURRENT_PAGE, required = false) Integer currentPage,
                                              @RequestParam(value = Constants.SEARCH, required = false) String search,
@@ -217,10 +280,16 @@ public class ProduceController {
         }
         queryInfo.setRows(list2);
         queryInfo.setTotal(pageInfo.getTotal());
+        String message="";
+        for(int i=0;i<list.size();i++) {
+            message+=list.get(i);
+        }
+        messageQueue.convertAndSend("Factory",message.toString());
         return returnJson(objectMap, ErpInfo.OK.name, ErpInfo.OK.code);
     }
 
     @GetMapping(value = "/getAllProductCriteria")
+    @CrossOrigin
     public String getAllProductCriteria(@RequestParam(value = Constants.PAGE_SIZE, required = false) Integer pageSize,
                                            @RequestParam(value = Constants.CURRENT_PAGE, required = false) Integer currentPage,
                                            @RequestParam(value = Constants.SEARCH, required = false) String search,
@@ -244,7 +313,46 @@ public class ProduceController {
             currentPage = BusinessConstants.DEFAULT_PAGINATION_PAGE_NUMBER;
         }
         PageHelper.startPage(currentPage,pageSize,true);
-        List<Product_Criteria> list = product_criteriaService.selectByConstraint(no,name,type);
+
+        String Jedis_String = "Product_Criteria--No:"+no+"; Name:"+name+"; Type:"+type;
+        List<Product_Criteria> list =new ArrayList<Product_Criteria>();
+        Jedis jedis=new Jedis("192.168.216.231",6379);//原先是6379
+        String jsonString=jedis.get(Jedis_String);
+        if(jsonString!=null)
+        {
+            ObjectMapper objectMapper=new ObjectMapper();
+            TypeReference<List<Product_Criteria>> typeReference =
+                    new TypeReference<List<Product_Criteria>>() {};
+            byte[] data=jsonString.getBytes();
+            try {
+                list=objectMapper.readValue(data, typeReference);
+                System.out.println("***** ***** ***** ***** ***** *****");
+            } catch (JsonParseException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (JsonMappingException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+        else
+        {
+            System.out.println("##### ##### ##### ##### ##### #####");
+            list = product_criteriaService.selectByConstraint(no,name,type);
+            ObjectMapper objectMapper=new ObjectMapper();
+            try {
+                String jsonString2 = objectMapper.writeValueAsString(list);
+                jedis.set(Jedis_String, jsonString2);
+            } catch (JsonProcessingException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+
+
         //log
         Staff sta=(Staff)request.getSession().getAttribute("user");
         logService.insertLog(BusinessConstants.LOG_MODULE_NAME_PRODUCT_CRITERIA,
@@ -260,11 +368,17 @@ public class ProduceController {
         }
         queryInfo.setRows(list);
         queryInfo.setTotal(pageInfo.getTotal());
+        String message="";
+        for(int i=0;i<list.size();i++) {
+            message+=list.get(i);
+        }
+        messageQueue.convertAndSend("Factory",message.toString());
         return returnJson(objectMap, ErpInfo.OK.name, ErpInfo.OK.code);
     }
 
 
     @GetMapping(value = "/purchase_list")
+    @CrossOrigin
     public String purchase_list(@RequestParam(value = Constants.PAGE_SIZE, required = false) Integer pageSize,
                                         @RequestParam(value = Constants.CURRENT_PAGE, required = false) Integer currentPage,
                                         @RequestParam(value = Constants.SEARCH, required = false) String search,
@@ -288,7 +402,45 @@ public class ProduceController {
             currentPage = BusinessConstants.DEFAULT_PAGINATION_PAGE_NUMBER;
         }
         PageHelper.startPage(currentPage,pageSize,true);
-        List<Product_Popularity> list = order_detailsService.selectByConstraint(no,name,type);
+
+        String Jedis_String = "Purchase--No:"+no+"; Name:"+name+"; Type:"+type;
+        List<Product_Popularity> list =new ArrayList<Product_Popularity>();
+        Jedis jedis=new Jedis("192.168.216.231",6379);//原先是6379
+        String jsonString=jedis.get(Jedis_String);
+        if(jsonString!=null)
+        {
+            ObjectMapper objectMapper=new ObjectMapper();
+            TypeReference<List<Product_Popularity>> typeReference =
+                    new TypeReference<List<Product_Popularity>>() {};
+            byte[] data=jsonString.getBytes();
+            try {
+                list=objectMapper.readValue(data, typeReference);
+                System.out.println("***** ***** ***** ***** ***** *****");
+            } catch (JsonParseException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (JsonMappingException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+        else
+        {
+            System.out.println("##### ##### ##### ##### ##### #####");
+            list = order_detailsService.selectByConstraint(no,name,type);
+            ObjectMapper objectMapper=new ObjectMapper();
+            try {
+                String jsonString2 = objectMapper.writeValueAsString(list);
+                jedis.set(Jedis_String, jsonString2);
+            } catch (JsonProcessingException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+
         //log
         Staff sta=(Staff)request.getSession().getAttribute("user");
         logService.insertLog(BusinessConstants.LOG_MODULE_NAME_PURCHASE,
@@ -304,12 +456,18 @@ public class ProduceController {
         }
         queryInfo.setRows(list);
         queryInfo.setTotal(pageInfo.getTotal());
+        String message="";
+        for(int i=0;i<list.size();i++) {
+            message+=list.get(i);
+        }
+        messageQueue.convertAndSend("Factory",message.toString());
         return returnJson(objectMap, ErpInfo.OK.name, ErpInfo.OK.code);
     }
 
 
     @PostMapping(value = "/client_purchase")
     @ResponseBody
+    @CrossOrigin
     public Object client_purchase(@RequestParam("ids") String ids,@RequestParam("counts") String counts,
                                   @RequestParam("units") String units,@RequestParam("client_no") String client_no, HttpServletRequest request)throws Exception{
         JSONObject result = ExceptionConstants.standardSuccess();
@@ -347,12 +505,18 @@ public class ProduceController {
                 new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_BUY).append(", id: "+sta.getId()).toString()
                 +"购买信息："+details,
                 ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
+        String message="";
+        for(int i=0;i<list.size();i++) {
+            message+=list.get(i);
+        }
+        messageQueue.convertAndSend("Factory",message.toString());
         return result;
     }
 
 
     @PostMapping("/addDesign")
     @ResponseBody
+    @CrossOrigin
     public Object addDesign(@RequestParam("info") String beanJson, HttpServletRequest request)throws Exception{
         JSONObject result = ExceptionConstants.standardSuccess();
         Manufacture_Design manufacture_design= JSON.parseObject(beanJson, Manufacture_Design.class);
@@ -375,12 +539,14 @@ public class ProduceController {
         logService.insertLog(BusinessConstants.LOG_MODULE_NAME_PRODUCT_CRITERIA,
                 new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_ADD).append(", id: "+sta.getId()).toString()
                 +"添加生产计划系列："+manufacture_design, ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
+        messageQueue.convertAndSend("Factory",manufacture_design.toString());
         return result;
     }
 
 
     @PostMapping("/updateDesign")
     @ResponseBody
+    @CrossOrigin
     public Object updateDesign(@RequestParam("info") String beanJson,@RequestParam("id") Long id, HttpServletRequest request)throws Exception{
         JSONObject result = ExceptionConstants.standardSuccess();
         Manufacture_Design manufacture_design= JSON.parseObject(beanJson, Manufacture_Design.class);
@@ -405,12 +571,14 @@ public class ProduceController {
         logService.insertLog(BusinessConstants.LOG_MODULE_NAME_PRODUCT_CRITERIA,
                 new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_EDIT).append(", id: "+sta.getId()).toString()
                         +"修改信息："+manufacture_design, ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
+        messageQueue.convertAndSend("Factory",manufacture_design.toString());
         return result;
     }
 
 
     @PostMapping("/batchDeleteDesignByIds")
     @ResponseBody
+    @CrossOrigin
     public Object batchDeleteDesignByIds(@RequestParam("ids") String ids, HttpServletRequest request)throws Exception{
         JSONObject result = ExceptionConstants.standardSuccess();
         String[] id=ids.split(",");
@@ -424,11 +592,13 @@ public class ProduceController {
                 new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_DELETE).append(", id: "+sta.getId()).toString()
                         +"删除信息ID组："+ids,
                 ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
+        messageQueue.convertAndSend("Factory",ids.toString());
         return result;
     }
 
 
     @GetMapping(value = "/getAllProductCriteria2")
+    @CrossOrigin
     public String getAllProductCriteria2(@RequestParam(value = Constants.PAGE_SIZE, required = false) Integer pageSize,
                                      @RequestParam(value = Constants.CURRENT_PAGE, required = false) Integer currentPage,
                                      @RequestParam(value = Constants.SEARCH, required = false) String search, HttpServletRequest request)throws Exception {
@@ -451,12 +621,49 @@ public class ProduceController {
         }
         PageHelper.startPage(currentPage,pageSize,true);
         List<Product_Criteria> list = new ArrayList<Product_Criteria>();
-        list.add(product_criteriaService.selectByProduct_no(no));
+
+        String Jedis_String = "Product_By_Manucature_No_Details--No:"+no;
+        Jedis jedis=new Jedis("192.168.216.231",6379);//原先是6379
+        String jsonString=jedis.get(Jedis_String);
+        if(jsonString!=null)
+        {
+            ObjectMapper objectMapper=new ObjectMapper();
+            TypeReference<List<Product_Criteria>> typeReference =
+                    new TypeReference<List<Product_Criteria>>() {};
+            byte[] data=jsonString.getBytes();
+            try {
+                list=objectMapper.readValue(data, typeReference);
+                System.out.println("***** ***** ***** ***** ***** *****");
+            } catch (JsonParseException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (JsonMappingException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+        else
+        {
+            System.out.println("##### ##### ##### ##### ##### #####");
+            list.add(product_criteriaService.selectByProduct_no(no));
+            ObjectMapper objectMapper=new ObjectMapper();
+            try {
+                String jsonString2 = objectMapper.writeValueAsString(list);
+                jedis.set(Jedis_String, jsonString2);
+            } catch (JsonProcessingException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+
         //log
         Staff sta=(Staff)request.getSession().getAttribute("user");
         logService.insertLog(BusinessConstants.LOG_MODULE_NAME_INGREDIENT,
                 new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_SEARCH).append(", id: "+sta.getId()).toString()
-                +"获得产品号为 “"+no+"” 的商品配方信息", ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
+                +"获得生产计划号为 “"+no+"” 的商品信息", ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
 
         //获取分页查询后的数据
         PageInfo<Product_Criteria> pageInfo = new PageInfo<>(list);
@@ -468,12 +675,18 @@ public class ProduceController {
         }
         queryInfo.setRows(list);
         queryInfo.setTotal(pageInfo.getTotal());
+        String message="";
+        for(int i=0;i<list.size();i++) {
+            message+=list.get(i);
+        }
+        messageQueue.convertAndSend("Factory",message.toString());
         return returnJson(objectMap, ErpInfo.OK.name, ErpInfo.OK.code);
     }
 
 
 
     @GetMapping(value = "/getIngredient")
+    @CrossOrigin
     public String getIngredient(@RequestParam(value = Constants.PAGE_SIZE, required = false) Integer pageSize,
                                          @RequestParam(value = Constants.CURRENT_PAGE, required = false) Integer currentPage,
                                          @RequestParam(value = Constants.SEARCH, required = false) String search, HttpServletRequest request)throws Exception {
@@ -496,19 +709,55 @@ public class ProduceController {
         PageHelper.startPage(currentPage,pageSize,true);
         List<Raw_Materials_Criteria> list = new ArrayList<Raw_Materials_Criteria>();
 
-        String[] materials=no.split("；");
-        for(int i=0;i<materials.length;i++)
+        String Jedis_String = "Ingredient--No:"+no;
+        Jedis jedis=new Jedis("192.168.216.231",6379);//原先是6379
+        String jsonString=jedis.get(Jedis_String);
+        if(jsonString!=null)
         {
-            Raw_Materials_Criteria raw=raw_materials_criteriaService.selectByKey(materials[i].split("（")[0].trim());
-            if(raw==null){
-                raw=new Raw_Materials_Criteria();
-                raw.setMaterial_no(materials[i].split("（")[0].trim());
-                raw.setMaterial_name("未找到原料");
-                raw.setMaterial_type("其他类");
-                raw.setGuarantee_period("????--年/季/月/周/日");
+            ObjectMapper objectMapper=new ObjectMapper();
+            TypeReference<List<Raw_Materials_Criteria>> typeReference =
+                    new TypeReference<List<Raw_Materials_Criteria>>() {};
+            byte[] data=jsonString.getBytes();
+            try {
+                list=objectMapper.readValue(data, typeReference);
+                System.out.println("***** ***** ***** ***** ***** *****");
+            } catch (JsonParseException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (JsonMappingException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
             }
-            list.add(raw);
         }
+        else
+        {
+            System.out.println("##### ##### ##### ##### ##### #####");
+            String[] materials=no.split("；");
+            for(int i=0;i<materials.length;i++)
+            {
+                Raw_Materials_Criteria raw=raw_materials_criteriaService.selectByKey(materials[i].split("（")[0].trim());
+                if(raw==null){
+                    raw=new Raw_Materials_Criteria();
+                    raw.setMaterial_no(materials[i].split("（")[0].trim());
+                    raw.setMaterial_name("未找到原料");
+                    raw.setMaterial_type("其他类");
+                    raw.setGuarantee_period("????--年/季/月/周/日");
+                }
+                list.add(raw);
+            }
+            ObjectMapper objectMapper=new ObjectMapper();
+            try {
+                String jsonString2 = objectMapper.writeValueAsString(list);
+                jedis.set(Jedis_String, jsonString2);
+            } catch (JsonProcessingException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+
         //log
         Staff sta=(Staff)request.getSession().getAttribute("user");
         logService.insertLog(BusinessConstants.LOG_MODULE_NAME_RAW_MATERIALS_CRITERIA,
@@ -524,11 +773,17 @@ public class ProduceController {
         }
         queryInfo.setRows(list);
         queryInfo.setTotal(pageInfo.getTotal());
+        String message="";
+        for(int i=0;i<list.size();i++) {
+            message+=list.get(i);
+        }
+        messageQueue.convertAndSend("Factory",message.toString());
         return returnJson(objectMap, ErpInfo.OK.name, ErpInfo.OK.code);
     }
 
 
     @GetMapping(value = "/getMaterials")
+    @CrossOrigin
     public String getMaterials(@RequestParam(value = Constants.PAGE_SIZE, required = false) Integer pageSize,
                                 @RequestParam(value = Constants.CURRENT_PAGE, required = false) Integer currentPage,
                                 @RequestParam(value = Constants.SEARCH, required = false) String search, HttpServletRequest request)throws Exception {
@@ -550,7 +805,44 @@ public class ProduceController {
         }
         PageHelper.startPage(currentPage,pageSize,true);
         List<Raw_Materials_Criteria> list = new ArrayList<Raw_Materials_Criteria>();
-        list.add(raw_materials_criteriaService.selectByKey(no));
+
+        String Jedis_String = "Materials_By_Product_No--No:"+no;
+        Jedis jedis=new Jedis("192.168.216.231",6379);//原先是6379
+        String jsonString=jedis.get(Jedis_String);
+        if(jsonString!=null)
+        {
+            ObjectMapper objectMapper=new ObjectMapper();
+            TypeReference<List<Raw_Materials_Criteria>> typeReference =
+                    new TypeReference<List<Raw_Materials_Criteria>>() {};
+            byte[] data=jsonString.getBytes();
+            try {
+                list=objectMapper.readValue(data, typeReference);
+                System.out.println("***** ***** ***** ***** ***** *****");
+            } catch (JsonParseException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (JsonMappingException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+        else
+        {
+            System.out.println("##### ##### ##### ##### ##### #####");
+            list.add(raw_materials_criteriaService.selectByKey(no));
+            ObjectMapper objectMapper=new ObjectMapper();
+            try {
+                String jsonString2 = objectMapper.writeValueAsString(list);
+                jedis.set(Jedis_String, jsonString2);
+            } catch (JsonProcessingException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+
         //log
         Staff sta=(Staff)request.getSession().getAttribute("user");
         logService.insertLog(BusinessConstants.LOG_MODULE_NAME_RAW_MATERIALS_CRITERIA,
@@ -567,10 +859,16 @@ public class ProduceController {
         }
         queryInfo.setRows(list);
         queryInfo.setTotal(pageInfo.getTotal());
+        String message="";
+        for(int i=0;i<list.size();i++) {
+            message+=list.get(i);
+        }
+        messageQueue.convertAndSend("Factory",message.toString());
         return returnJson(objectMap, ErpInfo.OK.name, ErpInfo.OK.code);
     }
 
     @GetMapping(value = "/getProducts")
+    @CrossOrigin
     public String getProducts(@RequestParam(value = Constants.PAGE_SIZE, required = false) Integer pageSize,
                                @RequestParam(value = Constants.CURRENT_PAGE, required = false) Integer currentPage,
                                @RequestParam(value = Constants.SEARCH, required = false) String search, HttpServletRequest request)throws Exception {
@@ -592,7 +890,43 @@ public class ProduceController {
         }
         PageHelper.startPage(currentPage,pageSize,true);
         List<Product_Criteria> list = new ArrayList<Product_Criteria>();
-        list.add(product_criteriaService.selectByProduct_no(no));
+
+        String Jedis_String = "Product_By_Manucature_No_Details--No:"+no;
+        Jedis jedis=new Jedis("192.168.216.231",6379);//原先是6379
+        String jsonString=jedis.get(Jedis_String);
+        if(jsonString!=null)
+        {
+            ObjectMapper objectMapper=new ObjectMapper();
+            TypeReference<List<Product_Criteria>> typeReference =
+                    new TypeReference<List<Product_Criteria>>() {};
+            byte[] data=jsonString.getBytes();
+            try {
+                list=objectMapper.readValue(data, typeReference);
+                System.out.println("***** ***** ***** ***** ***** *****");
+            } catch (JsonParseException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (JsonMappingException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+        else
+        {
+            System.out.println("##### ##### ##### ##### ##### #####");
+            list.add(product_criteriaService.selectByProduct_no(no));
+            ObjectMapper objectMapper=new ObjectMapper();
+            try {
+                String jsonString2 = objectMapper.writeValueAsString(list);
+                jedis.set(Jedis_String, jsonString2);
+            } catch (JsonProcessingException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
         //log
         Staff sta=(Staff)request.getSession().getAttribute("user");
         logService.insertLog(BusinessConstants.LOG_MODULE_NAME_PRODUCT_CRITERIA,
@@ -609,6 +943,11 @@ public class ProduceController {
         }
         queryInfo.setRows(list);
         queryInfo.setTotal(pageInfo.getTotal());
+        String message="";
+        for(int i=0;i<list.size();i++) {
+            message+=list.get(i);
+        }
+        messageQueue.convertAndSend("Factory",message.toString());
         return returnJson(objectMap, ErpInfo.OK.name, ErpInfo.OK.code);
     }
 }

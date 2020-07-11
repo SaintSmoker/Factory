@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.ds.factory.constants.BusinessConstants;
 import com.ds.factory.constants.ExceptionConstants;
 import com.ds.factory.dao.Example.FunctionsExample;
+import com.ds.factory.datasource.entities.Client;
 import com.ds.factory.datasource.entities.Functions;
 import com.ds.factory.datasource.entities.Staff;
 import com.ds.factory.datasource.mappers.FunctionsMapper;
@@ -15,17 +16,26 @@ import com.ds.factory.service.Service.FunctionsService;
 import com.ds.factory.service.Service.LogService;
 import com.ds.factory.service.Service.UserBusinessService;
 import com.ds.factory.utils.*;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.amqp.core.AmqpTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import redis.clients.jedis.Jedis;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -53,7 +63,11 @@ public class FunctionsController {
     @Resource
     private UserBusinessService userBusinessService;
 
+    @Autowired
+    AmqpTemplate messageQueue;
+
     @PostMapping(value = "/findMenu")
+    @CrossOrigin
     public JSONArray findMenu(@RequestParam(value="pNumber") String pNumber,
                               @RequestParam(value="hasFunctions") String hasFunctions,
                               HttpServletRequest request)throws Exception {
@@ -146,6 +160,7 @@ public class FunctionsController {
     }
 
     @GetMapping(value = "/list")
+    @CrossOrigin
     public String list(@RequestParam(value = Constants.PAGE_SIZE, required = false) Integer pageSize,
                           @RequestParam(value = Constants.CURRENT_PAGE, required = false) Integer currentPage,
                           @RequestParam(value = Constants.SEARCH, required = false) String search,
@@ -166,7 +181,45 @@ public class FunctionsController {
             parameterMap.put(Constants.OFFSET, offset);
         }
         PageHelper.startPage(currentPage,pageSize,true);
-        List<Functions> list = functionsService.selectByConstrain(name,no);
+
+        String Jedis_String = "Functions--No:"+no+"; Name:"+name;
+        List<Functions> list =new ArrayList<Functions>();
+        Jedis jedis=new Jedis("192.168.216.231",6379);//原先是6379
+        String jsonString=jedis.get(Jedis_String);
+        if(jsonString!=null)
+        {
+            ObjectMapper objectMapper=new ObjectMapper();
+            TypeReference<List<Functions>> typeReference =
+                    new TypeReference<List<Functions>>() {};
+            byte[] data=jsonString.getBytes();
+            try {
+                list=objectMapper.readValue(data, typeReference);
+                System.out.println("***** ***** ***** ***** ***** *****");
+            } catch (JsonParseException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (JsonMappingException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+        else
+        {
+            System.out.println("##### ##### ##### ##### ##### #####");
+            list = functionsService.selectByConstrain(name,no);
+            ObjectMapper objectMapper=new ObjectMapper();
+            try {
+                String jsonString2 = objectMapper.writeValueAsString(list);
+                jedis.set(Jedis_String, jsonString2);
+            } catch (JsonProcessingException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+
         PageInfo<Functions> pageInfo = new PageInfo<>(list);
         objectMap.put("page", queryInfo);
         if (list == null) {
@@ -181,12 +234,17 @@ public class FunctionsController {
         logService.insertLog(BusinessConstants.LOG_MODULE_NAME_FUNCTIONS,
                 new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_SEARCH).append(", id: "+sta.getId()).toString(),
                 ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
-
+        String message="";
+        for(int i=0;i<list.size();i++) {
+            message+=list.get(i);
+        }
+        messageQueue.convertAndSend("Factory",message.toString());
         return returnJson(objectMap, ErpInfo.OK.name, ErpInfo.OK.code);
     }
 
 
     @PostMapping(value = "/findRoleFunctions")
+    @CrossOrigin
     public JSONArray findRoleFunctions(@RequestParam("UBType") String type, @RequestParam("UBKeyId") String keyId,
                                        HttpServletRequest request)throws Exception {
         JSONArray arr = new JSONArray();
@@ -337,6 +395,7 @@ public class FunctionsController {
 
 
     @GetMapping(value = "/findByIds")
+    @CrossOrigin
     public BaseResponseInfo findByIds(@RequestParam("functionsIds") String functionsIds,
                                       HttpServletRequest request)throws Exception {
         BaseResponseInfo res = new BaseResponseInfo();
@@ -375,6 +434,7 @@ public class FunctionsController {
 
 
     @RequestMapping(value = "/batchDeleteFunctionsByIds")
+    @CrossOrigin
     public Object batchDeleteFunctionsByIds(@RequestParam("ids") String ids, HttpServletRequest request) throws Exception {
         List<Long> idList = StringUtil.strToLongList(ids);
         FunctionsExample example = new FunctionsExample();
@@ -397,6 +457,7 @@ public class FunctionsController {
 
     @PostMapping("/add")
     @ResponseBody
+    @CrossOrigin
     public Object add(@RequestParam("info") String beanJson, HttpServletRequest request)throws Exception{
         JSONObject obj = JSONObject.parseObject(beanJson, JSONObject.class);
         String a=obj.get("Enabled").toString();
@@ -441,6 +502,7 @@ public class FunctionsController {
 
     @PostMapping("/update")
     @ResponseBody
+    @CrossOrigin
     public Object update(@RequestParam("info") String beanJson,@RequestParam("id") Long id, HttpServletRequest request)throws Exception{
         JSONObject obj = JSONObject.parseObject(beanJson, JSONObject.class);
         String a=obj.get("Enabled").toString();

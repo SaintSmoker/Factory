@@ -11,6 +11,8 @@ import com.ds.factory.utils.ErpInfo;
 import com.ds.factory.utils.PageQueryInfo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.springframework.amqp.core.AmqpTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -39,8 +41,12 @@ public class OrderFormController {
     @Resource
     LogService logService;
 
+    @Autowired
+    AmqpTemplate messageQueue;
+
     @PostMapping("/update")
     @ResponseBody
+    @CrossOrigin
     public Object update(@RequestParam("info") String beanJson,@RequestParam("id") Long id, HttpServletRequest request)throws Exception{
         JSONObject result = ExceptionConstants.standardSuccess();
         Order_Form order_form= JSON.parseObject(beanJson, Order_Form.class);
@@ -77,6 +83,7 @@ public class OrderFormController {
         logService.insertLog(BusinessConstants.LOG_MODULE_NAME_ORDER,
                 new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_EDIT).append(", id: "+sta.getId()).toString()
                 +"修改信息："+order_form, ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
+        messageQueue.convertAndSend("Factory",order_form.toString());
         return result;
     }
 

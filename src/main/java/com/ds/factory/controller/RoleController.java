@@ -17,6 +17,8 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.amqp.core.AmqpTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -43,12 +45,16 @@ public class RoleController {
 
     @Resource
     LogService logService;
+
+    @Autowired
+    AmqpTemplate messageQueue;
     /**
      * 角色对应应用显示
      * @param request
      * @return
      */
     @PostMapping(value = "/findUserRole")
+    @CrossOrigin
     public JSONArray findUserRole(@RequestParam("UBType") String type, @RequestParam("UBKeyId") String keyId,
                                   HttpServletRequest request)throws Exception {
         JSONArray arr = new JSONArray();
@@ -84,6 +90,7 @@ public class RoleController {
     }
 
     @GetMapping(value = "/list")
+    @CrossOrigin
     public List<Role> list(HttpServletRequest request)throws Exception {
         Staff sta=(Staff)request.getSession().getAttribute("user");
         logService.insertLog(BusinessConstants.LOG_MODULE_NAME_ROLE,
@@ -94,6 +101,7 @@ public class RoleController {
     }
 
     @RequestMapping(value = "/batchDeleteRoleByIds")
+    @CrossOrigin
     public Object batchDeleteRoleByIds(@RequestParam("ids") String ids, HttpServletRequest request) throws Exception {
         JSONObject result = ExceptionConstants.standardSuccess();
         int i= roleService.batchDeleteRoleByIds(ids);
@@ -107,10 +115,12 @@ public class RoleController {
         logService.insertLog(BusinessConstants.LOG_MODULE_NAME_ROLE,
                 new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_BATCH_delete).append(", id: "+sta.getId()).toString()+"删除信息ID组："+ids,
                 ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
+        messageQueue.convertAndSend("Factory",ids.toString());
         return result;
     }
 
     @GetMapping(value = "/getAllRole")
+    @CrossOrigin
     public String getList(@RequestParam(value = Constants.PAGE_SIZE, required = false) Integer pageSize,
                           @RequestParam(value = Constants.CURRENT_PAGE, required = false) Integer currentPage,
                           @RequestParam(value = Constants.SEARCH, required = false) String search,
@@ -148,12 +158,18 @@ public class RoleController {
         logService.insertLog(BusinessConstants.LOG_MODULE_NAME_ROLE,
                 new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_SEARCH).append(", id: "+sta.getId()).toString(),
                 ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
+        String message="";
+        for(int i=0;i<list.size();i++) {
+            message+=list.get(i);
+        }
+        messageQueue.convertAndSend("Factory",message.toString());
         return returnJson(objectMap, ErpInfo.OK.name, ErpInfo.OK.code);
     }
 
 
     @PostMapping("/add")
     @ResponseBody
+    @CrossOrigin
     public Object add(@RequestParam("info") String beanJson, HttpServletRequest request)throws Exception{
         JSONObject result = ExceptionConstants.standardSuccess();
         Role role= JSON.parseObject(beanJson, Role.class);
@@ -162,12 +178,14 @@ public class RoleController {
         logService.insertLog(BusinessConstants.LOG_MODULE_NAME_ROLE,
                 new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_ADD).append(", id: "+sta.getId()).toString()+"添加信息："+role,
                 ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
+        messageQueue.convertAndSend("Factory",role.toString());
         return result;
     }
 
 
     @PostMapping("/update")
     @ResponseBody
+    @CrossOrigin
     public Object update(@RequestParam("info") String beanJson,@RequestParam("id") Long id, HttpServletRequest request)throws Exception{
         JSONObject result = ExceptionConstants.standardSuccess();
         Role role= JSON.parseObject(beanJson, Role.class);
@@ -177,6 +195,7 @@ public class RoleController {
         logService.insertLog(BusinessConstants.LOG_MODULE_NAME_ROLE,
                 new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_EDIT).append(", id: "+sta.getId()).toString()
                 +"修改信息："+role, ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
+        messageQueue.convertAndSend("Factory",role.toString());
         return result;
     }
 }
