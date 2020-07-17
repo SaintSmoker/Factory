@@ -147,7 +147,7 @@ public class OrderController {
         String Jedis_String = "Order_Details--Order_No:"+no+"; Client_no:"+client_no
                 +"; Product_no:"+product_no+"; Check:"+check;
         List<Order_Details> list =new ArrayList<Order_Details>();
-        Jedis jedis=new Jedis("192.168.216.231",6379);//原先是6379
+        Jedis jedis=new Jedis("192.168.216.130",6379);//原先是6379
         String jsonString=jedis.get(Jedis_String);
         if(jsonString!=null)
         {
@@ -440,7 +440,7 @@ public class OrderController {
         String Jedis_String = "Refund_Application--Refund_No:"+refund_no+"; Order_No:"+order_no+
                 "; Client_No:"+client_no+"; Staff_No:"+staff_no+"; Permission:"+permission;
         List<Refund_Application> list =new ArrayList<Refund_Application>();
-        Jedis jedis=new Jedis("192.168.216.231",6379);//原先是6379
+        Jedis jedis=new Jedis("192.168.216.130",6379);//原先是6379
         String jsonString=jedis.get(Jedis_String);
         if(jsonString!=null)
         {

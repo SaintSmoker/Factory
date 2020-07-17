@@ -80,7 +80,7 @@ public class WarehouseController {
                 "; Staff_No:"+staff_no + "; Manufacture_Date:"+manufacture_date +
                 "; Storage_Address:"+storage_address;
         List<Product_Warehouse> list =new ArrayList<Product_Warehouse>();
-        Jedis jedis=new Jedis("192.168.216.231",6379);//原先是6379
+        Jedis jedis=new Jedis("192.168.216.130",6379);//原先是6379
         String jsonString=jedis.get(Jedis_String);
         if(jsonString!=null)
         {
@@ -172,7 +172,7 @@ public class WarehouseController {
                 "; Staff_No:"+staff_no_storage + "; Manufacture_Date:"+product_date +
                 "; Storage_Address:"+storage_address;
         List<Raw_Materials_Warehouse> list =new ArrayList<Raw_Materials_Warehouse>();
-        Jedis jedis=new Jedis("192.168.216.231",6379);//原先是6379
+        Jedis jedis=new Jedis("192.168.216.130",6379);//原先是6379
         String jsonString=jedis.get(Jedis_String);
         if(jsonString!=null)
         {

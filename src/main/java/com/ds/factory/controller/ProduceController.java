@@ -160,7 +160,7 @@ public class ProduceController {
 
         String Jedis_String = "Raw_Materials_Criteria--No:"+no+"; Name:"+name+"; Type:"+type;
         List<Raw_Materials_Criteria> list =new ArrayList<Raw_Materials_Criteria>();
-        Jedis jedis=new Jedis("192.168.216.231",6379);//原先是6379
+        Jedis jedis=new Jedis("192.168.216.130",6379);//原先是6379
         String jsonString=jedis.get(Jedis_String);
         if(jsonString!=null)
         {
@@ -316,7 +316,7 @@ public class ProduceController {
 
         String Jedis_String = "Product_Criteria--No:"+no+"; Name:"+name+"; Type:"+type;
         List<Product_Criteria> list =new ArrayList<Product_Criteria>();
-        Jedis jedis=new Jedis("192.168.216.231",6379);//原先是6379
+        Jedis jedis=new Jedis("192.168.216.130",6379);//原先是6379
         String jsonString=jedis.get(Jedis_String);
         if(jsonString!=null)
         {
@@ -405,7 +405,7 @@ public class ProduceController {
 
         String Jedis_String = "Purchase--No:"+no+"; Name:"+name+"; Type:"+type;
         List<Product_Popularity> list =new ArrayList<Product_Popularity>();
-        Jedis jedis=new Jedis("192.168.216.231",6379);//原先是6379
+        Jedis jedis=new Jedis("192.168.216.130",6379);//原先是6379
         String jsonString=jedis.get(Jedis_String);
         if(jsonString!=null)
         {
@@ -623,7 +623,7 @@ public class ProduceController {
         List<Product_Criteria> list = new ArrayList<Product_Criteria>();
 
         String Jedis_String = "Product_By_Manucature_No_Details--No:"+no;
-        Jedis jedis=new Jedis("192.168.216.231",6379);//原先是6379
+        Jedis jedis=new Jedis("192.168.216.130",6379);//原先是6379
         String jsonString=jedis.get(Jedis_String);
         if(jsonString!=null)
         {
@@ -710,7 +710,7 @@ public class ProduceController {
         List<Raw_Materials_Criteria> list = new ArrayList<Raw_Materials_Criteria>();
 
         String Jedis_String = "Ingredient--No:"+no;
-        Jedis jedis=new Jedis("192.168.216.231",6379);//原先是6379
+        Jedis jedis=new Jedis("192.168.216.130",6379);//原先是6379
         String jsonString=jedis.get(Jedis_String);
         if(jsonString!=null)
         {
@@ -807,7 +807,7 @@ public class ProduceController {
         List<Raw_Materials_Criteria> list = new ArrayList<Raw_Materials_Criteria>();
 
         String Jedis_String = "Materials_By_Product_No--No:"+no;
-        Jedis jedis=new Jedis("192.168.216.231",6379);//原先是6379
+        Jedis jedis=new Jedis("192.168.216.130",6379);//原先是6379
         String jsonString=jedis.get(Jedis_String);
         if(jsonString!=null)
         {
@@ -892,7 +892,7 @@ public class ProduceController {
         List<Product_Criteria> list = new ArrayList<Product_Criteria>();
 
         String Jedis_String = "Product_By_Manucature_No_Details--No:"+no;
-        Jedis jedis=new Jedis("192.168.216.231",6379);//原先是6379
+        Jedis jedis=new Jedis("192.168.216.130",6379);//原先是6379
         String jsonString=jedis.get(Jedis_String);
         if(jsonString!=null)
         {

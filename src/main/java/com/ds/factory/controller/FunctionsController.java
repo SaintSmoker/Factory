@@ -184,7 +184,7 @@ public class FunctionsController {
 
         String Jedis_String = "Functions--No:"+no+"; Name:"+name;
         List<Functions> list =new ArrayList<Functions>();
-        Jedis jedis=new Jedis("192.168.216.231",6379);//原先是6379
+        Jedis jedis=new Jedis("192.168.216.130",6379);//原先是6379
         String jsonString=jedis.get(Jedis_String);
         if(jsonString!=null)
         {

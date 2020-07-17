@@ -12,16 +12,16 @@ spring:
       probability: 1
 
   rabbitmq:
-    host: 192.168.216.231
+    host: 192.168.216.130
     port: 5672
     username: admin
-    password: admin
+    password: ZTM123ztm
 
   datasource:
-    url: jdbc:mysql://127.0.0.1:3306/DS_erp?serverTimezone=CTT&useUnicode=true&characterEncoding=utf8&useCursorFetch=true&defaultFetchSize=500&allowMultiQueries=true&rewriteBatchedStatements=true&useSSL=false
+    url: jdbc:mysql://192.168.216.130:3306/DS_erp?serverTimezone=CTT&useUnicode=true&characterEncoding=utf8&useCursorFetch=true&defaultFetchSize=500&allowMultiQueries=true&rewriteBatchedStatements=true&useSSL=false
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
-    password: root
+    password: ZTM123ztm
 
   freemarker:
     check-template-location: false
@@ -41,10 +41,10 @@ mybatis:
   mapper-locations: classpath*:mappers/*.xml
   type-aliases-package: com.ds.factory.datasource.entities
 
-eureka:
-  client:
-    service-url:
-      defaultZone: http://admin1:123456@localhost:7001/eureka/
+#eureka:
+#  client:
+#    service-url:
+#      defaultZone: http://admin1:123456@localhost:7001/eureka/
 
 ---
 spring:
