@@ -109,7 +109,6 @@ public class OrderController {
         }
         queryInfo.setRows(list2);
         queryInfo.setTotal(pageInfo.getTotal());
-
         String message="";
         for(int i=0;i<list.size();i++) {
             message+=list.get(i);
@@ -214,7 +213,6 @@ public class OrderController {
         }
         queryInfo.setRows(list2);
         queryInfo.setTotal(pageInfo.getTotal());
-
         String message="";
         for(int i=0;i<list.size();i++) {
             message+=list.get(i);
@@ -278,7 +276,6 @@ public class OrderController {
         }
         queryInfo.setRows(list2);
         queryInfo.setTotal(pageInfo.getTotal());
-
         String message="";
         for(int i=0;i<list.size();i++) {
             message+=list.get(i);
@@ -344,7 +341,6 @@ public class OrderController {
         }
         queryInfo.setRows(list2);
         queryInfo.setTotal(pageInfo.getTotal());
-
         String message="";
         for(int i=0;i<list.size();i++) {
             message+=list.get(i);
@@ -398,7 +394,6 @@ public class OrderController {
         }
         queryInfo.setRows(list);
         queryInfo.setTotal(pageInfo.getTotal());
-
         String message="";
         for(int i=0;i<list.size();i++) {
             message+=list.get(i);
@@ -491,7 +486,6 @@ public class OrderController {
         }
         queryInfo.setRows(list);
         queryInfo.setTotal(pageInfo.getTotal());
-
         String message="";
         for(int i=0;i<list.size();i++) {
             message+=list.get(i);
